@@ -1,12 +1,7 @@
 { constants, pkgs, ... }:
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  wsl.enable = true;
+  wsl.defaultUser = constants.username;
 
   nix.settings.experimental-features = [
     "nix-command"
@@ -14,7 +9,6 @@
   ];
 
   time.timeZone = "Asia/Kolkata";
-  networking.hostName = "nixvm1";
   i18n.defaultLocale = "en_US.UTF-8";
   services.xserver.xkb.layout = "us";
 

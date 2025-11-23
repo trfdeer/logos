@@ -7,6 +7,7 @@
       url = "github:nix-community/home-manager?ref=release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
   outputs =
@@ -36,7 +37,18 @@
         specialArgs = { inherit inputs constants; };
 
         modules = [
-          ./hosts/nixvm1/configuration.nix
+          inputs.nixos-wsl.nixosModules.default
+          ./hosts/wsl/configuration.nix
+          ./modules/nixos
+        ];
+      };
+
+      nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs constants; };
+
+        modules = [
+          ./hosts/wsl/configuration.nix
           ./modules/nixos
         ];
       };
