@@ -22,6 +22,7 @@
         username = "REDACTED_USERNAME";
         email = "REDACTED_EMAIL";
         signingKey = "REDACTED_SSH_KEY";
+        sshKeys = [ "REDACTED_SSH_KEY" ];
         stateVersion = "25.05";
       };
       pkgs = import nixpkgs {
