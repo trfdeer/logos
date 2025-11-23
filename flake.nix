@@ -22,6 +22,7 @@
         username = "ttarafder";
         email = "ttarafder7d1@protonmail.com";
         signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILNyNZFAlLgqaLZGIB79Gz/FT0rj9PcIYW6zaM4fhUhb";
+        sshKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILNyNZFAlLgqaLZGIB79Gz/FT0rj9PcIYW6zaM4fhUhb" ];
         stateVersion = "25.05";
       };
       pkgs = import nixpkgs {

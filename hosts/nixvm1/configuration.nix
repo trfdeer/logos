@@ -69,15 +69,11 @@
   # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.ttarafder = {
+  users.users.${constants.username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-      tree
-    ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBod7BQCA2N5GCdkD8NJzjhx5uajVrUwNCok+EYtDAvA"
-    ];
+    shell = pkgs.zsh;
+    openssh.authorizedKeys.keys = constants.sshKeys;
   };
 
   # programs.firefox.enable = true;
@@ -89,10 +85,12 @@
     vim
     wget
     nixd
+    tmux
     nixfmt-rfc-style
     direnv
   ];
 
+  programs.zsh.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
