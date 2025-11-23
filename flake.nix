@@ -37,7 +37,6 @@
         specialArgs = { inherit inputs constants; };
 
         modules = [
-          inputs.nixos-wsl.nixosModules.default
           ./hosts/wsl/configuration.nix
           ./modules/nixos
         ];
@@ -48,6 +47,7 @@
         specialArgs = { inherit inputs constants; };
 
         modules = [
+          inputs.nixos-wsl.nixosModules.default
           ./hosts/wsl/configuration.nix
           ./modules/nixos
         ];
