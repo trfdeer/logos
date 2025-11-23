@@ -12,27 +12,50 @@
       syntaxHighlighting.enable = true;
       dotDir = ".config/zsh";
       history.save = 0;
-      loginExtra = ''
-        if [[ -z $TMUX ]] && [[ -n $SSH_TTY ]]; then
-          exec tmux -u new-session -A -s default
-        fi
-      '';
-      initExtra = ''
+      initContent = ''
         if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
           . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
         fi
+      ''
+      + lib.optionalString config.sqwer.tmux.enable ''
+
+        if [[ $- == *i* ]] && [[ -z "$TMUX" ]] && [[ -t 0 ]]; then
+          # Skip if running in VS Code terminal
+          if [[ "$TERM_PROGRAM" == "vscode" ]] || [[ -n "$VSCODE_PID" ]]; then
+              return
+          fi
+
+          # Skip if ssh was invoked with a remote command (non-tty)
+          if [[ -n "$SSH_ORIGINAL_COMMAND" ]]; then
+              return
+          fi
+
+          # Skip for "dumb" terminals or automation tools
+          case "$TERM" in
+              dumb) return ;;
+          esac
+
+          # Default tmux session name
+          SESSION="main"
+
+          # Check if session exists, attach or create accordingly
+          if tmux has-session -t "$SESSION" 2>/dev/null; then
+              exec tmux attach-session -t "$SESSION"
+          else
+              exec tmux new-session -s "$SESSION"
+          fi
+        fi
       '';
-      shellAliases = {
-        ls = "exa";
-      };
+      shellAliases = { } // lib.optionalAttrs config.sqwer.utils.enable { ls = "exa"; };
       oh-my-zsh = {
         enable = true;
         plugins = [
-          "git"
           "sudo"
-          "tmux"
-          "direnv"
-        ];
+        ]
+        ++ lib.optionals config.sqwer.tmux.enable [ "tmux" ]
+        ++ lib.optionals config.sqwer.git.enable [ "git" ]
+        ++ lib.optionals config.sqwer.direnv.enable [ "direnv" ];
+
       };
     };
     # // lib.optionalAttrs defs.config.isWsl {
