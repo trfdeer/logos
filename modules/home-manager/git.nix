@@ -13,13 +13,15 @@
     programs.git = {
       enable = true;
       lfs.enable = true;
-      userName = constants.username;
-      userEmail = constants.email;
       signing = {
         key = constants.signingKey;
         signByDefault = true;
       };
-      extraConfig = {
+      settings = {
+        user = {
+          name = constants.username;
+          email = constants.email;
+        };
         init.defaultBranch = "main";
         gpg.format = "ssh";
       };

@@ -2,9 +2,9 @@
   description = "NixOS / Home Manager Configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=release-25.11";
     home-manager = {
-      url = "github:nix-community/home-manager?ref=release-25.05";
+      url = "github:nix-community/home-manager?ref=release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
@@ -24,7 +24,7 @@
         email = "REDACTED_EMAIL";
         signingKey = "REDACTED_SSH_KEY";
         sshKeys = [ "REDACTED_SSH_KEY" ];
-        stateVersion = "25.05";
+        stateVersion = "25.11";
       };
       pkgs = import nixpkgs {
         inherit system;
@@ -60,6 +60,13 @@
         modules = [
           ./home.nix
           ./modules/home-manager
+        ];
+      };
+
+      devShells.${system}.default = pkgs.mkShellNoCC {
+        packages = with pkgs; [
+          nixd
+          nixfmt-rfc-style
         ];
       };
     };
