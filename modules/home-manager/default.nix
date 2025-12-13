@@ -8,5 +8,6 @@
     ./tmux.nix
     ./helix.nix
     ./utils.nix
+    ./audio.nix
   ];
 }

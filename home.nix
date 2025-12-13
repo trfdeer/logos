@@ -15,6 +15,9 @@
     helix.enable = true;
     utils.enable = true;
 
+    audio.disable-hsp = true;
+    audio.disable-hw-volume = true;
+
     git.enable = true;
   };
 
