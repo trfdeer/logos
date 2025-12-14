@@ -1,4 +1,4 @@
-{ constants, ... }:
+{ constants, config, ... }:
 {
   home.username = constants.username;
   home.homeDirectory = "/home/${constants.username}";
@@ -18,7 +18,19 @@
     audio.disable-hsp = true;
     audio.disable-hw-volume = true;
 
-    git.enable = true;
+    git = {
+      enable = true;
+      user = {
+        name = constants.username;
+        email = constants.email;
+        signingkey = constants.signingKey;
+      };
+    };
+
+    devtools = {
+      basePath = "${config.home.homeDirectory}/code";
+      go.enable = true;
+    };
   };
 
   home.stateVersion = constants.stateVersion;
