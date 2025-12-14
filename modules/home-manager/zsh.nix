@@ -46,7 +46,9 @@
           fi
         fi
       '';
-      shellAliases = { } // lib.optionalAttrs config.sqwer.utils.enable { ls = "exa"; };
+      shellAliases = lib.mkMerge [
+        (lib.mkIf config.sqwer.utils.enable { ls = "exa"; })
+      ];
       oh-my-zsh = {
         enable = true;
         plugins = [

@@ -9,5 +9,6 @@
     ./helix.nix
     ./utils.nix
     ./audio.nix
+    ./devtools.nix
   ];
 }

@@ -1,12 +1,25 @@
 {
   lib,
   config,
-  constants,
   ...
 }:
 {
   options = {
     sqwer.git.enable = lib.mkEnableOption "Enable Git";
+    sqwer.git.user = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        description = "Git user name";
+      };
+      email = lib.mkOption {
+        type = lib.types.str;
+        description = "Git user email";
+      };
+      signingkey = lib.mkOption {
+        type = lib.types.str;
+        description = "Git user signingkey";
+      };
+    };
   };
 
   config = lib.mkIf config.sqwer.git.enable {
@@ -14,13 +27,13 @@
       enable = true;
       lfs.enable = true;
       signing = {
-        key = constants.signingKey;
+        key = config.sqwer.git.user.signingkey;
         signByDefault = true;
       };
       settings = {
         user = {
-          name = constants.username;
-          email = constants.email;
+          name = config.sqwer.git.user.name;
+          email = config.sqwer.git.user.email;
         };
         init.defaultBranch = "main";
         gpg.format = "ssh";
