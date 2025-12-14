@@ -19,30 +19,28 @@
       ''
       + lib.optionalString config.sqwer.tmux.enable ''
 
-        if [[ $- == *i* ]] && [[ -z "$TMUX" ]] && [[ -t 0 ]]; then
-          # Skip if running in VS Code terminal
-          if [[ "$TERM_PROGRAM" == "vscode" ]] || [[ -n "$VSCODE_PID" ]]; then
-              return
-          fi
+        # Decide whether tmux auto-start should be skipped
+        SKIP_TMUX=0
 
-          # Skip if ssh was invoked with a remote command (non-tty)
-          if [[ -n "$SSH_ORIGINAL_COMMAND" ]]; then
-              return
-          fi
+        if [[ "$TERM_PROGRAM" == "vscode" ]] || [[ -n "$VSCODE_PID" ]]; then
+          SKIP_TMUX=1
+        fi
 
-          # Skip for "dumb" terminals or automation tools
-          case "$TERM" in
-              dumb) return ;;
-          esac
+        if [[ -n "$SSH_ORIGINAL_COMMAND" ]]; then
+          SKIP_TMUX=1
+        fi
 
-          # Default tmux session name
+        case "$TERM" in
+          dumb) SKIP_TMUX=1 ;;
+        esac
+
+        if [[ $- == *i* ]] && [[ -z "$TMUX" ]] && [[ -t 0 ]] && [[ "$SKIP_TMUX" -eq 0 ]]; then
           SESSION="main"
 
-          # Check if session exists, attach or create accordingly
           if tmux has-session -t "$SESSION" 2>/dev/null; then
-              exec tmux attach-session -t "$SESSION"
+            exec tmux attach-session -t "$SESSION"
           else
-              exec tmux new-session -s "$SESSION"
+            exec tmux new-session -s "$SESSION"
           fi
         fi
       '';
