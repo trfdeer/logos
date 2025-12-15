@@ -36,5 +36,14 @@
       uv
       bun
     ];
+
+    programs.topgrade = {
+      enable = true;
+      settings = {
+        misc = {
+          cleanup = true;
+        };
+      };
+    };
   };
 }
