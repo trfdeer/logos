@@ -11,7 +11,7 @@
       clock24 = true;
       escapeTime = 0;
       mouse = true;
-      terminal = "screen-256color";
+      terminal = "tmux-256color";
     };
   };
 }
