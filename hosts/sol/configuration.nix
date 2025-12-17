@@ -64,7 +64,10 @@
     shell = pkgs.zsh;
   };
 
-  sqwer.tailscale.enable = true;
+  sqwer.tailscale = {
+    enable = true;
+    operator = "REDACTED_USERNAME";
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
