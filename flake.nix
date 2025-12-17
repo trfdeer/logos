@@ -7,6 +7,10 @@
       url = "github:nix-community/home-manager?ref=release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
@@ -14,12 +18,14 @@
     {
       self,
       nixpkgs,
+      lanzaboote,
       home-manager,
       ...
     }@inputs:
     let
       system = "x86_64-linux";
       constants = {
+        name = "REDACTED_NAME";
         username = "REDACTED_USERNAME";
         email = "REDACTED_EMAIL";
         signingKey = "REDACTED_SSH_KEY";
@@ -49,6 +55,18 @@
         modules = [
           inputs.nixos-wsl.nixosModules.default
           ./hosts/wsl/configuration.nix
+          ./modules/nixos
+        ];
+      };
+
+      nixosConfigurations.sol = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs constants; };
+
+        modules = [
+          lanzaboote.nixosModules.lanzaboote
+
+          ./hosts/sol/configuration.nix
           ./modules/nixos
         ];
       };

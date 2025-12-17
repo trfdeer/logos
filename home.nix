@@ -21,7 +21,7 @@
     git = {
       enable = true;
       user = {
-        name = constants.username;
+        name = constants.name;
         email = constants.email;
         signingkey = constants.signingKey;
       };

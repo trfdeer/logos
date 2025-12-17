@@ -37,6 +37,7 @@
         };
         init.defaultBranch = "main";
         gpg.format = "ssh";
+        "gpg \"ssh\"".program = "/opt/1Password/op-ssh-sign";
       };
       # // lib.optionalAttrs defs.config.isWsl {
       #   core.sshCommand = "ssh.exe";
