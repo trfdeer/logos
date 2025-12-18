@@ -97,22 +97,6 @@
         ];
       };
 
-      homeConfigurations.sol = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = { inherit constants inputs; };
-
-        modules = [
-          ./modules/home-manager
-          ./home.nix
-          {
-            sqwer = {
-              git._1password.enable = false;
-            };
-          }
-        ];
-
-      };
-
       # ================================================================
       # rock Config
       # ================================================================
