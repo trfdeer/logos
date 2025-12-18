@@ -3,37 +3,41 @@
   wsl.enable = true;
   wsl.defaultUser = constants.username;
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
   time.timeZone = "Asia/Kolkata";
   i18n.defaultLocale = "en_US.UTF-8";
   services.xserver.xkb.layout = "us";
 
   users.users.${constants.username} = {
     isNormalUser = true;
+    description = constants.name;
     extraGroups = [ "wheel" ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = constants.sshKeys;
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-    wget
-    nixd
-    tmux
-    nixfmt-rfc-style
-    direnv
-  ];
+  home-manager = {
+    extraSpecialArgs = { inherit constants; };
+    useGlobalPkgs = true;
+    useUserPackages = true;
 
-  programs.nix-ld.enable = true;
+    users.${constants.username}.imports = [
+      ../../modules/home-manager
+      ./home-configuration.nix
+    ];
+  };
+
+  nixpkgs.config.allowUnfree = true;
+  nix.settings = {
+    use-xdg-base-directories = true;
+    auto-optimise-store = true;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
+
   programs.zsh.enable = true;
-  services.openssh.enable = true;
-
-  virtualisation.vmware.guest.enable = true;
+  programs.nix-ld.enable = true;
 
   system.stateVersion = constants.stateVersion;
 }
