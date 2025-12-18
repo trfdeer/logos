@@ -36,6 +36,4 @@
       go.enable = false;
     };
   };
-
-  programs.home-manager.enable = true;
 }
