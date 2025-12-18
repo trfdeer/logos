@@ -48,6 +48,9 @@
 
   home-manager = {
     extraSpecialArgs = { inherit constants; };
+    useGlobalPkgs = true;
+    useUserPackages = true;
+
     users.${constants.username}.imports = [
       ../../modules/home-manager
       ./home-configuration.nix
@@ -61,10 +64,14 @@
 
   # Configure nix / nixpkgs
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings = {
+    use-xdg-base-directories = true;
+    auto-optimise-store = true;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
 
   programs.zsh.enable = true;
   services.openssh.enable = true;
