@@ -11,28 +11,30 @@
     ./hardware-configuration.nix
   ];
 
-  # Configure bootloader
-  boot.bootspec.enable = true;
-  boot.initrd.systemd.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot = {
-    enable = lib.mkForce false;
-    consoleMode = "max";
-    configurationLimit = 3;
-  };
+  boot = {
+    bootspec.enable = true;
+    initrd.systemd.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    kernelPackages = pkgs.linuxPackages_latest;
 
-  boot.lanzaboote = {
-    enable = true;
-    pkiBundle = "/etc/secureboot";
-  };
+    loader.systemd-boot = {
+      enable = lib.mkForce false;
+      consoleMode = "max";
+      configurationLimit = 3;
+    };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
+  };
 
   networking.hostName = "sol";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Asia/Kolkata";
   i18n.defaultLocale = "en_US.UTF-8";
+  services.xserver.xkb.layout = "us";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${constants.username} = {
@@ -42,8 +44,8 @@
       "networkmanager"
       "wheel"
     ];
-    openssh.authorizedKeys.keys = constants.sshKeys;
     shell = pkgs.zsh;
+    openssh.authorizedKeys.keys = constants.sshKeys;
   };
 
   home-manager = {
@@ -76,6 +78,5 @@
   programs.zsh.enable = true;
   services.openssh.enable = true;
 
-  system.stateVersion = "25.11";
-
+  system.stateVersion = constants.stateVersion;
 }
