@@ -38,6 +38,9 @@
       };
     in
     {
+      # ================================================================
+      # Test VM Config
+      # ================================================================
       nixosConfigurations.nixvm1 = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs constants; };
@@ -48,6 +51,9 @@
         ];
       };
 
+      # ================================================================
+      # WSL Config
+      # ================================================================
       nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs constants; };
@@ -59,6 +65,24 @@
         ];
       };
 
+      homeConfigurations.wsl = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = { inherit constants inputs; };
+
+        modules = [
+          ./modules/home-manager
+          ./home.nix
+          {
+            sqwer = {
+              git._1password.isWsl = true;
+            };
+          }
+        ];
+      };
+
+      # ================================================================
+      # sol Config
+      # ================================================================
       nixosConfigurations.sol = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs constants; };
@@ -71,16 +95,44 @@
         ];
       };
 
-      homeConfigurations.${constants.username} = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.sol = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         extraSpecialArgs = { inherit constants inputs; };
 
         modules = [
-          ./home.nix
           ./modules/home-manager
+          ./home.nix
+          {
+            sqwer = {
+              git._1password.enable = false;
+            };
+          }
+        ];
+
+      };
+
+      # ================================================================
+      # rock Config
+      # ================================================================
+      homeConfigurations.rock = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = { inherit constants inputs; };
+
+        modules = [
+          ./modules/home-manager
+          ./home.nix
+          {
+            sqwer = {
+              audio.disable-hsp = true;
+              audio.disable-hw-volume = true;
+            };
+          }
         ];
       };
 
+      # ================================================================
+      # Dev Shell
+      # ================================================================
       devShells.${system}.default = pkgs.mkShellNoCC {
         packages = with pkgs; [
           nixd
