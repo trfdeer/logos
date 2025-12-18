@@ -125,6 +125,7 @@
             sqwer = {
               audio.disable-hsp = true;
               audio.disable-hw-volume = true;
+              tmux.prefixKey = "C-a";
             };
           }
         ];
