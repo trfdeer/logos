@@ -20,6 +20,11 @@
         description = "Git user signingkey";
       };
     };
+
+    sqwer.git._1password = {
+      enable = lib.mkEnableOption "Enable 1Password integration";
+      isWsl = lib.mkEnableOption "Use windows 1Password path";
+    };
   };
 
   config = lib.mkIf config.sqwer.git.enable {
@@ -37,15 +42,14 @@
         };
         init.defaultBranch = "main";
         gpg.format = "ssh";
-        "gpg \"ssh\"".program = "/opt/1Password/op-ssh-sign";
+      }
+      // lib.optionalAttrs config.sqwer.git._1password.enable {
+        "gpg \"ssh\"".program =
+          if config.sqwer.git._1password.isWsl then
+            "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl"
+          else
+            "/opt/1Password/op-ssh-sign";
       };
-      # // lib.optionalAttrs defs.config.isWsl {
-      #   core.sshCommand = "ssh.exe";
-      #   "gpg \"ssh\"".program = "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl";
-      # }
-      # // lib.optionalAttrs (!defs.config.isWsl && defs.desktop.enable) {
-      #   "gpg \"ssh\"".program = "/opt/1Password/op-ssh-sign";
-      # };
     };
   };
 }

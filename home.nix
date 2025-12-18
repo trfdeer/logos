@@ -20,6 +20,7 @@
 
     git = {
       enable = true;
+      _1password.enable = true;
       user = {
         name = constants.name;
         email = constants.email;
