@@ -46,7 +46,7 @@
         specialArgs = { inherit inputs constants; };
 
         modules = [
-          ./hosts/wsl/configuration.nix
+          ./hosts/nixvm1/configuration.nix
           ./modules/nixos
         ];
       };
@@ -60,6 +60,7 @@
 
         modules = [
           inputs.nixos-wsl.nixosModules.default
+
           ./hosts/wsl/configuration.nix
           ./modules/nixos
         ];
@@ -89,6 +90,7 @@
 
         modules = [
           lanzaboote.nixosModules.lanzaboote
+          home-manager.nixosModules.home-manager
 
           ./hosts/sol/configuration.nix
           ./modules/nixos
