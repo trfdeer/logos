@@ -1,6 +1,6 @@
 {
-  config,
   lib,
+  constants,
   pkgs,
   ...
 }:
@@ -11,102 +11,72 @@
     ./hardware-configuration.nix
   ];
 
-  # Bootloader.
-  boot.initrd.systemd.enable = true;
-  boot.loader.systemd-boot = {
-    enable = lib.mkForce false;
-    consoleMode = "max";
-    configurationLimit = 3;
+  boot = {
+    bootspec.enable = true;
+    initrd.systemd.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    kernelPackages = pkgs.linuxPackages_latest;
+
+    loader.systemd-boot = {
+      enable = lib.mkForce false;
+      consoleMode = "max";
+      configurationLimit = 3;
+    };
+
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
   };
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.bootspec.enable = true;
-  boot.lanzaboote = {
-    enable = true;
-    pkiBundle = "/etc/secureboot";
-  };
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  networking.hostName = "sol"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
+  networking.hostName = "sol";
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "Asia/Kolkata";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
+  services.xserver.xkb.layout = "us";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.ttarafder = {
+  users.users.${constants.username} = {
     isNormalUser = true;
-    description = "Tuhin Tarafder";
+    description = constants.name;
     extraGroups = [
       "networkmanager"
       "wheel"
     ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBod7BQCA2N5GCdkD8NJzjhx5uajVrUwNCok+EYtDAvA"
-    ];
     shell = pkgs.zsh;
+    openssh.authorizedKeys.keys = constants.sshKeys;
+  };
+
+  home-manager = {
+    extraSpecialArgs = { inherit constants; };
+    useGlobalPkgs = true;
+    useUserPackages = true;
+
+    users.${constants.username}.imports = [
+      ../../modules/home-manager
+      ./home-configuration.nix
+    ];
   };
 
   sqwer.tailscale = {
     enable = true;
-    operator = "ttarafder";
+    operator = constants.username;
   };
 
-  # Allow unfree packages
+  # Configure nix / nixpkgs
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-  ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  nix.settings = {
+    use-xdg-base-directories = true;
+    auto-optimise-store = true;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
 
   programs.zsh.enable = true;
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.11"; # Did you read the comment?
-
+  system.stateVersion = constants.stateVersion;
 }

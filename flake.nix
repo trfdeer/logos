@@ -38,82 +38,34 @@
       };
     in
     {
-      # ================================================================
-      # Test VM Config
-      # ================================================================
-      nixosConfigurations.nixvm1 = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit inputs constants; };
+      nixosConfigurations = {
+        sol = nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs constants; };
 
-        modules = [
-          ./hosts/wsl/configuration.nix
-          ./modules/nixos
-        ];
+          modules = [
+            lanzaboote.nixosModules.lanzaboote
+            home-manager.nixosModules.home-manager
+
+            ./hosts/sol/configuration.nix
+            ./modules/nixos
+          ];
+        };
+
+        wsl = nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs constants; };
+
+          modules = [
+            inputs.nixos-wsl.nixosModules.default
+            home-manager.nixosModules.home-manager
+
+            ./hosts/wsl/configuration.nix
+            ./modules/nixos
+          ];
+        };
       };
 
-      # ================================================================
-      # WSL Config
-      # ================================================================
-      nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit inputs constants; };
-
-        modules = [
-          inputs.nixos-wsl.nixosModules.default
-          ./hosts/wsl/configuration.nix
-          ./modules/nixos
-        ];
-      };
-
-      homeConfigurations.wsl = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = { inherit constants inputs; };
-
-        modules = [
-          ./modules/home-manager
-          ./home.nix
-          {
-            sqwer = {
-              git._1password.isWsl = true;
-            };
-          }
-        ];
-      };
-
-      # ================================================================
-      # sol Config
-      # ================================================================
-      nixosConfigurations.sol = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit inputs constants; };
-
-        modules = [
-          lanzaboote.nixosModules.lanzaboote
-
-          ./hosts/sol/configuration.nix
-          ./modules/nixos
-        ];
-      };
-
-      homeConfigurations.sol = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = { inherit constants inputs; };
-
-        modules = [
-          ./modules/home-manager
-          ./home.nix
-          {
-            sqwer = {
-              git._1password.enable = false;
-            };
-          }
-        ];
-
-      };
-
-      # ================================================================
-      # rock Config
-      # ================================================================
       homeConfigurations.rock = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         extraSpecialArgs = { inherit constants inputs; };
