@@ -49,10 +49,10 @@
             "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl"
           else
             "/opt/1Password/op-ssh-sign";
-      };
+      }
       // lib.optionalAttrs config.sqwer.git._1password.isWsl {
         core.sshCommand = "ssh.exe";
-      }
+      };
     };
   };
 }
