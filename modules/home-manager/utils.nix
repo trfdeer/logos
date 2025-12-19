@@ -33,8 +33,8 @@
       nixd
       nixfmt-rfc-style
 
-      uv
-      bun
+      #uv
+      #bun
     ];
 
     programs.topgrade = {
