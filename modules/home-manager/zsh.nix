@@ -46,6 +46,10 @@
       '';
       shellAliases = lib.mkMerge [
         (lib.mkIf config.sqwer.utils.enable { ls = "exa"; })
+        (lib.mkIf config.sqwer.git._1password.isWsl {
+          ssh = "ssh.exe";
+          ssh-add = "ssh-add.exe";
+        })
       ];
       oh-my-zsh = {
         enable = true;
@@ -58,11 +62,5 @@
 
       };
     };
-    # // lib.optionalAttrs defs.config.isWsl {
-    #   shellAliases = {
-    #     ssh = "ssh.exe";
-    #     ssh-add = "ssh-add.exe";
-    #   };
-    # };
   };
 }
