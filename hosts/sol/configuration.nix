@@ -62,9 +62,16 @@
     ];
   };
 
-  sqwer.tailscale = {
-    enable = true;
-    operator = constants.username;
+  sqwer = {
+    tailscale = {
+      enable = true;
+      operator = constants.username;
+    };
+
+    incus = {
+      enable = true;
+      adminUser = constants.username;
+    };
   };
 
   # Configure nix / nixpkgs

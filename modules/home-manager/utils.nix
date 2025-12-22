@@ -29,6 +29,7 @@
       nnn
       btop
       fd
+      lazygit
 
       nixd
       nixfmt-rfc-style
