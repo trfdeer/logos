@@ -9,6 +9,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./disko-configuration.nix
   ];
 
   boot = {
@@ -27,6 +28,8 @@
       enable = true;
       pkiBundle = "/etc/secureboot";
     };
+
+    supportedFilesystems = [ "btrfs" ];
   };
 
   networking.hostName = "sol";
@@ -77,6 +80,7 @@
 
   programs.zsh.enable = true;
   services.openssh.enable = true;
+  services.fstrim.enable = true;
 
   system.stateVersion = constants.stateVersion;
 }
