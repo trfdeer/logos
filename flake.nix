@@ -11,12 +11,17 @@
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
   outputs =
     {
       self,
+      disko,
       nixpkgs,
       lanzaboote,
       home-manager,
@@ -45,6 +50,7 @@
 
           modules = [
             lanzaboote.nixosModules.lanzaboote
+            disko.nixosModules.disko
             home-manager.nixosModules.home-manager
 
             ./hosts/sol/configuration.nix
