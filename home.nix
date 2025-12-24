@@ -19,6 +19,7 @@
     tmux.enable = lib.mkDefault true;
     helix.enable = lib.mkDefault true;
     utils.enable = lib.mkDefault true;
+    lazygit.enable = lib.mkDefault true;
 
     audio.disable-hsp = lib.mkDefault false;
     audio.disable-hw-volume = lib.mkDefault false;

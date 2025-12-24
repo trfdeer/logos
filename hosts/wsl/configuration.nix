@@ -1,4 +1,9 @@
-{ constants, pkgs, ... }:
+{
+  constants,
+  pkgs,
+  inputs,
+  ...
+}:
 {
   wsl.enable = true;
   wsl.defaultUser = constants.username;
@@ -23,6 +28,7 @@
     users.${constants.username}.imports = [
       ../../modules/home-manager
       ./home-configuration.nix
+      inputs.catppuccin.homeModules.catppuccin
     ];
   };
 

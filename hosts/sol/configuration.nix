@@ -2,6 +2,7 @@
   lib,
   constants,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -59,6 +60,7 @@
     users.${constants.username}.imports = [
       ../../modules/home-manager
       ./home-configuration.nix
+      inputs.catppuccin.homeModules.catppuccin
     ];
   };
 
