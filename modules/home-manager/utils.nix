@@ -30,12 +30,6 @@
       btop
       fd
       lazygit
-
-      nixd
-      nixfmt-rfc-style
-
-      #uv
-      #bun
     ];
 
     programs.topgrade = {
