@@ -10,6 +10,10 @@
   };
 
   config = lib.mkIf config.sqwer.utils.enable {
+    home.sessionVariables = {
+      CARGO_HOME = "${config.xdg.dataHome}/cargo";
+    };
+
     home.packages = with pkgs; [
       zsh
       tmux
@@ -29,8 +33,13 @@
       nnn
       btop
       fd
-      lazygit
     ];
+
+    programs.btop.enable = true;
+    catppuccin.btop = {
+      enable = true;
+      flavor = "mocha";
+    };
 
     programs.topgrade = {
       enable = true;

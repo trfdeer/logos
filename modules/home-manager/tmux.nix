@@ -23,5 +23,10 @@
     // lib.optionalAttrs (config.sqwer.tmux.prefixKey != "") {
       prefix = config.sqwer.tmux.prefixKey;
     };
+
+    catppuccin.tmux = {
+      enable = true;
+      flavor = "mocha";
+    };
   };
 }

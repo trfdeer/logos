@@ -59,8 +59,12 @@
         ++ lib.optionals config.sqwer.tmux.enable [ "tmux" ]
         ++ lib.optionals config.sqwer.git.enable [ "git" ]
         ++ lib.optionals config.sqwer.direnv.enable [ "direnv" ];
-
       };
+    };
+
+    catppuccin.zsh-syntax-highlighting = {
+      enable = true;
+      flavor = "mocha";
     };
   };
 }

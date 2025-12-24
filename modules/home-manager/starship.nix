@@ -19,5 +19,10 @@
         line_break.disabled = true;
       };
     };
+
+    catppuccin.starship = {
+      enable = true;
+      flavor = "mocha";
+    };
   };
 }

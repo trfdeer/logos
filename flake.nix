@@ -7,6 +7,7 @@
       url = "github:nix-community/home-manager?ref=release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin.url = "github:catppuccin/nix";
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,7 +16,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -25,6 +29,7 @@
       nixpkgs,
       lanzaboote,
       home-manager,
+      catppuccin,
       ...
     }@inputs:
     let
@@ -51,6 +56,7 @@
           modules = [
             lanzaboote.nixosModules.lanzaboote
             disko.nixosModules.disko
+            catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
 
             ./hosts/sol/configuration.nix
@@ -64,6 +70,7 @@
 
           modules = [
             inputs.nixos-wsl.nixosModules.default
+            catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
 
             ./hosts/wsl/configuration.nix
@@ -79,6 +86,7 @@
         modules = [
           ./modules/home-manager
           ./home.nix
+          catppuccin.nixosModules.catppuccin
           {
             sqwer = {
               audio.disable-hsp = true;
