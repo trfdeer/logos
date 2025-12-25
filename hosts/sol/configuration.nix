@@ -19,6 +19,12 @@
     loader.efi.canTouchEfiVariables = true;
     kernelPackages = pkgs.linuxPackages_latest;
 
+    initrd.luks.devices.vault = {
+      device = "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b402b400e-part1";
+      name = "vault-crypt";
+      allowDiscards = true;
+    };
+
     loader.systemd-boot = {
       enable = lib.mkForce false;
       consoleMode = "max";
@@ -33,6 +39,18 @@
     };
 
     supportedFilesystems = [ "btrfs" ];
+  };
+
+  fileSystems."/vault" = {
+    device = "/dev/mapper/vault";
+    fsType = "btrfs";
+    options = [
+      "subvol=@vault"
+      "ssd"
+      "space_cache=v2"
+      "compress=zstd"
+      "noatime"
+    ];
   };
 
   networking.hostName = "sol";
