@@ -27,6 +27,8 @@
 
     lanzaboote = {
       enable = true;
+      autoGenerateKeys.enable = true;
+      autoEnrollKeys.enable = true;
       pkiBundle = "/etc/secureboot";
     };
 
