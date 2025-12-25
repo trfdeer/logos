@@ -14,6 +14,7 @@
     direnv.enable = true;
     starship.enable = true;
     tmux.enable = true;
+    tmux.prefixKey = "C-a";
     helix.enable = true;
     utils.enable = true;
 

@@ -94,6 +94,13 @@
       enable = false;
       adminUser = constants.username;
     };
+
+    samba = {
+      enable = true;
+      shareName = "vault";
+      shareUser = constants.username;
+      sharePath = "/vault";
+    };
   };
 
   # Configure nix / nixpkgs
