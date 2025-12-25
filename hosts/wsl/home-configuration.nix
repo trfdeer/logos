@@ -19,6 +19,7 @@
 
     helix.enable = true;
     utils.enable = true;
+    lazygit.enable = true;
 
     audio.disable-hsp = false;
     audio.disable-hw-volume = false;
