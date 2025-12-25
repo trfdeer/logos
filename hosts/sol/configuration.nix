@@ -71,7 +71,7 @@
     };
 
     incus = {
-      enable = true;
+      enable = false;
       adminUser = constants.username;
     };
   };
