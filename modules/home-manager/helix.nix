@@ -9,7 +9,7 @@
       enable = true;
       defaultEditor = true;
       settings = {
-        theme = "catppuccin_mocha";
+        theme = "transparent_mocha";
         editor = {
           mouse = true;
           bufferline = "always";
@@ -55,6 +55,17 @@
           ];
         };
       };
+
+      themes.transparent_mocha = {
+        inherits = "catppuccin_mocha";
+        "ui.background" = { };
+      };
     };
+
+    #catppuccin.helix = {
+    #  enable = true;
+    #  flavor = "mocha";
+    #  useItalics = true;
+    #};
   };
 }

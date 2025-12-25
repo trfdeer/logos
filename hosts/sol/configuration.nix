@@ -2,6 +2,7 @@
   lib,
   constants,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -18,6 +19,12 @@
     loader.efi.canTouchEfiVariables = true;
     kernelPackages = pkgs.linuxPackages_latest;
 
+    initrd.luks.devices.vault = {
+      device = "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b402b400e-part1";
+      name = "vault-crypt";
+      allowDiscards = true;
+    };
+
     loader.systemd-boot = {
       enable = lib.mkForce false;
       consoleMode = "max";
@@ -26,10 +33,24 @@
 
     lanzaboote = {
       enable = true;
+      autoGenerateKeys.enable = true;
+      autoEnrollKeys.enable = true;
       pkiBundle = "/etc/secureboot";
     };
 
     supportedFilesystems = [ "btrfs" ];
+  };
+
+  fileSystems."/vault" = {
+    device = "/dev/mapper/vault";
+    fsType = "btrfs";
+    options = [
+      "subvol=@vault"
+      "ssd"
+      "space_cache=v2"
+      "compress=zstd"
+      "noatime"
+    ];
   };
 
   networking.hostName = "sol";
@@ -59,6 +80,7 @@
     users.${constants.username}.imports = [
       ../../modules/home-manager
       ./home-configuration.nix
+      inputs.catppuccin.homeModules.catppuccin
     ];
   };
 
@@ -69,7 +91,7 @@
     };
 
     incus = {
-      enable = true;
+      enable = false;
       adminUser = constants.username;
     };
   };
