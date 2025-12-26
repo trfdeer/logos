@@ -33,6 +33,8 @@
       nnn
       btop
       fd
+
+      lm_sensors
     ];
 
     programs.btop.enable = true;

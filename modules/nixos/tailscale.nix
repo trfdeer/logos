@@ -14,7 +14,7 @@
     services.tailscale = {
       enable = true;
       extraSetFlags = [
-        #"--ssh"
+        "--ssh=false"
         "--accept-dns"
         "--accept-routes"
         "--netfilter-mode=nodivert"
