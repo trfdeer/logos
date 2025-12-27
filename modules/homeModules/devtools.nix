@@ -11,6 +11,7 @@ in
 
     go.enable = lib.mkEnableOption "Install go compiler";
     rust.enable = lib.mkEnableOption "Enable rust toolchain";
+    dotnet.enable = lib.mkEnableOption "Enable .NET SDK";
   };
 
   config = lib.mkMerge [
@@ -24,6 +25,11 @@ in
     (lib.mkIf cfg.rust.enable {
       home.sessionVariables = {
         CARGO_HOME = "${config.xdg.dataHome}/cargo";
+      };
+    })
+    (lib.mkIf cfg.dotnet.enable {
+      home.sessionVariables = {
+        DOTNET_CLI_HOME = "${config.xdg.dataHome}/dotnet";
       };
     })
   ];
