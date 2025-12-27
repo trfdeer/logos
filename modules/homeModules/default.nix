@@ -46,6 +46,7 @@
       basePath = lib.mkDefault "";
       go.enable = lib.mkDefault false;
       rust.enable = lib.mkDefault false;
+      dotnet.enable = lib.mkDefault false;
     };
 
     catppuccin = {

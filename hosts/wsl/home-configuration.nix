@@ -25,6 +25,7 @@
       basePath = "${config.home.homeDirectory}/code";
       go.enable = true;
       rust.enable = true;
+      dotnet.enable = true;
     };
   };
 }
