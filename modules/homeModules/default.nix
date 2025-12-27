@@ -11,7 +11,7 @@
     ./utils.nix
     ./sound.nix
     ./lazygit.nix
-    ./devtools.nix
+    ./session.nix
     ./catppuccin.nix
   ];
 
@@ -40,13 +40,6 @@
         email = lib.mkDefault "";
         signingkey = lib.mkDefault "";
       };
-    };
-
-    devtools = {
-      basePath = lib.mkDefault "";
-      go.enable = lib.mkDefault false;
-      rust.enable = lib.mkDefault false;
-      dotnet.enable = lib.mkDefault false;
     };
 
     catppuccin = {

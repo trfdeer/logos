@@ -68,9 +68,12 @@
           ];
         };
 
-        wsl = nixpkgs.lib.nixosSystem {
+        rock = nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs constants sqwer; };
+          specialArgs = {
+            inherit inputs constants sqwer;
+            hostname = "rock";
+          };
 
           modules = [
             inputs.nixos-wsl.nixosModules.default
