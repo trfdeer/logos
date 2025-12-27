@@ -17,11 +17,6 @@
   };
 
   config = lib.mkIf config.sqwer.samba.enable {
-    services.samba-wsdd = {
-      enable = true;
-      openFirewall = true;
-    };
-
     networking.firewall = {
       enable = true;
       allowPing = true;
@@ -29,7 +24,8 @@
 
     services.samba = {
       enable = true;
-      securityType = "user";
+      nmbd.enable = false;
+      winbindd.enable = false;
       openFirewall = true;
       settings = {
         global = {

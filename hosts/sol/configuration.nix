@@ -88,11 +88,7 @@
     tailscale = {
       enable = true;
       operator = constants.username;
-    };
-
-    incus = {
-      enable = false;
-      adminUser = constants.username;
+      advertiseRoutes = "172.16.10.0/24";
     };
 
     samba = {
