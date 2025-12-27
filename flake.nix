@@ -2,7 +2,8 @@
   description = "NixOS / Home Manager Configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=release-25.11";
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0";
     home-manager = {
       url = "github:nix-community/home-manager?ref=release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,8 +25,8 @@
 
   outputs =
     {
-      self,
       disko,
+      determinate,
       nixpkgs,
       lanzaboote,
       home-manager,
@@ -62,6 +63,7 @@
             catppuccin.nixosModules.catppuccin
             lanzaboote.nixosModules.lanzaboote
             home-manager.nixosModules.home-manager
+            determinate.nixosModules.default
 
             sqwer.nixosModules
             ./hosts/sol/configuration.nix
@@ -79,6 +81,7 @@
             inputs.nixos-wsl.nixosModules.default
             catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
+            determinate.nixosModules.default
 
             sqwer.nixosModules
             ./hosts/wsl/configuration.nix
