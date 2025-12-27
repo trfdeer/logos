@@ -3,6 +3,7 @@
   constants,
   pkgs,
   inputs,
+  sqwer,
   ...
 }:
 
@@ -78,7 +79,7 @@
     useUserPackages = true;
 
     users.${constants.username}.imports = [
-      ../../modules/home-manager
+      sqwer.homeModules
       ./home-configuration.nix
       inputs.catppuccin.homeModules.catppuccin
     ];

@@ -46,47 +46,52 @@
         inherit system;
         config.allowUnfree = true;
       };
+      sqwer = {
+        homeModules = import ./modules/homeModules;
+        nixosModules = import ./modules/nixosModules;
+      };
     in
     {
       nixosConfigurations = {
         sol = nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs constants; };
+          specialArgs = { inherit inputs constants sqwer; };
 
           modules = [
-            lanzaboote.nixosModules.lanzaboote
             disko.nixosModules.disko
             catppuccin.nixosModules.catppuccin
+            lanzaboote.nixosModules.lanzaboote
             home-manager.nixosModules.home-manager
 
+            sqwer.nixosModules
             ./hosts/sol/configuration.nix
-            ./modules/nixos
           ];
         };
 
         wsl = nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs constants; };
+          specialArgs = { inherit inputs constants sqwer; };
 
           modules = [
             inputs.nixos-wsl.nixosModules.default
             catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
 
+            sqwer.nixosModules
             ./hosts/wsl/configuration.nix
-            ./modules/nixos
           ];
         };
       };
 
       homeConfigurations.rock = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = { inherit constants inputs; };
+        extraSpecialArgs = { inherit constants inputs sqwer; };
 
         modules = [
-          ./modules/home-manager
-          ./home.nix
+          sqwer.homeModules
           catppuccin.nixosModules.catppuccin
+
+          ./home.nix
           {
             sqwer = {
               audio.disable-hsp = true;
