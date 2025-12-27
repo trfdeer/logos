@@ -1,15 +1,18 @@
 { lib, config, ... }:
+
+let
+  cfg = config.sqwer.tmux;
+in
 {
-  options = {
-    sqwer.tmux.enable = lib.mkEnableOption "Enable tmux";
-    sqwer.tmux.prefixKey = lib.mkOption {
-      type = lib.types.str;
-      default = "";
+  options.sqwer.tmux = {
+    enable = lib.mkEnableOption "Enable tmux";
+    prefixKey = lib.mkOption {
+      type = lib.types.nonEmptyStr;
       description = "Set prefix key";
     };
   };
 
-  config = lib.mkIf config.sqwer.tmux.enable {
+  config = lib.mkIf cfg.enable {
     programs.tmux = {
       enable = true;
       baseIndex = 1;
@@ -19,9 +22,7 @@
       historyLimit = 20000;
       mouse = true;
       terminal = "tmux-256color";
-    }
-    // lib.optionalAttrs (config.sqwer.tmux.prefixKey != "") {
-      prefix = config.sqwer.tmux.prefixKey;
+      prefix = cfg.prefixKey;
     };
   };
 }

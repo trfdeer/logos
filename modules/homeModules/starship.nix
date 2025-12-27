@@ -1,7 +1,7 @@
 { lib, config, ... }:
 {
-  options = {
-    sqwer.starship.enable = lib.mkEnableOption "Enable Starship prompt";
+  options.sqwer.starship = {
+    enable = lib.mkEnableOption "Enable Starship prompt";
   };
 
   config = lib.mkIf config.sqwer.starship.enable {

@@ -83,25 +83,6 @@
         };
       };
 
-      homeConfigurations.rock = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = { inherit constants inputs sqwer; };
-
-        modules = [
-          sqwer.homeModules
-          catppuccin.nixosModules.catppuccin
-
-          ./home.nix
-          {
-            sqwer = {
-              audio.disable-hsp = true;
-              audio.disable-hw-volume = true;
-              tmux.prefixKey = "C-a";
-            };
-          }
-        ];
-      };
-
       # ================================================================
       # Dev Shell
       # ================================================================

@@ -1,7 +1,7 @@
 { lib, config, ... }:
 {
-  options = {
-    sqwer.helix.enable = lib.mkEnableOption "Enable Helix Editor";
+  options.sqwer.helix = {
+    enable = lib.mkEnableOption "Enable Helix Editor";
   };
 
   config = lib.mkIf config.sqwer.helix.enable {

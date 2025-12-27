@@ -5,15 +5,11 @@
   ...
 }:
 {
-  options = {
-    sqwer.utils.enable = lib.mkEnableOption "Install common tools";
+  options.sqwer.utils = {
+    enable = lib.mkEnableOption "Install common tools";
   };
 
   config = lib.mkIf config.sqwer.utils.enable {
-    home.sessionVariables = {
-      CARGO_HOME = "${config.xdg.dataHome}/cargo";
-    };
-
     home.packages = with pkgs; [
       zsh
       tmux
