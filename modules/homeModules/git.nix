@@ -46,7 +46,7 @@
       // lib.optionalAttrs config.sqwer.git._1password.enable {
         "gpg \"ssh\"".program =
           if config.sqwer.git._1password.isWsl then
-            "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl"
+            "/mnt/c/Program\ Files/1Password/app/8/op-ssh-sign-wsl"
           else
             "/opt/1Password/op-ssh-sign";
       }
