@@ -1,22 +1,28 @@
 { lib, config, ... }:
+let
+  cfg = config.sqwer.samba;
+in
 {
   options.sqwer.samba = {
     enable = lib.mkEnableOption "Enable Samba file share";
-    shareName = lib.mkOption {
+
+    name = lib.mkOption {
       type = lib.types.nonEmptyStr;
-      description = "Share name";
+      description = "Name of the Samba share.";
     };
-    shareUser = lib.mkOption {
-      type = lib.types.nonEmptyStr;
-      description = "Share path owner";
+
+    path = lib.mkOption {
+      type = lib.types.path;
+      description = "Filesystem path to be shared via Samba.";
     };
-    sharePath = lib.mkOption {
+
+    owner = lib.mkOption {
       type = lib.types.nonEmptyStr;
-      description = "Share path";
+      description = "User that owns the shared path.";
     };
   };
 
-  config = lib.mkIf config.sqwer.samba.enable {
+  config = lib.mkIf cfg.enable {
     networking.firewall = {
       enable = true;
       allowPing = true;
@@ -39,14 +45,14 @@
           "map to guest" = "Bad User";
         };
 
-        "${config.sqwer.samba.shareName}" = {
-          "path" = config.sqwer.samba.sharePath;
+        "${cfg.name}" = {
+          "path" = cfg.path;
           "browsable" = "yes";
           "read only" = "no";
           "guest ok" = "no";
           "create mask" = "0644";
           "directory mask" = "0755";
-          "force user" = config.sqwer.samba.shareUser;
+          "force user" = cfg.owner;
           "force group" = "users";
         };
       };

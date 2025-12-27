@@ -1,12 +1,15 @@
 { lib, config, ... }:
+let
+  cfg = config.sqwer.sound;
+in
 {
-  options = {
-    sqwer.audio.disable-hsp = lib.mkEnableOption "Disable bluetooth Headset Profile";
-    sqwer.audio.disable-hw-volume = lib.mkEnableOption "Disable Hardware Volume Control";
+  options.sqwer.sound = {
+    disable-hsp = lib.mkEnableOption "Disable bluetooth Headset Profile";
+    disable-hw-volume = lib.mkEnableOption "Disable Hardware Volume Control";
   };
 
   config = lib.mkMerge [
-    (lib.mkIf config.sqwer.audio.disable-hsp {
+    (lib.mkIf cfg.disable-hsp {
       home.file."${config.xdg.configHome}/wireplumber/wireplumber.conf.d/51-mitigate-annoying-profile-switch.conf".text =
         ''
           ## In WirePlumber there's a bug where some applications trigger switching to Headset Profile
@@ -43,7 +46,7 @@
           }
         '';
     })
-    (lib.mkIf config.sqwer.audio.disable-hw-volume {
+    (lib.mkIf cfg.disable-hw-volume {
       home.file."${config.xdg.configHome}/wireplumber/wireplumber.conf.d/80-bluez-properties.conf".text =
         ''
           monitor.bluez.properties = {

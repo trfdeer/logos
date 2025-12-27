@@ -3,12 +3,12 @@
   constants,
   pkgs,
   inputs,
+  sqwer,
   ...
 }:
 
 {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./disko-configuration.nix
   ];
@@ -31,6 +31,7 @@
       configurationLimit = 3;
     };
 
+    # Run `nix run nixpkgs#sbctl -- enroll-keys -m` after first boot while in setup mode.
     lanzaboote = {
       enable = true;
       autoGenerateKeys.enable = true;
@@ -78,9 +79,9 @@
     useUserPackages = true;
 
     users.${constants.username}.imports = [
-      ../../modules/home-manager
-      ./home-configuration.nix
+      sqwer.homeModules
       inputs.catppuccin.homeModules.catppuccin
+      ./home-configuration.nix
     ];
   };
 
@@ -91,11 +92,12 @@
       advertiseRoutes = "172.16.10.0/24";
     };
 
+    # Run `smbpasswd -a $USER` after installing
     samba = {
       enable = true;
-      shareName = "vault";
-      shareUser = constants.username;
-      sharePath = "/vault";
+      name = "vault";
+      path = "/vault";
+      owner = constants.username;
     };
   };
 

@@ -1,7 +1,7 @@
 { lib, config, ... }:
 {
-  options = {
-    sqwer.helix.enable = lib.mkEnableOption "Enable Helix Editor";
+  options.sqwer.helix = {
+    enable = lib.mkEnableOption "Enable Helix Editor";
   };
 
   config = lib.mkIf config.sqwer.helix.enable {
@@ -9,7 +9,6 @@
       enable = true;
       defaultEditor = true;
       settings = {
-        theme = "transparent_mocha";
         editor = {
           mouse = true;
           bufferline = "always";
@@ -55,17 +54,6 @@
           ];
         };
       };
-
-      themes.transparent_mocha = {
-        inherits = "catppuccin_mocha";
-        "ui.background" = { };
-      };
     };
-
-    #catppuccin.helix = {
-    #  enable = true;
-    #  flavor = "mocha";
-    #  useItalics = true;
-    #};
   };
 }

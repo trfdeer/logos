@@ -4,9 +4,9 @@
   ...
 }:
 {
-  options = {
-    sqwer.git.enable = lib.mkEnableOption "Enable Git";
-    sqwer.git.user = {
+  options.sqwer.git = {
+    enable = lib.mkEnableOption "Enable Git";
+    user = {
       name = lib.mkOption {
         type = lib.types.str;
         description = "Git user name";
@@ -17,13 +17,9 @@
       };
       signingkey = lib.mkOption {
         type = lib.types.str;
+        default = "";
         description = "Git user signingkey";
       };
-    };
-
-    sqwer.git._1password = {
-      enable = lib.mkEnableOption "Enable 1Password integration";
-      isWsl = lib.mkEnableOption "Use windows 1Password path";
     };
   };
 
@@ -33,7 +29,7 @@
       lfs.enable = true;
       signing = {
         key = config.sqwer.git.user.signingkey;
-        signByDefault = true;
+        signByDefault = config.sqwer.git.user.signingkey != "";
       };
       settings = {
         user = {
@@ -41,16 +37,16 @@
           email = config.sqwer.git.user.email;
         };
         init.defaultBranch = "main";
-        gpg.format = "ssh";
+        gpg.format = lib.mkIf (config.sqwer.git.user.signingkey != "") "ssh";
       }
-      // lib.optionalAttrs config.sqwer.git._1password.enable {
+      // lib.optionalAttrs (config.sqwer.git.user.signingkey != "" && config.sqwer.env.has1Password) {
         "gpg \"ssh\"".program =
-          if config.sqwer.git._1password.isWsl then
-            "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl"
+          if config.sqwer.env.isWsl then
+            ''/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl''
           else
             "/opt/1Password/op-ssh-sign";
       }
-      // lib.optionalAttrs config.sqwer.git._1password.isWsl {
+      // lib.optionalAttrs config.sqwer.env.isWsl {
         core.sshCommand = "ssh.exe";
       };
     };

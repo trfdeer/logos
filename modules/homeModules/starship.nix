@@ -1,7 +1,7 @@
 { lib, config, ... }:
 {
-  options = {
-    sqwer.starship.enable = lib.mkEnableOption "Enable Starship prompt";
+  options.sqwer.starship = {
+    enable = lib.mkEnableOption "Enable Starship prompt";
   };
 
   config = lib.mkIf config.sqwer.starship.enable {
@@ -18,11 +18,6 @@
         };
         line_break.disabled = true;
       };
-    };
-
-    catppuccin.starship = {
-      enable = true;
-      flavor = "mocha";
     };
   };
 }

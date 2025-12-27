@@ -1,7 +1,7 @@
 { lib, config, ... }:
 {
-  options = {
-    sqwer.zsh.enable = lib.mkEnableOption "Enable ZSH shell";
+  options.sqwer.zsh = {
+    enable = lib.mkEnableOption "Enable ZSH";
   };
 
   config = lib.mkIf config.sqwer.zsh.enable {
@@ -46,7 +46,7 @@
       '';
       shellAliases = lib.mkMerge [
         (lib.mkIf config.sqwer.utils.enable { ls = "exa"; })
-        (lib.mkIf config.sqwer.git._1password.isWsl {
+        (lib.mkIf config.sqwer.env.isWsl {
           ssh = "ssh.exe";
           ssh-add = "ssh-add.exe";
         })
@@ -60,11 +60,6 @@
         ++ lib.optionals config.sqwer.git.enable [ "git" ]
         ++ lib.optionals config.sqwer.direnv.enable [ "direnv" ];
       };
-    };
-
-    catppuccin.zsh-syntax-highlighting = {
-      enable = true;
-      flavor = "mocha";
     };
   };
 }

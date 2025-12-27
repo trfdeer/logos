@@ -10,37 +10,21 @@
   xdg.mime.enable = true;
 
   sqwer = {
-    zsh.enable = true;
-    direnv.enable = true;
-    starship.enable = true;
+    env = {
+      isWsl = true;
+      has1Password = true;
+    };
 
-    tmux.enable = true;
-    tmux.prefixKey = "C-a";
-
-    helix.enable = true;
-    utils.enable = true;
-    lazygit.enable = true;
-
-    audio.disable-hsp = false;
-    audio.disable-hw-volume = false;
-
-    git = {
-      enable = true;
-      _1password = {
-        enable = true;
-        isWsl = true;
-      };
-
-      user = {
-        name = constants.name;
-        email = constants.email;
-        signingkey = constants.signingKey;
-      };
+    git.user = {
+      name = constants.name;
+      email = constants.email;
+      signingkey = constants.signingKey;
     };
 
     devtools = {
       basePath = "${config.home.homeDirectory}/code";
-      go.enable = false;
+      go.enable = true;
+      rust.enable = true;
     };
   };
 }
