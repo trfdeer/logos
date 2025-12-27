@@ -3,11 +3,14 @@
   pkgs,
   inputs,
   sqwer,
+  hostname,
   ...
 }:
 {
   wsl.enable = true;
   wsl.defaultUser = constants.username;
+
+  networking.hostName = hostname;
 
   time.timeZone = "Asia/Kolkata";
   i18n.defaultLocale = "en_US.UTF-8";

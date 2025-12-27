@@ -1,4 +1,4 @@
-{ constants, config, ... }:
+{ constants, ... }:
 {
   home = {
     username = constants.username;
@@ -19,13 +19,6 @@
       name = constants.name;
       email = constants.email;
       signingkey = constants.signingKey;
-    };
-
-    devtools = {
-      basePath = "${config.home.homeDirectory}/code";
-      go.enable = true;
-      rust.enable = true;
-      dotnet.enable = true;
     };
   };
 }
