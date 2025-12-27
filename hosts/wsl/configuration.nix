@@ -28,8 +28,8 @@
 
     users.${constants.username}.imports = [
       sqwer.homeModules
-      ./home-configuration.nix
       inputs.catppuccin.homeModules.catppuccin
+      ./home-configuration.nix
     ];
   };
 

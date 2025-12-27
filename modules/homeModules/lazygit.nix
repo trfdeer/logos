@@ -9,10 +9,5 @@
       enable = true;
       enableZshIntegration = true;
     };
-
-    catppuccin.lazygit = {
-      enable = true;
-      flavor = "mocha";
-    };
   };
 }

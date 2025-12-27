@@ -61,10 +61,5 @@
         ++ lib.optionals config.sqwer.direnv.enable [ "direnv" ];
       };
     };
-
-    catppuccin.zsh-syntax-highlighting = {
-      enable = true;
-      flavor = "mocha";
-    };
   };
 }

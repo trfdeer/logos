@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 {
   imports = [
     ./git.nix
@@ -11,5 +11,14 @@
     ./audio.nix
     ./lazygit.nix
     ./devtools.nix
+    ./catppuccin.nix
   ];
+
+  config.sqwer = {
+    catppuccin = {
+      enable = lib.mkDefault true;
+      flavor = lib.mkDefault "mocha";
+    };
+  };
+
 }
