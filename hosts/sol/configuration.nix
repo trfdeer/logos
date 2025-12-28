@@ -79,7 +79,7 @@ in
     samba = {
       enable = true;
       name = "vault";
-      path = "/vault";
+      path = "/srv/vault";
       owner = id.username;
     };
   };
