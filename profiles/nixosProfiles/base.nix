@@ -43,7 +43,7 @@ in
     users.${id.username}.imports = [
       inputs.catppuccin.homeModules.catppuccin
       ../../modules/homeModules
-      ../homeProfiles/primary.nix
+      ../homeProfiles/base.nix
     ];
   };
 
