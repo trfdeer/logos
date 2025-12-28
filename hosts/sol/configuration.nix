@@ -44,7 +44,6 @@ in
       efi.canTouchEfiVariables = true;
     };
 
-    # Run `nix run nixpkgs#sbctl -- enroll-keys -m` after first boot while in setup mode.
     lanzaboote = {
       enable = true;
       autoGenerateKeys.enable = true;
