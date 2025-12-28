@@ -44,6 +44,7 @@
       "nix-command"
       "flakes"
     ];
+    trusted-users = [ constants.username ];
   };
 
   programs.zsh.enable = true;
