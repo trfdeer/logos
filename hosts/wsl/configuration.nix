@@ -1,14 +1,16 @@
 {
-  constants,
   pkgs,
+  config,
   inputs,
-  sqwer,
   hostname,
   ...
 }:
+let
+  id = config.sqwer.identity;
+in
 {
   wsl.enable = true;
-  wsl.defaultUser = constants.username;
+  wsl.defaultUser = id.username;
 
   networking.hostName = hostname;
 
@@ -16,22 +18,28 @@
   i18n.defaultLocale = "en_US.UTF-8";
   services.xserver.xkb.layout = "us";
 
-  users.users.${constants.username} = {
+  users.users.${id.username} = {
     isNormalUser = true;
-    description = constants.name;
+    description = id.fullName;
     extraGroups = [ "wheel" ];
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = constants.sshKeys;
+    openssh.authorizedKeys.keys = id.sshPublicKeys;
   };
 
   home-manager = {
-    extraSpecialArgs = { inherit constants; };
     useGlobalPkgs = true;
     useUserPackages = true;
 
-    users.${constants.username}.imports = [
-      sqwer.homeModules
+    sharedModules = [
+      ../../modules/coreModules
+      ../../profiles/primary/identity.nix
+    ];
+
+    users.${id.username}.imports = [
       inputs.catppuccin.homeModules.catppuccin
+
+      ../../modules/homeModules
+      ../../profiles/primary/home.nix
       ./home-configuration.nix
     ];
   };
@@ -44,11 +52,11 @@
       "nix-command"
       "flakes"
     ];
-    trusted-users = [ constants.username ];
+    trusted-users = [ id.username ];
   };
 
   programs.zsh.enable = true;
   programs.nix-ld.enable = true;
 
-  system.stateVersion = constants.stateVersion;
+  system.stateVersion = config.sqwer.platform.stateVersion;
 }

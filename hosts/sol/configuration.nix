@@ -1,12 +1,13 @@
 {
   lib,
-  constants,
   pkgs,
   inputs,
-  sqwer,
+  config,
   ...
 }:
-
+let
+  id = config.sqwer.identity;
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -62,25 +63,31 @@
   services.xserver.xkb.layout = "us";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${constants.username} = {
+  users.users.${id.username} = {
     isNormalUser = true;
-    description = constants.name;
+    description = id.fullName;
     extraGroups = [
       "networkmanager"
       "wheel"
     ];
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = constants.sshKeys;
+    openssh.authorizedKeys.keys = id.sshPublicKeys;
   };
 
   home-manager = {
-    extraSpecialArgs = { inherit constants; };
     useGlobalPkgs = true;
     useUserPackages = true;
 
-    users.${constants.username}.imports = [
-      sqwer.homeModules
+    sharedModules = [
+      ../../modules/coreModules
+      ../../profiles/primary/identity.nix
+    ];
+
+    users.${id.username}.imports = [
       inputs.catppuccin.homeModules.catppuccin
+
+      ../../modules/homeModules
+      ../../profiles/primary/home.nix
       ./home-configuration.nix
     ];
   };
@@ -88,7 +95,7 @@
   sqwer = {
     tailscale = {
       enable = true;
-      operator = constants.username;
+      operator = id.username;
       advertiseRoutes = "172.16.10.0/24";
     };
 
@@ -97,7 +104,7 @@
       enable = true;
       name = "vault";
       path = "/vault";
-      owner = constants.username;
+      owner = id.username;
     };
   };
 
@@ -110,12 +117,12 @@
       "nix-command"
       "flakes"
     ];
-    trusted-users = [ constants.username ];
+    trusted-users = [ id.username ];
   };
 
   programs.zsh.enable = true;
   services.openssh.enable = true;
   services.fstrim.enable = true;
 
-  system.stateVersion = constants.stateVersion;
+  system.stateVersion = config.sqwer.platform.stateVersion;
 }

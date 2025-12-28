@@ -35,57 +35,62 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      constants = {
-        name = "Tuhin Tarafder";
-        username = "ttarafder";
-        email = "ttarafder7d1@protonmail.com";
-        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILNyNZFAlLgqaLZGIB79Gz/FT0rj9PcIYW6zaM4fhUhb";
-        sshKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBod7BQCA2N5GCdkD8NJzjhx5uajVrUwNCok+EYtDAvA" ];
-        stateVersion = "25.11";
-      };
+
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-      };
-      sqwer = {
-        homeModules = import ./modules/homeModules;
-        nixosModules = import ./modules/nixosModules;
       };
     in
     {
       nixosConfigurations = {
         sol = nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs constants sqwer; };
+          specialArgs = { inherit inputs; };
 
           modules = [
+            ./modules/coreModules
+
+            ./profiles/primary/identity.nix
+            ./profiles/platform.nix
+
+            ./modules/nixosModules
+
             disko.nixosModules.disko
             catppuccin.nixosModules.catppuccin
             lanzaboote.nixosModules.lanzaboote
-            home-manager.nixosModules.home-manager
             determinate.nixosModules.default
 
-            sqwer.nixosModules
+            home-manager.nixosModules.home-manager
+
             ./hosts/sol/configuration.nix
           ];
+
         };
 
         rock = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit inputs constants sqwer;
+            inherit inputs;
             hostname = "rock";
           };
 
           modules = [
+            ./modules/coreModules
+
+            ./profiles/primary/identity.nix
+            ./profiles/platform.nix
+
+            ./modules/nixosModules
+
             inputs.nixos-wsl.nixosModules.default
             catppuccin.nixosModules.catppuccin
-            home-manager.nixosModules.home-manager
             determinate.nixosModules.default
 
-            sqwer.nixosModules
+            home-manager.nixosModules.home-manager
+
             ./hosts/wsl/configuration.nix
           ];
+
         };
       };
 
