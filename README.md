@@ -48,13 +48,10 @@ The layout is intentionally opinionated and optimized for long-term maintainabil
 
 ## Initial Installation (First Boot)
 
-On first installation, use the following command to avoid compiling Nix from scratch and to ensure required caches are available:
+On first installation, use the following commandL
 
 ```sh
-sudo nixos-rebuild \
-  --option extra-substituters https://install.determinate.systems \
-  --option extra-trusted-public-keys cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= \
-  --flake . boot
+sudo nixos-rebuild --flake . boot
 ```
 
 After the build completes, set a password for the primary user defined in the selected identity **before rebooting**.
