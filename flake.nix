@@ -35,57 +35,62 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      constants = {
-        name = "REDACTED_NAME";
-        username = "REDACTED_USERNAME";
-        email = "REDACTED_EMAIL";
-        signingKey = "REDACTED_SSH_KEY";
-        sshKeys = [ "REDACTED_SSH_KEY" ];
-        stateVersion = "25.11";
-      };
+
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
-      sqwer = {
-        homeModules = import ./modules/homeModules;
-        nixosModules = import ./modules/nixosModules;
-      };
+
+      mkHost =
+        {
+          hostModules,
+          extraModules ? [ ],
+          extraSpecialArgs ? { },
+        }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = {
+            inherit inputs;
+          }
+          // extraSpecialArgs;
+
+          modules = [
+            ./modules/coreModules
+            ./profiles/identities/primary.nix
+            ./profiles/platform.nix
+
+            ./modules/nixosModules
+
+            catppuccin.nixosModules.catppuccin
+            determinate.nixosModules.default
+            home-manager.nixosModules.home-manager
+
+            ./profiles/nixosProfiles/base.nix
+          ]
+          ++ extraModules
+          ++ hostModules;
+        };
+
     in
     {
       nixosConfigurations = {
-        sol = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit inputs constants sqwer; };
-
-          modules = [
+        sol = mkHost {
+          hostModules = [ ./hosts/sol/configuration.nix ];
+          extraModules = [
             disko.nixosModules.disko
-            catppuccin.nixosModules.catppuccin
             lanzaboote.nixosModules.lanzaboote
-            home-manager.nixosModules.home-manager
-            determinate.nixosModules.default
-
-            sqwer.nixosModules
-            ./hosts/sol/configuration.nix
           ];
         };
 
-        rock = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs constants sqwer;
+        rock = mkHost {
+          hostModules = [ ./hosts/wsl/configuration.nix ];
+          extraModules = [
+            inputs.nixos-wsl.nixosModules.default
+          ];
+          extraSpecialArgs = {
             hostname = "rock";
           };
-
-          modules = [
-            inputs.nixos-wsl.nixosModules.default
-            catppuccin.nixosModules.catppuccin
-            home-manager.nixosModules.home-manager
-            determinate.nixosModules.default
-
-            sqwer.nixosModules
-            ./hosts/wsl/configuration.nix
-          ];
         };
       };
 
