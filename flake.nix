@@ -40,57 +40,57 @@
         inherit system;
         config.allowUnfree = true;
       };
+
+      mkHost =
+        {
+          hostModules,
+          extraModules ? [ ],
+          extraSpecialArgs ? { },
+        }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = {
+            inherit inputs;
+          }
+          // extraSpecialArgs;
+
+          modules = [
+            ./modules/coreModules
+            ./profiles/identities/primary.nix
+            ./profiles/platform.nix
+
+            ./modules/nixosModules
+
+            catppuccin.nixosModules.catppuccin
+            determinate.nixosModules.default
+            home-manager.nixosModules.home-manager
+
+            ./profiles/nixosProfiles/base.nix
+          ]
+          ++ extraModules
+          ++ hostModules;
+        };
+
     in
     {
       nixosConfigurations = {
-        sol = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit inputs; };
-
-          modules = [
-            ./modules/coreModules
-
-            ./profiles/primary/identity.nix
-            ./profiles/platform.nix
-
-            ./modules/nixosModules
-
+        sol = mkHost {
+          hostModules = [ ./hosts/sol/configuration.nix ];
+          extraModules = [
             disko.nixosModules.disko
-            catppuccin.nixosModules.catppuccin
             lanzaboote.nixosModules.lanzaboote
-            determinate.nixosModules.default
-
-            home-manager.nixosModules.home-manager
-
-            ./hosts/sol/configuration.nix
           ];
-
         };
 
-        rock = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
+        rock = mkHost {
+          hostModules = [ ./hosts/wsl/configuration.nix ];
+          extraModules = [
+            inputs.nixos-wsl.nixosModules.default
+          ];
+          extraSpecialArgs = {
             hostname = "rock";
           };
-
-          modules = [
-            ./modules/coreModules
-
-            ./profiles/primary/identity.nix
-            ./profiles/platform.nix
-
-            ./modules/nixosModules
-
-            inputs.nixos-wsl.nixosModules.default
-            catppuccin.nixosModules.catppuccin
-            determinate.nixosModules.default
-
-            home-manager.nixosModules.home-manager
-
-            ./hosts/wsl/configuration.nix
-          ];
-
         };
       };
 

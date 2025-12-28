@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  inputs,
   config,
   ...
 }:
@@ -14,22 +13,35 @@ in
     ./disko-configuration.nix
   ];
 
+  # ------------------------------------------------------------
+  # Host identity
+  # ------------------------------------------------------------
+  networking.hostName = "sol";
+  networking.networkmanager.enable = true;
+
+  # ------------------------------------------------------------
+  # Boot / storage (WSL + encrypted vault)
+  # ------------------------------------------------------------
   boot = {
     bootspec.enable = true;
-    initrd.systemd.enable = true;
-    loader.efi.canTouchEfiVariables = true;
     kernelPackages = pkgs.linuxPackages_latest;
 
-    initrd.luks.devices.vault = {
-      device = "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b402b400e-part1";
-      name = "vault-crypt";
-      allowDiscards = true;
+    initrd = {
+      luks.devices.vault = {
+        device = "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b402b400e-part1";
+        name = "vault-crypt";
+        allowDiscards = true;
+      };
+      systemd.enable = true;
     };
 
-    loader.systemd-boot = {
-      enable = lib.mkForce false;
-      consoleMode = "max";
-      configurationLimit = 3;
+    loader = {
+      systemd-boot = {
+        enable = lib.mkForce false;
+        consoleMode = "max";
+        configurationLimit = 3;
+      };
+      efi.canTouchEfiVariables = true;
     };
 
     # Run `nix run nixpkgs#sbctl -- enroll-keys -m` after first boot while in setup mode.
@@ -43,7 +55,7 @@ in
     supportedFilesystems = [ "btrfs" ];
   };
 
-  fileSystems."/vault" = {
+  fileSystems."/srv/vault" = {
     device = "/dev/mapper/vault";
     fsType = "btrfs";
     options = [
@@ -55,43 +67,9 @@ in
     ];
   };
 
-  networking.hostName = "sol";
-  networking.networkmanager.enable = true;
-
-  time.timeZone = "Asia/Kolkata";
-  i18n.defaultLocale = "en_US.UTF-8";
-  services.xserver.xkb.layout = "us";
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${id.username} = {
-    isNormalUser = true;
-    description = id.fullName;
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
-    shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = id.sshPublicKeys;
-  };
-
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-
-    sharedModules = [
-      ../../modules/coreModules
-      ../../profiles/primary/identity.nix
-    ];
-
-    users.${id.username}.imports = [
-      inputs.catppuccin.homeModules.catppuccin
-
-      ../../modules/homeModules
-      ../../profiles/primary/home.nix
-      ./home-configuration.nix
-    ];
-  };
-
+  # ------------------------------------------------------------
+  # Host-specific services
+  # ------------------------------------------------------------
   sqwer = {
     tailscale = {
       enable = true;
@@ -99,7 +77,6 @@ in
       advertiseRoutes = "172.16.10.0/24";
     };
 
-    # Run `smbpasswd -a $USER` after installing
     samba = {
       enable = true;
       name = "vault";
@@ -108,21 +85,11 @@ in
     };
   };
 
-  # Configure nix / nixpkgs
-  nixpkgs.config.allowUnfree = true;
-  nix.settings = {
-    use-xdg-base-directories = true;
-    auto-optimise-store = true;
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    trusted-users = [ id.username ];
-  };
-
-  programs.zsh.enable = true;
   services.openssh.enable = true;
   services.fstrim.enable = true;
 
-  system.stateVersion = config.sqwer.platform.stateVersion;
+  # ------------------------------------------------------------
+  # Host-specific Home Manager deltas
+  # ------------------------------------------------------------
+  home-manager.users.${id.username}.imports = [ ./home-configuration.nix ];
 }

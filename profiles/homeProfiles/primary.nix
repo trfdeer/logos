@@ -6,7 +6,7 @@ in
   home = {
     username = id.username;
     homeDirectory = "/home/${id.username}";
-    stateVersion = "25.11";
+    stateVersion = config.sqwer.platform.stateVersion;
   };
 
   xdg.enable = true;
