@@ -83,13 +83,13 @@
           ];
         };
 
-        rock = mkHost {
+        rockwsl = mkHost {
           hostModules = [ ./hosts/wsl/configuration.nix ];
           extraModules = [
             inputs.nixos-wsl.nixosModules.default
           ];
           extraSpecialArgs = {
-            hostname = "rock";
+            hostname = "rockwsl";
           };
         };
       };
