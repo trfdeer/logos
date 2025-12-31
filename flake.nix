@@ -83,6 +83,14 @@
           ];
         };
 
+        rock = mkHost {
+          hostModules = [ ./hosts/rock/configuration.nix ];
+          extraModules = [
+            disko.nixosModules.disko
+            lanzaboote.nixosModules.lanzaboote
+          ];
+        };
+
         rockwsl = mkHost {
           hostModules = [ ./hosts/wsl/configuration.nix ];
           extraModules = [
