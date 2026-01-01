@@ -3,6 +3,8 @@
   imports = [
     ./tailscale.nix
     ./samba.nix
+
+    ./hardware/hyper-v.nix
   ];
 
   config.sqwer = {
@@ -17,6 +19,10 @@
       name = lib.mkDefault "";
       path = lib.mkDefault "";
       owner = lib.mkDefault "";
+    };
+
+    hardware.hyperv = {
+      enable = false;
     };
   };
 }
