@@ -22,7 +22,7 @@
     };
 
     hardware.hyperv = {
-      enable = false;
+      enable = lib.mkDefault false;
     };
   };
 }
