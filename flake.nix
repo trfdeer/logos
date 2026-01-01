@@ -76,7 +76,7 @@
     {
       nixosConfigurations = {
         sol = mkHost {
-          hostModules = [ ./hosts/sol/configuration.nix ];
+          hostModules = [ ./hosts/machines/sol/configuration.nix ];
           extraModules = [
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
@@ -84,15 +84,26 @@
         };
 
         rock = mkHost {
-          hostModules = [ ./hosts/rock/configuration.nix ];
+          hostModules = [ ./hosts/machines/rock/configuration.nix ];
           extraModules = [
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
           ];
         };
 
+        slate = mkHost {
+          hostModules = [ ./hosts/templates/hyperv/configuration.nix ];
+          extraModules = [
+            disko.nixosModules.disko
+            lanzaboote.nixosModules.lanzaboote
+          ];
+          extraSpecialArgs = {
+            hostname = "slate";
+          };
+        };
+
         rockwsl = mkHost {
-          hostModules = [ ./hosts/wsl/configuration.nix ];
+          hostModules = [ ./hosts/templates/wsl/configuration.nix ];
           extraModules = [
             inputs.nixos-wsl.nixosModules.default
           ];
