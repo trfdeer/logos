@@ -24,5 +24,14 @@
         Used by other modules to apply WSL-specific behavior or workarounds.
       '';
     };
+
+    isDesktop = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        Indiciates that the Home Manager configuration is running inside
+        an inderactive desktop environment.
+      '';
+    };
   };
 }

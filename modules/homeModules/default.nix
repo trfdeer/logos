@@ -1,7 +1,6 @@
 { lib, ... }:
 {
   imports = [
-    ./env.nix
     ./git.nix
     ./zsh.nix
     ./starship.nix
@@ -16,11 +15,6 @@
   ];
 
   config.sqwer = {
-    env = {
-      isWsl = lib.mkDefault false;
-      has1Password = lib.mkDefault false;
-    };
-
     zsh.enable = lib.mkDefault true;
     starship.enable = lib.mkDefault true;
     tmux = {

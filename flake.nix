@@ -72,11 +72,31 @@
           ++ hostModules;
         };
 
+      mkHome =
+        {
+          extraModules ? [ ],
+        }:
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+
+          modules = [
+            ./modules/coreModules
+            ./profiles/identities/primary.nix
+            ./profiles/platform.nix
+
+            catppuccin.homeModules.catppuccin
+
+            ./modules/homeModules
+            ./profiles/homeProfiles/base.nix
+          ]
+          ++ extraModules;
+        };
+
     in
     {
       nixosConfigurations = {
         sol = mkHost {
-          hostModules = [ ./hosts/machines/sol/configuration.nix ];
+          hostModules = [ ./hosts/sol/configuration.nix ];
           extraModules = [
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
@@ -84,7 +104,7 @@
         };
 
         rock = mkHost {
-          hostModules = [ ./hosts/machines/rock/configuration.nix ];
+          hostModules = [ ./hosts/rock/configuration.nix ];
           extraModules = [
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
@@ -92,7 +112,7 @@
         };
 
         slate = mkHost {
-          hostModules = [ ./hosts/templates/hyperv/configuration.nix ];
+          hostModules = [ ./hosts/hyperv/configuration.nix ];
           extraModules = [
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
@@ -103,13 +123,21 @@
         };
 
         rockwsl = mkHost {
-          hostModules = [ ./hosts/templates/wsl/configuration.nix ];
+          hostModules = [ ./hosts/wsl/configuration.nix ];
           extraModules = [
             inputs.nixos-wsl.nixosModules.default
           ];
           extraSpecialArgs = {
             hostname = "rockwsl";
           };
+        };
+      };
+
+      homeConfigurations = {
+        ttarafder = mkHome {
+          extraModules = [
+            ./homes/primaryDesktop.nix
+          ];
         };
       };
 
