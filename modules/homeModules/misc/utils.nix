@@ -15,6 +15,7 @@
       tmux
       git
       devenv
+      just
 
       coreutils
       aria2
