@@ -42,12 +42,14 @@
         inherit system;
         config.allowUnfree = true;
       };
+
       modules = import ./modules;
       profiles = import ./profiles;
+      hosts = import ./hosts;
 
       mkHost =
         {
-          hostModules,
+          name,
           extraModules ? [ ],
           extraSpecialArgs ? { },
         }:
@@ -60,6 +62,8 @@
           // extraSpecialArgs;
 
           modules = [
+            hosts.${name}
+
             modules.commonModules
             profiles.identities.primary
             profiles.platform
@@ -71,8 +75,7 @@
 
             profiles.system.base
           ]
-          ++ extraModules
-          ++ hostModules;
+          ++ extraModules;
         };
 
       mkHome =
@@ -100,7 +103,7 @@
     {
       nixosConfigurations = {
         sol = mkHost {
-          hostModules = [ ./hosts/sol/configuration.nix ];
+          name = "sol";
           extraModules = [
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
@@ -108,33 +111,33 @@
         };
 
         rock = mkHost {
-          hostModules = [ ./hosts/rock/configuration.nix ];
+          name = "rock";
           extraModules = [
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
           ];
         };
 
-        slate = mkHost {
-          hostModules = [ ./hosts/hyperv/configuration.nix ];
-          extraModules = [
-            disko.nixosModules.disko
-            lanzaboote.nixosModules.lanzaboote
-          ];
-          extraSpecialArgs = {
-            hostname = "slate";
-          };
-        };
+        # slate = mkHost {
+        #   hostModules = [ ./hosts/hyperv/configuration.nix ];
+        #   extraModules = [
+        #     disko.nixosModules.disko
+        #     lanzaboote.nixosModules.lanzaboote
+        #   ];
+        #   extraSpecialArgs = {
+        #     hostname = "slate";
+        #   };
+        # };
 
-        rockwsl = mkHost {
-          hostModules = [ ./hosts/wsl/configuration.nix ];
-          extraModules = [
-            inputs.nixos-wsl.nixosModules.default
-          ];
-          extraSpecialArgs = {
-            hostname = "rockwsl";
-          };
-        };
+        # rockwsl = mkHost {
+        #   hostModules = [ ./hosts/wsl/configuration.nix ];
+        #   extraModules = [
+        #     inputs.nixos-wsl.nixosModules.default
+        #   ];
+        #   extraSpecialArgs = {
+        #     hostname = "rockwsl";
+        #   };
+        # };
       };
 
       homeConfigurations = {
