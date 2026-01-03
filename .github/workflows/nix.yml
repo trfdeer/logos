@@ -1,0 +1,57 @@
+name: Nix CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  nix:
+    name: Nix flake checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:release-25.11
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Show Nix version
+        run: nix --version
+
+      # ------------------------
+      # Formatting
+      # ------------------------
+      - name: Check nixfmt formatting
+        run: |
+          nix run nixpkgs#nixfmt-tree -- --ci .
+
+      # ------------------------
+      # Flake evaluation
+      # ------------------------
+      - name: nix flake check
+        run: |
+          nix flake check --all-systems
+
+      # # ------------------------
+      # # Evaluate all NixOS hosts
+      # # ------------------------
+      # - name: Evaluate NixOS configurations
+      #   run: |
+      #     set -euo pipefail
+
+      #     hosts=$(nix flake show --json | jq -r '.nixosConfigurations | keys[]')
+
+      #     for host in $hosts; do
+      #       echo "Evaluating host: $host"
+      #       nix eval ".#nixosConfigurations.${host}.config.system.build.toplevel"
+      #     done
