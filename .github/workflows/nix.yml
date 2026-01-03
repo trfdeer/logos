@@ -53,5 +53,5 @@ jobs:
 
           for host in $hosts; do
             echo "Evaluating host: $host"
-            nix eval ".#nixosConfigurations.${host}.config.system.build.toplevel" > /dev/null
+            nix eval ".#nixosConfigurations.${host}.config.system.build.toplevel"
           done
