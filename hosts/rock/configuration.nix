@@ -52,7 +52,7 @@ in
   # ------------------------------------------------------------
   # Host-specific services
   # ------------------------------------------------------------
-  sqwer = {
+  sqwer.system = {
     tailscale = {
       enable = true;
       operator = id.username;

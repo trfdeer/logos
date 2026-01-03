@@ -50,7 +50,7 @@ in
     supportedFilesystems = [ "btrfs" ];
   };
 
-  sqwer = {
+  sqwer.system = {
     hardware.hyperv.enable = true;
   };
 
