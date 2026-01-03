@@ -27,6 +27,7 @@
 
   outputs =
     {
+      self,
       disko,
       nixpkgs,
       lanzaboote,
@@ -41,6 +42,8 @@
         inherit system;
         config.allowUnfree = true;
       };
+      modules = import ./modules;
+      profiles = import ./profiles;
 
       mkHost =
         {
@@ -52,21 +55,21 @@
           inherit system;
 
           specialArgs = {
-            inherit inputs;
+            inherit inputs modules profiles;
           }
           // extraSpecialArgs;
 
           modules = [
-            ./modules/commonModules
-            ./profiles/identities/primary.nix
-            ./profiles/platform.nix
+            modules.commonModules
+            profiles.identities.primary
+            profiles.platform
 
-            ./modules/nixosModules
+            modules.nixosModules
 
             catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
 
-            ./profiles/nixosProfiles/base.nix
+            profiles.system.base
           ]
           ++ extraModules
           ++ hostModules;
@@ -80,14 +83,15 @@
           inherit pkgs;
 
           modules = [
-            ./modules/commonModules
-            ./profiles/identities/primary.nix
-            ./profiles/platform.nix
+            modules.commonModules
+            modules.homeModules.standalone.nix
+            profiles.identities.primary
+            profiles.platform
 
             catppuccin.homeModules.catppuccin
 
-            ./modules/homeModules
-            ./profiles/homeProfiles/base.nix
+            modules.homeModules.sqwerHome
+            profiles.home.base
           ]
           ++ extraModules;
         };
@@ -136,7 +140,7 @@
       homeConfigurations = {
         ttarafder = mkHome {
           extraModules = [
-            ./profiles/homeProfiles/desktopBase.nix
+            profiles.home.desktop
           ];
         };
       };

@@ -1,6 +1,8 @@
 {
   pkgs,
   inputs,
+  modules,
+  profiles,
   config,
   ...
 }:
@@ -36,15 +38,16 @@ in
     useUserPackages = true;
 
     sharedModules = [
-      ../../modules/commonModules
-      ../identities/primary.nix
-      ../platform.nix
+      modules.commonModules
+      profiles.identities.primary
+      profiles.platform
     ];
 
     users.${id.username}.imports = [
       inputs.catppuccin.homeModules.catppuccin
-      ../../modules/homeModules
-      ../homeProfiles/base.nix
+      modules.homeModules.sqwerHome
+      profiles.identities.primary
+      profiles.home.base
     ];
   };
 

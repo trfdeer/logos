@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 let
@@ -14,7 +13,7 @@ in
 
   config = lib.mkIf (homeCfg.nix.enable && !config.sqwer.env.isNixosSystem) {
     nix = {
-      package = pkgs.nix;
+
       settings = {
         use-xdg-base-directories = true;
         auto-optimise-store = true;

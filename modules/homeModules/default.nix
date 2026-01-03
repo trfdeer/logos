@@ -1,20 +1,25 @@
-{ ... }:
 {
-  imports = [
-    ./shell/zsh.nix
-    ./shell/tmux.nix
-    ./shell/direnv.nix
-    ./shell/starship.nix
-    ./shell/session_vars.nix
+  standalone = {
+    nix = ./misc/nix-package.nix;
+  };
 
-    ./dev/git.nix
-    ./dev/helix.nix
-    ./dev/lazygit.nix
+  sqwerHome = {
+    imports = [
+      ./shell/zsh.nix
+      ./shell/tmux.nix
+      ./shell/direnv.nix
+      ./shell/starship.nix
+      ./shell/session_vars.nix
 
-    ./misc/nix.nix
-    ./misc/utils.nix
-    ./misc/catppuccin.nix
+      ./dev/git.nix
+      ./dev/helix.nix
+      ./dev/lazygit.nix
 
-    ./desktop/sound.nix
-  ];
+      ./misc/nix.nix
+      ./misc/utils.nix
+      ./misc/catppuccin.nix
+
+      ./desktop/sound.nix
+    ];
+  };
 }

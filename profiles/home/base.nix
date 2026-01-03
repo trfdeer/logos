@@ -39,11 +39,6 @@ in
       flavor = lib.mkDefault "mocha";
     };
 
-    sound = {
-      disable-hsp = lib.mkDefault false;
-      disable-hw-volume = lib.mkDefault false;
-    };
-
     nix.enable = lib.mkDefault true;
   };
 }
