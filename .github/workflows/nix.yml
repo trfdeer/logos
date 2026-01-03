@@ -33,7 +33,7 @@ jobs:
       # ------------------------
       - name: Check nixfmt formatting
         run: |
-          nix run nixpkgs#nixfmt-tree -- --check .
+          nix run nixpkgs#nixfmt-tree -- --ci .
 
       # ------------------------
       # Flake evaluation
