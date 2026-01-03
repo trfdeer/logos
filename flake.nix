@@ -57,7 +57,7 @@
           // extraSpecialArgs;
 
           modules = [
-            ./modules/coreModules
+            ./modules/commonModules
             ./profiles/identities/primary.nix
             ./profiles/platform.nix
 
@@ -80,7 +80,7 @@
           inherit pkgs;
 
           modules = [
-            ./modules/coreModules
+            ./modules/commonModules
             ./profiles/identities/primary.nix
             ./profiles/platform.nix
 

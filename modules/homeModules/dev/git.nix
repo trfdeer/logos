@@ -9,10 +9,12 @@
     user = {
       name = lib.mkOption {
         type = lib.types.str;
+        default = "";
         description = "Git user name";
       };
       email = lib.mkOption {
         type = lib.types.str;
+        default = "";
         description = "Git user email";
       };
       signingkey = lib.mkOption {

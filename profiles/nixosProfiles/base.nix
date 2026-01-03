@@ -4,11 +4,12 @@
   config,
   ...
 }:
-
 let
   id = config.sqwer.identity;
 in
 {
+  sqwer.env.isNixosSystem = true;
+
   # ------------------------------------------------------------
   # Locale / time (system-wide defaults)
   # ------------------------------------------------------------
@@ -35,7 +36,7 @@ in
     useUserPackages = true;
 
     sharedModules = [
-      ../../modules/coreModules
+      ../../modules/commonModules
       ../identities/primary.nix
       ../platform.nix
     ];

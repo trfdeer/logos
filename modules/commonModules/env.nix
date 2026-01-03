@@ -33,5 +33,13 @@
         an inderactive desktop environment.
       '';
     };
+
+    isNixosSystem = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        Indiciates whether this is a nixos-system or a home-manager only config.
+      '';
+    };
   };
 }

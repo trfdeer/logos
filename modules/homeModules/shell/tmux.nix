@@ -8,6 +8,7 @@ in
     enable = lib.mkEnableOption "Enable tmux";
     prefixKey = lib.mkOption {
       type = lib.types.nonEmptyStr;
+      default = "C-a";
       description = "Set prefix key";
     };
   };

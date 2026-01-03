@@ -24,7 +24,7 @@ The layout is intentionally opinionated and optimized for long-term maintainabil
 │       └── ...
 │
 ├── modules/
-│   ├── coreModules/        # Option schemas & namespaces (sqwer.*)
+│   ├── commonModules/      # Option schemas & namespaces (sqwer.*)
 │   ├── nixosModules/       # Low-level OS / infra features
 │   └── homeModules/        # Reusable Home Manager features
 │
