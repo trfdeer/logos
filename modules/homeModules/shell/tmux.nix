@@ -1,13 +1,14 @@
 { lib, config, ... }:
 
 let
-  cfg = config.sqwer.tmux;
+  cfg = config.sqwer.home.tmux;
 in
 {
-  options.sqwer.tmux = {
+  options.sqwer.home.tmux = {
     enable = lib.mkEnableOption "Enable tmux";
     prefixKey = lib.mkOption {
       type = lib.types.nonEmptyStr;
+      default = "C-a";
       description = "Set prefix key";
     };
   };

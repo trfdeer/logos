@@ -1,23 +1,26 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.samba;
+  cfg = config.sqwer.system.samba;
 in
 {
-  options.sqwer.samba = {
+  options.sqwer.system.samba = {
     enable = lib.mkEnableOption "Enable Samba file share";
 
     name = lib.mkOption {
       type = lib.types.nonEmptyStr;
+      default = "";
       description = "Name of the Samba share.";
     };
 
     path = lib.mkOption {
       type = lib.types.path;
+      default = "";
       description = "Filesystem path to be shared via Samba.";
     };
 
     owner = lib.mkOption {
       type = lib.types.nonEmptyStr;
+      default = "";
       description = "User that owns the shared path.";
     };
   };

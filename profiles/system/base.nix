@@ -1,14 +1,17 @@
 {
   pkgs,
   inputs,
+  modules,
+  profiles,
   config,
   ...
 }:
-
 let
   id = config.sqwer.identity;
 in
 {
+  sqwer.env.isNixosSystem = true;
+
   # ------------------------------------------------------------
   # Locale / time (system-wide defaults)
   # ------------------------------------------------------------
@@ -35,15 +38,16 @@ in
     useUserPackages = true;
 
     sharedModules = [
-      ../../modules/coreModules
-      ../identities/primary.nix
-      ../platform.nix
+      modules.commonModules
+      profiles.identities.primary
+      profiles.platform
     ];
 
     users.${id.username}.imports = [
       inputs.catppuccin.homeModules.catppuccin
-      ../../modules/homeModules
-      ../homeProfiles/base.nix
+      modules.homeModules.sqwerHome
+      profiles.identities.primary
+      profiles.home.base
     ];
   };
 
