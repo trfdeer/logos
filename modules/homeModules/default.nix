@@ -5,11 +5,11 @@
     ./shell/tmux.nix
     ./shell/direnv.nix
     ./shell/starship.nix
+    ./shell/session_vars.nix
 
     ./dev/git.nix
     ./dev/helix.nix
     ./dev/lazygit.nix
-    ./dev/session_vars.nix
 
     ./misc/nix.nix
     ./misc/utils.nix
