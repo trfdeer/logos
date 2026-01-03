@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  hostname,
   ...
 }:
 let
@@ -16,22 +17,17 @@ in
   # ------------------------------------------------------------
   # Host identity
   # ------------------------------------------------------------
-  networking.hostName = "sol";
+  networking.hostName = hostname;
   networking.networkmanager.enable = true;
 
   # ------------------------------------------------------------
-  # Boot / storage (WSL + encrypted vault)
+  # Boot / storage
   # ------------------------------------------------------------
   boot = {
     bootspec.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
 
     initrd = {
-      luks.devices.vault = {
-        device = "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b402b400e-part1";
-        name = "vault-crypt";
-        allowDiscards = true;
-      };
       systemd.enable = true;
     };
 
@@ -54,38 +50,9 @@ in
     supportedFilesystems = [ "btrfs" ];
   };
 
-  fileSystems."/srv/vault" = {
-    device = "/dev/mapper/vault";
-    fsType = "btrfs";
-    options = [
-      "subvol=@vault"
-      "ssd"
-      "space_cache=v2"
-      "compress=zstd"
-      "noatime"
-    ];
-  };
-
-  # ------------------------------------------------------------
-  # Host-specific services
-  # ------------------------------------------------------------
   sqwer.system = {
-    tailscale = {
-      enable = true;
-      operator = id.username;
-      advertiseRoutes = "172.16.10.0/24";
-    };
-
-    samba = {
-      enable = true;
-      name = "vault";
-      path = "/srv/vault";
-      owner = id.username;
-    };
+    hardware.hyperv.enable = true;
   };
-
-  services.openssh.enable = true;
-  services.fstrim.enable = true;
 
   # ------------------------------------------------------------
   # Host-specific Home Manager deltas

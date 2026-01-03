@@ -1,12 +1,13 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.tailscale;
+  cfg = config.sqwer.system.tailscale;
 in
 {
-  options.sqwer.tailscale = {
+  options.sqwer.system.tailscale = {
     enable = lib.mkEnableOption "Enable Tailscale";
     operator = lib.mkOption {
       type = lib.types.str;
+      default = "";
       description = "Set tailscale operator";
     };
     advertiseRoutes = lib.mkOption {

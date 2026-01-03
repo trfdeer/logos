@@ -5,11 +5,11 @@
   ...
 }:
 {
-  options.sqwer.utils = {
+  options.sqwer.home.utils = {
     enable = lib.mkEnableOption "Install common tools";
   };
 
-  config = lib.mkIf config.sqwer.utils.enable {
+  config = lib.mkIf config.sqwer.home.utils.enable {
     home.packages = with pkgs; [
       zsh
       tmux

@@ -1,10 +1,10 @@
 { lib, config, ... }:
 {
-  options.sqwer.helix = {
+  options.sqwer.home.helix = {
     enable = lib.mkEnableOption "Enable Helix Editor";
   };
 
-  config = lib.mkIf config.sqwer.helix.enable {
+  config = lib.mkIf config.sqwer.home.helix.enable {
     programs.helix = {
       enable = true;
       defaultEditor = true;
