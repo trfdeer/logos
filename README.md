@@ -127,6 +127,41 @@ sudo reboot
 
 ---
 
+## Standalone Home Manager (Non-NixOS Systems)
+
+This repository also supports standalone Home Manager usage on non-NixOS systems (e.g. Arch Linux).
+
+### Important: Nix daemon trust model
+
+On non-NixOS systems, Nix is typically installed as a multi-user daemon.
+In this mode:
+
+* Home Manager only writes client-side configuration
+* Certain Nix settings are restricted and ignored unless the user is trusted
+
+If using the standalone Home Manager configuration and enabling nix.settings, you must add the user to the Nix daemon’s trusted users list.
+
+Edit /etc/nix/nix.conf as root:
+
+```nix
+trusted-users = root <username>
+```
+
+Then restart the Nix daemon:
+
+```sh
+sudo systemctl restart nix-daemon
+```
+
+Without this step, the daemon will ignore restricted settings such as:
+
+* `auto-optimise-store`
+* `use-xdg-base-directories`
+
+This requirement does not apply on NixOS, where the system configuration owns the Nix daemon.
+
+---
+
 ## Notes for Future Maintenance
 
 * `system.stateVersion` and `home.stateVersion` are sourced from `profiles/platform.nix`

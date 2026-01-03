@@ -3,8 +3,11 @@
   config,
   ...
 }:
+let
+  homeCfg = config.sqwer.home;
+in
 {
-  options.sqwer.git = {
+  options.sqwer.home.git = {
     enable = lib.mkEnableOption "Enable Git";
     user = {
       name = lib.mkOption {
@@ -25,23 +28,23 @@
     };
   };
 
-  config = lib.mkIf config.sqwer.git.enable {
+  config = lib.mkIf homeCfg.git.enable {
     programs.git = {
       enable = true;
       lfs.enable = true;
       signing = {
-        key = config.sqwer.git.user.signingkey;
-        signByDefault = config.sqwer.git.user.signingkey != "";
+        key = homeCfg.git.user.signingkey;
+        signByDefault = homeCfg.git.user.signingkey != "";
       };
       settings = {
         user = {
-          name = config.sqwer.git.user.name;
-          email = config.sqwer.git.user.email;
+          name = homeCfg.git.user.name;
+          email = homeCfg.git.user.email;
         };
         init.defaultBranch = "main";
-        gpg.format = lib.mkIf (config.sqwer.git.user.signingkey != "") "ssh";
+        gpg.format = lib.mkIf (homeCfg.git.user.signingkey != "") "ssh";
       }
-      // lib.optionalAttrs (config.sqwer.git.user.signingkey != "" && config.sqwer.env.has1Password) {
+      // lib.optionalAttrs (homeCfg.git.user.signingkey != "" && config.sqwer.env.has1Password) {
         "gpg \"ssh\"".program =
           if config.sqwer.env.isWsl then
             ''/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl''

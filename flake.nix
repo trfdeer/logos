@@ -136,7 +136,7 @@
       homeConfigurations = {
         ttarafder = mkHome {
           extraModules = [
-            ./homes/primaryDesktop.nix
+            ./profiles/homeProfiles/desktopBase.nix
           ];
         };
       };

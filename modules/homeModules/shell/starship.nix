@@ -1,13 +1,13 @@
 { lib, config, ... }:
 {
-  options.sqwer.starship = {
+  options.sqwer.home.starship = {
     enable = lib.mkEnableOption "Enable Starship prompt";
   };
 
-  config = lib.mkIf config.sqwer.starship.enable {
+  config = lib.mkIf config.sqwer.home.starship.enable {
     programs.starship = {
       enable = true;
-      enableZshIntegration = config.sqwer.zsh.enable;
+      enableZshIntegration = config.sqwer.home.zsh.enable;
       settings = {
         add_newline = false;
         right_format = "$time";

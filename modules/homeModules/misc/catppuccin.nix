@@ -1,36 +1,36 @@
 { lib, config, ... }:
-
 let
-  cfg = config.sqwer.catppuccin;
+  homeCfg = config.sqwer.home;
 
   mkCatppuccin =
     enableCond: extra:
     lib.mkIf enableCond (
       {
         enable = true;
-        flavor = cfg.flavor;
+        flavor = homeCfg.catppuccin.flavor;
       }
       // extra
     );
 
 in
 {
-  options.sqwer.catppuccin = {
+  options.sqwer.home.catppuccin = {
     enable = lib.mkEnableOption "Enable Catppuccin Theme";
     flavor = lib.mkOption {
       type = lib.types.nonEmptyStr;
+      default = "";
       description = "Catppuccin Theme Variant";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf homeCfg.catppuccin.enable {
     catppuccin = {
-      zsh-syntax-highlighting = mkCatppuccin config.sqwer.zsh.enable { };
-      btop = mkCatppuccin config.sqwer.utils.enable { };
-      tmux = mkCatppuccin config.sqwer.tmux.enable { };
-      starship = mkCatppuccin config.sqwer.starship.enable { };
-      lazygit = mkCatppuccin config.sqwer.lazygit.enable { };
-      helix = mkCatppuccin config.sqwer.helix.enable { useItalics = true; };
+      zsh-syntax-highlighting = mkCatppuccin homeCfg.zsh.enable { };
+      btop = mkCatppuccin homeCfg.utils.enable { };
+      tmux = mkCatppuccin homeCfg.tmux.enable { };
+      starship = mkCatppuccin homeCfg.starship.enable { };
+      lazygit = mkCatppuccin homeCfg.lazygit.enable { };
+      helix = mkCatppuccin homeCfg.helix.enable { useItalics = true; };
     };
   };
 }
