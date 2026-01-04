@@ -33,18 +33,11 @@ in
 
     loader = {
       systemd-boot = {
-        enable = lib.mkForce false;
+        enable = true;
         consoleMode = "max";
         configurationLimit = 3;
       };
       efi.canTouchEfiVariables = true;
-    };
-
-    lanzaboote = {
-      enable = true;
-      autoGenerateKeys.enable = true;
-      autoEnrollKeys.enable = true;
-      pkiBundle = "/etc/secureboot";
     };
 
     supportedFilesystems = [ "btrfs" ];
@@ -53,6 +46,8 @@ in
   sqwer.system = {
     hardware.hyperv.enable = true;
   };
+
+  services.openssh.enable = true;
 
   # ------------------------------------------------------------
   # Host-specific Home Manager deltas
