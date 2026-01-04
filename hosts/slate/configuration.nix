@@ -33,7 +33,7 @@ in
 
     loader = {
       systemd-boot = {
-        enable = lib.mkForce false;
+        enable = true;
         consoleMode = "max";
         configurationLimit = 3;
       };
