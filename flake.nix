@@ -58,6 +58,7 @@
 
           specialArgs = {
             inherit inputs modules profiles;
+            hostname = name;
           }
           // extraSpecialArgs;
 
@@ -118,16 +119,12 @@
           ];
         };
 
-        # slate = mkHost {
-        #   hostModules = [ ./hosts/hyperv/configuration.nix ];
-        #   extraModules = [
-        #     disko.nixosModules.disko
-        #     lanzaboote.nixosModules.lanzaboote
-        #   ];
-        #   extraSpecialArgs = {
-        #     hostname = "slate";
-        #   };
-        # };
+        slate = mkHost {
+          name = "slate";
+          extraModules = [
+            disko.nixosModules.disko
+          ];
+        };
 
         # rockwsl = mkHost {
         #   hostModules = [ ./hosts/wsl/configuration.nix ];
