@@ -45,6 +45,11 @@ in
 
   sqwer.system = {
     hardware.hyperv.enable = true;
+
+    docker = {
+      enable = true;
+      useBtrfsDriver = true;
+    };
   };
 
   services.openssh.enable = true;
