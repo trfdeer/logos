@@ -47,6 +47,8 @@ in
     hardware.hyperv.enable = true;
   };
 
+  services.openssh.enable = true;
+
   # ------------------------------------------------------------
   # Host-specific Home Manager deltas
   # ------------------------------------------------------------
