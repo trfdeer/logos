@@ -1,11 +1,15 @@
-{ ... }:
 {
-  imports = [
-    ./docker.nix
+  standalone.hardware = {
+    hyper-v = ./hardware/hyper-v.nix;
+    proxmox-lxc = ./hardware/proxmox-lxc.nix;
+  };
 
-    ./network/tailscale.nix
-    ./network/samba.nix
+  sqwerSystem = {
+    imports = [
+      ./docker.nix
 
-    ./hardware/hyper-v.nix
-  ];
+      ./network/tailscale.nix
+      ./network/samba.nix
+    ];
+  };
 }

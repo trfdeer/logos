@@ -1,58 +1,20 @@
-{
-  lib,
-  pkgs,
-  config,
-  hostname,
-  ...
-}:
+{ modulesPath, config, ... }:
 let
   id = config.sqwer.identity;
 in
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./disko-configuration.nix
-  ];
-
-  # ------------------------------------------------------------
-  # Host identity
-  # ------------------------------------------------------------
-  networking.hostName = hostname;
-  networking.networkmanager.enable = true;
-
-  # ------------------------------------------------------------
-  # Boot / storage
-  # ------------------------------------------------------------
-  boot = {
-    bootspec.enable = true;
-    kernelPackages = pkgs.linuxPackages_latest;
-
-    initrd = {
-      systemd.enable = true;
-    };
-
-    loader = {
-      systemd-boot = {
-        enable = true;
-        consoleMode = "max";
-        configurationLimit = 3;
-      };
-      efi.canTouchEfiVariables = true;
-    };
-
-    supportedFilesystems = [ "btrfs" ];
-  };
+  #  imports = [
+  #    (modulesPath + "/virtualisation/proxmox-lxc.nix")
+  #  ];
 
   sqwer.system = {
-    hardware.hyperv.enable = true;
-
+    hardware.proxmox-lxc.enable = true;
     docker = {
       enable = true;
-      useBtrfsDriver = true;
+      useBtrfsDriver = false;
+      users = [ id.username ];
     };
   };
-
-  services.openssh.enable = true;
 
   # ------------------------------------------------------------
   # Host-specific Home Manager deltas

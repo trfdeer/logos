@@ -20,6 +20,8 @@
       ./misc/catppuccin.nix
 
       ./desktop/sound.nix
+
+      ./sshcfg.nix
     ];
   };
 }
