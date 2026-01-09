@@ -69,7 +69,7 @@
             profiles.identities.primary
             profiles.platform
 
-            modules.nixosModules
+            modules.nixosModules.sqwerSystem
 
             catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
@@ -122,7 +122,8 @@
         slate = mkHost {
           name = "slate";
           extraModules = [
-            disko.nixosModules.disko
+            "${nixpkgs}/nixos/modules/virtualisation/proxmox-lxc.nix"
+            modules.nixosModules.standalone.hardware.proxmox-lxc
           ];
         };
 
