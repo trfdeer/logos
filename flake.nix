@@ -19,10 +19,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -119,23 +115,21 @@
           ];
         };
 
+        # Proxmox LXC Container
         slate = mkHost {
           name = "slate";
           extraModules = [
-            "${nixpkgs}/nixos/modules/virtualisation/proxmox-lxc.nix"
             modules.nixosModules.standalone.hardware.proxmox-lxc
           ];
         };
 
-        # rockwsl = mkHost {
-        #   hostModules = [ ./hosts/wsl/configuration.nix ];
-        #   extraModules = [
-        #     inputs.nixos-wsl.nixosModules.default
-        #   ];
-        #   extraSpecialArgs = {
-        #     hostname = "rockwsl";
-        #   };
-        # };
+        # Proxmox VM
+        atlas = mkHost {
+          name = "atlas";
+          extraModules = [
+            disko.nixosModules.disko
+          ];
+        };
       };
 
       homeConfigurations = {
