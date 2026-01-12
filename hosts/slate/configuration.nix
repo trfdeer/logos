@@ -3,6 +3,10 @@ let
   id = config.sqwer.identity;
 in
 {
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
   sqwer.system = {
     hardware.proxmox-lxc.enable = true;
     docker = {

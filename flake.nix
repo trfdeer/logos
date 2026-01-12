@@ -115,11 +115,19 @@
           ];
         };
 
+        # Proxmox LXC Container
         slate = mkHost {
           name = "slate";
           extraModules = [
-            "${nixpkgs}/nixos/modules/virtualisation/proxmox-lxc.nix"
             modules.nixosModules.standalone.hardware.proxmox-lxc
+          ];
+        };
+
+        # Proxmox VM
+        atlas = mkHost {
+          name = "atlas";
+          extraModules = [
+            disko.nixosModules.disko
           ];
         };
       };
