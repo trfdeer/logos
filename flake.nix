@@ -19,10 +19,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -126,16 +122,6 @@
             modules.nixosModules.standalone.hardware.proxmox-lxc
           ];
         };
-
-        # rockwsl = mkHost {
-        #   hostModules = [ ./hosts/wsl/configuration.nix ];
-        #   extraModules = [
-        #     inputs.nixos-wsl.nixosModules.default
-        #   ];
-        #   extraSpecialArgs = {
-        #     hostname = "rockwsl";
-        #   };
-        # };
       };
 
       homeConfigurations = {

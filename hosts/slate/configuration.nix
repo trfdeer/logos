@@ -1,12 +1,8 @@
-{ modulesPath, config, ... }:
+{ config, ... }:
 let
   id = config.sqwer.identity;
 in
 {
-  #  imports = [
-  #    (modulesPath + "/virtualisation/proxmox-lxc.nix")
-  #  ];
-
   sqwer.system = {
     hardware.proxmox-lxc.enable = true;
     docker = {
