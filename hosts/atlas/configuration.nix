@@ -10,6 +10,7 @@ in
 
   networking = {
     hostName = "atlas";
+    useDHCP = false;
     interfaces = {
       ens18.ipv4.addresses = [
         {
@@ -54,6 +55,8 @@ in
   };
 
   services.openssh.enable = true;
+  services.qemuGuest.enable = true;
+  services.spice-vdagentd.enable = true;
 
   home-manager.users.${id.username}.imports = [ ./home-configuration.nix ];
 }
