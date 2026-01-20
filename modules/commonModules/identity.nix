@@ -45,5 +45,29 @@
         dedicated key is preferred.
       '';
     };
+
+    sshHosts = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options = {
+            domain = lib.mkOption {
+              type = lib.types.nonEmptyStr;
+            };
+            user = lib.mkOption {
+              type = lib.types.nonEmptyStr;
+            };
+            sshPubKey = lib.mkOption {
+              type = lib.types.nonEmptyStr;
+            };
+          };
+        }
+      );
+      default = { };
+      description = ''
+        Identity-scoped SSH hosts.
+        Typically used for Git remotes or other personal access patterns.
+      '';
+    };
+
   };
 }

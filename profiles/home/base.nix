@@ -20,6 +20,11 @@ in
       prefixKey = lib.mkDefault "C-a";
     };
 
+    ssh = {
+      enable = lib.mkDefault true;
+      strict = lib.mkDefault false;
+    };
+
     utils.enable = lib.mkDefault true;
     lazygit.enable = lib.mkDefault true;
     helix.enable = lib.mkDefault true;

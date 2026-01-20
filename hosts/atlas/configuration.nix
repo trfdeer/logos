@@ -54,9 +54,21 @@ in
     };
   };
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      PermitRootLogin = "no";
+    };
+  };
+
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
+
+  services.actual = {
+    enable = true;
+    openFirewall = true;
+  };
 
   home-manager.users.${id.username}.imports = [ ./home-configuration.nix ];
 }

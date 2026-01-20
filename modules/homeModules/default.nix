@@ -5,6 +5,7 @@
 
   sqwerHome = {
     imports = [
+      ./shell/ssh.nix
       ./shell/zsh.nix
       ./shell/tmux.nix
       ./shell/direnv.nix
@@ -20,8 +21,6 @@
       ./misc/catppuccin.nix
 
       ./desktop/sound.nix
-
-      ./sshcfg.nix
     ];
   };
 }
