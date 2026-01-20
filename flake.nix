@@ -140,11 +140,55 @@
         };
       };
 
+      packages.${system}.gi = pkgs.writeShellApplication {
+        name = "gi";
+        runtimeInputs = [
+          pkgs.sops
+          pkgs.gomplate
+          pkgs.git
+        ];
+
+        text = ''
+          set -euo pipefail
+
+          # find repo root from current directory
+          root="$(git rev-parse --show-toplevel)"
+
+          secrets="$root/profiles/identities/secrets.json"
+          template="$root/profiles/identities/primary.nix.tmpl"
+          output="$root/profiles/identities/primary.nix"
+
+          user="''${1:-}"
+
+          if [ -z "$user" ]; then
+            read -rp "identity username: " user
+          fi
+
+          export GI_USER="$user"
+
+          sops -d "$secrets" \
+          | gomplate \
+              -d 'identities=stdin:///?type=application/json' \
+              -d 'user=env:///GI_USER?type=application/text' \
+              -f "$template" \
+          > "$output"
+
+          echo "generated $output for '$user'"
+        '';
+      };
+
       # ================================================================
       # Dev Shell
       # ================================================================
       devShells.${system}.default = pkgs.mkShellNoCC {
         packages = with pkgs; [
+          age
+          sops
+          helix
+          gomplate
+          ssh-to-age
+          self.packages.${system}.gi
+
           nixd
           nixfmt-rfc-style
         ];
