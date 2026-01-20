@@ -10,7 +10,7 @@ else
     identity not initialized
 
     run:
-      g USERNAME
+      gi USERNAME
 
     this will generate:
       profiles/identities/primary.nix
