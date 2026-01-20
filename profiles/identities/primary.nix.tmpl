@@ -1,0 +1,42 @@
+# GENERATED FILE — DO NOT EDIT
+{{- $username := (ds "user") -}}
+
+{{- $count := 0 -}}
+{{- $selected := dict -}}
+
+{{- range (ds "identities").identities }}
+  {{- if eq .username $username }}
+    {{- $count = add $count 1 -}}
+    {{- $selected = . -}}
+  {{- end }}
+{{- end }}
+
+{{- if ne $count 1 -}}
+{{ fail (printf "expected exactly one identity for username '%s', found %d" $username $count) }}
+{{- end }}
+
+{
+  sqwer.identity = {
+    username = "{{ $selected.username }}";
+    fullName = "{{ $selected.fullName }}";
+    email = "{{ $selected.email }}";
+
+    sshPublicKeys = [
+{{- range $selected.sshPublicKeys }}
+      "{{ . }}"
+{{- end }}
+    ];
+
+    gitSshPublicKey = "{{ $selected.gitSshPublicKey }}";
+
+    sshHosts = {
+{{- range $selected.sshHosts }}
+      {{ .name }} = {
+        domain = "{{ .domain }}";
+        user = "{{ .user }}";
+        sshPubKey = "{{ .sshPubKey }}";
+      };
+{{- end }}
+    };
+  };
+}
