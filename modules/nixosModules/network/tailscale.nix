@@ -15,6 +15,11 @@ in
       default = "";
       description = "Advertise subnet routes";
     };
+    acceptRoutes = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Accept routes";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -24,7 +29,6 @@ in
       extraSetFlags = [
         "--ssh=false"
         "--accept-dns=true"
-        "--accept-routes=true"
         "--netfilter-mode=nodivert"
       ]
       ++ lib.optionals (cfg.operator != "") [
@@ -33,6 +37,9 @@ in
       ++ lib.optionals (cfg.advertiseRoutes != "") [
         "--advertise-routes=${cfg.advertiseRoutes}"
         "--snat-subnet-routes=false"
+      ]
+      ++ lib.optionals (cfg.acceptRoutes) [
+        "--accept-routes=true"
       ];
       extraDaemonFlags = [ "--no-logs-no-support" ];
     };

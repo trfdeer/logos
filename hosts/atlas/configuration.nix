@@ -44,6 +44,7 @@ in
   sqwer.system = {
     tailscale = {
       enable = true;
+      acceptRoutes = false;
       operator = id.username;
     };
 
@@ -54,21 +55,8 @@ in
     };
   };
 
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      PermitRootLogin = "no";
-    };
-  };
-
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
-
-  services.actual = {
-    enable = true;
-    openFirewall = true;
-  };
 
   home-manager.users.${id.username}.imports = [ ./home-configuration.nix ];
 }
