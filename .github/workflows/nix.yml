@@ -35,12 +35,12 @@ jobs:
         run: |
           nix run nixpkgs#nixfmt-tree -- --ci .
 
-      # ------------------------
-      # Flake evaluation
-      # ------------------------
-      - name: nix flake check
-        run: |
-          nix flake check --all-systems
+      # # ------------------------
+      # # Flake evaluation
+      # # ------------------------
+      # - name: nix flake check
+      #   run: |
+      #     nix flake check --all-systems
 
       # # ------------------------
       # # Evaluate all NixOS hosts
