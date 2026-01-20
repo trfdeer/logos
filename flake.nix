@@ -173,6 +173,9 @@
               -f "$template" \
           > "$output"
 
+          # Make the generated file visible to flakes without staging contents
+          git add -fN "$output"
+
           echo "generated $output for '$user'"
         '';
       };
@@ -187,6 +190,7 @@
           helix
           gomplate
           ssh-to-age
+          git
           self.packages.${system}.gi
 
           nixd

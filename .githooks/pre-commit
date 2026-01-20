@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+
+FORBIDDEN_PATH="profiles/identities/primary.nix"
+
+# Check if the forbidden file is present in the index in any form
+if git diff --cached --name-only --diff-filter=ACMR | grep -qx "$FORBIDDEN_PATH"; then
+  echo >&2
+  echo >&2 "✗ Commit blocked"
+  echo >&2
+  echo >&2 "  $FORBIDDEN_PATH is staged."
+  echo >&2 "  This file is generated from encrypted secrets and must never be committed."
+  echo >&2
+  echo >&2 "  Fix:"
+  echo >&2 "    git reset $FORBIDDEN_PATH"
+  echo >&2
+  exit 1
+fi
