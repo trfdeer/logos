@@ -84,7 +84,6 @@ in
     };
   };
 
-  services.openssh.enable = true;
   services.fstrim.enable = true;
 
   # ------------------------------------------------------------

@@ -133,7 +133,7 @@
       };
 
       homeConfigurations = {
-        REDACTED_USERNAME = mkHome {
+        primary = mkHome {
           extraModules = [
             profiles.home.desktop
           ];

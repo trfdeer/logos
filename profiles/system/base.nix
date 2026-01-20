@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   inputs,
   modules,
@@ -71,6 +72,10 @@ in
   # ------------------------------------------------------------
   programs.zsh.enable = true;
   programs.nix-ld.enable = true;
+
+  sqwer.system = {
+    ssh.enable = lib.mkDefault true;
+  };
 
   # ------------------------------------------------------------
   # Lifecycle

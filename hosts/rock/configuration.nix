@@ -57,6 +57,8 @@ in
       enable = true;
       operator = id.username;
     };
+
+    ssh.enable = false;
   };
 
   services.fstrim.enable = true;
