@@ -65,9 +65,19 @@ in
         enable = true;
         maxPlayers = 4;
         memoryMax = "1.5G";
+        cpuQuota = "50%";
         worldSize = "medium";
         port = 7777;
       };
+    };
+
+    games.minecraft = {
+      enable = true;
+      groupMembers = [ id.username ];
+      plugins = with pkgs.sqpkgs.minecraftPlugins; [
+        geysermc
+        floodgate
+      ];
     };
   };
 

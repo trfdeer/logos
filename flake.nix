@@ -19,6 +19,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sqpkgs = {
+      url = "git+ssh://git@github.com/trfdeer/sqpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -28,6 +32,7 @@
       nixpkgs,
       lanzaboote,
       home-manager,
+      sqpkgs,
       catppuccin,
       ...
     }@inputs:
@@ -37,6 +42,7 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        overlays = [ sqpkgs.overlays.default ];
       };
 
       modules = import ./modules;

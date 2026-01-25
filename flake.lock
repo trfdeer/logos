@@ -215,11 +215,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769345727,
-        "narHash": "sha256-HK2Ij9WsfQHzLyZUGdfiM0aP+Zhd8CmvZDemekU5WIo=",
+        "lastModified": 1769346623,
+        "narHash": "sha256-G3R9znvV31g0UgfCcKw4UZGKKmnAJcfUH2+xa1/NqOU=",
         "ref": "refs/heads/main",
-        "rev": "214201f289ac7ed683f0d321c0ac0b3be55db837",
-        "revCount": 2,
+        "rev": "2bcb973e01b9be6a81f1ea17ce5ae7661f8d7285",
+        "revCount": 3,
         "type": "git",
         "url": "ssh://git@github.com/trfdeer/sqpkgs"
       },

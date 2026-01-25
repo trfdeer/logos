@@ -11,6 +11,7 @@
       ./network/samba.nix
 
       ./games/terraria.nix
+      ./games/minecraft.nix
 
       ./services/docker.nix
       ./services/ssh.nix
