@@ -53,6 +53,22 @@ in
       useBtrfsDriver = true;
       users = [ id.username ];
     };
+
+    games.terraria = {
+      enable = true;
+      dataDir = "/srv/games/terraria";
+      noUPnP = true;
+      openFirewall = true;
+      groupMembers = [ id.username ];
+
+      instances.world_m1 = {
+        enable = true;
+        maxPlayers = 4;
+        memoryMax = "1.5G";
+        worldSize = "medium";
+        port = 7777;
+      };
+    };
   };
 
   services.qemuGuest.enable = true;

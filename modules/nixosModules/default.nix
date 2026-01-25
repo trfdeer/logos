@@ -10,6 +10,8 @@
       ./network/tailscale.nix
       ./network/samba.nix
 
+      ./games/terraria.nix
+
       ./services/docker.nix
       ./services/ssh.nix
     ];

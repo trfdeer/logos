@@ -17,15 +17,15 @@ in
     systemd.network.wait-online.enable = false;
     systemd.additionalUpstreamSystemUnits = [ "systemd-udev-trigger.service" ];
 
-    services.openssh = {
-      enable = true;
-      openFirewall = true;
-      settings = {
-        PermitRootLogin = "yes";
-        PasswordAuthentication = true;
-        PermitEmptyPasswords = "yes";
-      };
-    };
+    #    services.openssh = {
+    #      enable = true;
+    #      openFirewall = true;
+    #      settings = {
+    #        PermitRootLogin = "yes";
+    #        PasswordAuthentication = true;
+    #        PermitEmptyPasswords = "yes";
+    #      };
+    #    };
     security.pam.services.sshd.allowNullPassword = true;
 
     nix.settings = {
