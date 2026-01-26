@@ -122,8 +122,8 @@
         };
 
         # Proxmox LXC Container
-        slate = mkHost {
-          name = "slate";
+        rift = mkHost {
+          name = "rift";
           extraModules = [
             modules.nixosModules.standalone.hardware.proxmox-lxc
           ];

@@ -14,7 +14,7 @@ in
     interfaces = {
       ens18.ipv4.addresses = [
         {
-          address = "172.16.11.4";
+          address = "172.16.11.102";
           prefixLength = 24;
         }
       ];
@@ -52,32 +52,6 @@ in
       enable = true;
       useBtrfsDriver = true;
       users = [ id.username ];
-    };
-
-    games.terraria = {
-      enable = true;
-      dataDir = "/srv/games/terraria";
-      noUPnP = true;
-      openFirewall = true;
-      groupMembers = [ id.username ];
-
-      instances.world_m1 = {
-        enable = true;
-        maxPlayers = 4;
-        memoryMax = "1.5G";
-        cpuQuota = "50%";
-        worldSize = "medium";
-        port = 7777;
-      };
-    };
-
-    games.minecraft = {
-      enable = true;
-      groupMembers = [ id.username ];
-      plugins = with pkgs.sqpkgs.minecraftPlugins; [
-        geysermc
-        floodgate
-      ];
     };
   };
 
