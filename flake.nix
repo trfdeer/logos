@@ -42,7 +42,10 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ sqpkgs.overlays.default ];
+        overlays = [
+          sqpkgs.overlays.default
+          (import ./overlays/terraria-server-1.4.5.0-master-412d8dd.nix)
+        ];
       };
 
       modules = import ./modules;
