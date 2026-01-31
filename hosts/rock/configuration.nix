@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  profiles,
   ...
 }:
 let
@@ -9,7 +10,7 @@ let
 in
 {
   imports = [
-    ./hardware-configuration.nix
+    profiles.hardware.devices.dell-precision-3561
     ./disko-configuration.nix
   ];
 

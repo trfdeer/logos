@@ -1,10 +1,15 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  profiles,
+  ...
+}:
 let
   id = config.sqwer.identity;
 in
 {
   imports = [
-    ./hardware-configuration.nix
+    profiles.hardware.vm.qemu-guest
     ./disko-configuration.nix
   ];
 

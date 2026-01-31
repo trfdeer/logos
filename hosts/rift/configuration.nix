@@ -1,15 +1,19 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  profiles,
+  ...
+}:
 let
   id = config.sqwer.identity;
 in
 {
   imports = [
-    ./hardware-configuration.nix
+    profiles.hardware.ct.proxmox-lxc
   ];
 
   sqwer.system = {
     ssh.enable = true;
-    hardware.proxmox-lxc.enable = true;
 
     tailscale = {
       enable = true;
