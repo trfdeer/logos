@@ -42,7 +42,7 @@
         config.allowUnfree = true;
         overlays = [
           sqpkgs.overlays.default
-          (import ./overlays/terraria-server-1.4.5.0-master-412d8dd.nix)
+          (import ./overlays/terraria-server.nix)
         ];
       };
 

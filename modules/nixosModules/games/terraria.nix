@@ -56,6 +56,12 @@ in
             options = {
               enable = lib.mkEnableOption "Terraria instance ${name}";
 
+              worldName = lib.mkOption {
+                type = lib.types.nonEmptyStr;
+                default = "World";
+                description = "World Name";
+              };
+
               worldSize = lib.mkOption {
                 type = lib.types.enum [
                   "small"
@@ -184,6 +190,7 @@ in
               -port ${toString inst.port} \
               -maxplayers ${toString inst.maxPlayers} \
               -world "${cfg.dataDir}/worlds/${name}.wld" \
+              -worldname "${inst.worldName}" \
               -autocreate ${toString worldSizeMap.${inst.worldSize}} \
               -difficulty ${toString worldDifficultyMap.${inst.worldDifficulty}} \
               ${lib.optionalString cfg.noUPnP "-noupnp"}
