@@ -39,6 +39,7 @@ in
 
       instances."Probably_Cursed" = {
         enable = true;
+        worldName = "Probably Cursed";
         maxPlayers = 4;
         memoryMax = "2.5G";
         cpuQuota = "80%";
