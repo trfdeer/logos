@@ -10,7 +10,7 @@ in
 {
   imports = [
     profiles.hardware.vm.qemu-guest
-    ./disko-configuration.nix
+    (import profiles.storage.layouts.btrfs-esp { device = "/dev/sda"; })
   ];
 
   networking = {
