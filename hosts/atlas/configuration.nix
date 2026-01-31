@@ -1,11 +1,16 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  profiles,
+  ...
+}:
 let
   id = config.sqwer.identity;
 in
 {
   imports = [
-    ./hardware-configuration.nix
-    ./disko-configuration.nix
+    profiles.hardware.vm.qemu-guest
+    (import profiles.storage.layouts.btrfs-esp { device = "/dev/sda"; })
   ];
 
   networking = {
@@ -14,7 +19,7 @@ in
     interfaces = {
       ens18.ipv4.addresses = [
         {
-          address = "172.16.11.4";
+          address = "172.16.11.102";
           prefixLength = 24;
         }
       ];

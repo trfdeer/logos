@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  profiles,
   ...
 }:
 let
@@ -9,8 +10,10 @@ let
 in
 {
   imports = [
-    ./hardware-configuration.nix
-    ./disko-configuration.nix
+    profiles.hardware.devices.ss-fury
+    (import profiles.storage.layouts.btrfs-luks-esp {
+      device = "/dev/disk/by-id/nvme-Vi3000_Internal_PCIe_NVMe_M.2_SSD_1TB_493754484830002";
+    })
   ];
 
   # ------------------------------------------------------------

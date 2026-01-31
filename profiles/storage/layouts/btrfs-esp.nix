@@ -1,3 +1,4 @@
+{ device, ... }:
 let
   btrfsOpts = [
     "compress=zstd"
@@ -8,8 +9,8 @@ let
 in
 {
   disko.devices.disk.main = {
+    inherit device;
     type = "disk";
-    device = "/dev/sda";
 
     content = {
       type = "gpt";

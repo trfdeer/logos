@@ -55,7 +55,13 @@ in
   # ------------------------------------------------------------
   # Nix / nixpkgs policy
   # ------------------------------------------------------------
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [
+      inputs.sqpkgs.overlays.default
+      (import "${inputs.self}/overlays/terraria-server-1.4.5.0-master-412d8dd.nix")
+    ];
+  };
 
   nix.settings = {
     use-xdg-base-directories = true;

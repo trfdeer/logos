@@ -19,6 +19,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sqpkgs = {
+      url = "git+ssh://git@github.com/trfdeer/sqpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -27,8 +31,7 @@
       disko,
       nixpkgs,
       lanzaboote,
-      home-manager,
-      catppuccin,
+      sqpkgs,
       ...
     }@inputs:
     let
@@ -37,64 +40,35 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        overlays = [
+          sqpkgs.overlays.default
+          (import ./overlays/terraria-server-1.4.5.0-master-412d8dd.nix)
+        ];
       };
 
       modules = import ./modules;
       profiles = import ./profiles;
       hosts = import ./hosts;
 
-      mkHost =
-        {
-          name,
-          extraModules ? [ ],
-          extraSpecialArgs ? { },
-        }:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
+      mkHost = import ./flake/mk-host.nix {
+        inherit
+          nixpkgs
+          inputs
+          modules
+          profiles
+          system
+          hosts
+          ;
+      };
 
-          specialArgs = {
-            inherit inputs modules profiles;
-            hostname = name;
-          }
-          // extraSpecialArgs;
-
-          modules = [
-            hosts.${name}
-
-            modules.commonModules
-            profiles.identities.primary
-            profiles.platform
-
-            modules.nixosModules.sqwerSystem
-
-            catppuccin.nixosModules.catppuccin
-            home-manager.nixosModules.home-manager
-
-            profiles.system.base
-          ]
-          ++ extraModules;
-        };
-
-      mkHome =
-        {
-          extraModules ? [ ],
-        }:
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          modules = [
-            modules.commonModules
-            modules.homeModules.standalone.nix
-            profiles.identities.primary
-            profiles.platform
-
-            catppuccin.homeModules.catppuccin
-
-            modules.homeModules.sqwerHome
-            profiles.home.base
-          ]
-          ++ extraModules;
-        };
+      mkHome = import ./flake/mk-home.nix {
+        inherit
+          pkgs
+          modules
+          profiles
+          inputs
+          ;
+      };
 
     in
     {
@@ -116,8 +90,8 @@
         };
 
         # Proxmox LXC Container
-        slate = mkHost {
-          name = "slate";
+        rift = mkHost {
+          name = "rift";
           extraModules = [
             modules.nixosModules.standalone.hardware.proxmox-lxc
           ];
@@ -158,11 +132,19 @@
           template="$root/profiles/identities/primary.nix.tmpl"
           output="$root/profiles/identities/primary.nix"
 
-          user="''${1:-}"
+          user=""
 
-          if [ -z "$user" ]; then
-            read -rp "identity username: " user
-          fi
+          case "''${1:-}" in
+            -u)
+              read -rp "identity username: " user
+              ;;
+            "")
+              user="$USER"
+              ;;
+            *)
+              user="$1"
+            ;;
+          esac
 
           export GI_USER="$user"
 

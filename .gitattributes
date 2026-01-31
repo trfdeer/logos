@@ -1,0 +1,28 @@
+# Default: auto-detect text, always normalize to LF
+* text=auto eol=lf working-tree-encoding=UTF-8
+
+# Nix
+*.nix text eol=lf
+
+# Markdown
+*.md text eol=lf
+
+# Lockfiles (JSON)
+*.lock text eol=lf
+*.lock.json text eol=lf
+
+# YAML
+*.yml  text eol=lf
+*.yaml text eol=lf
+
+# JSON
+*.json text eol=lf
+
+# GitHub Actions workflows
+.github/workflows/* text eol=lf
+
+# Git hooks
+.githooks/* text eol=lf
+
+# Shell scripts (including pre-commit hooks)
+*.sh text eol=lf

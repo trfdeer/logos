@@ -30,7 +30,7 @@
       default = false;
       description = ''
         Indiciates that the Home Manager configuration is running inside
-        an inderactive desktop environment.
+        an interactive desktop environment.
       '';
     };
 
