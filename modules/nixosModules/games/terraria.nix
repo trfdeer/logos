@@ -14,6 +14,13 @@ let
     large = 3;
   };
 
+  worldDifficultyMap = {
+    classic = 0;
+    expert = 1;
+    master = 2;
+    journey = 3;
+  };
+
 in
 {
   options.sqwer.system.games.terraria = {
@@ -57,6 +64,17 @@ in
                 ];
                 description = "world size";
                 default = "medium";
+              };
+
+              worldDifficulty = lib.mkOption {
+                type = lib.types.enum [
+                  "classic"
+                  "expert"
+                  "master"
+                  "journey"
+                ];
+                description = "world difficulty";
+                default = "classic";
               };
 
               memoryMax = lib.mkOption {
@@ -167,6 +185,7 @@ in
               -maxplayers ${toString inst.maxPlayers} \
               -world "${cfg.dataDir}/worlds/${name}.wld" \
               -autocreate ${toString worldSizeMap.${inst.worldSize}} \
+              -difficulty ${toString worldDifficultyMap.${inst.worldDifficulty}} \
               ${lib.optionalString cfg.noUPnP "-noupnp"}
           '';
 

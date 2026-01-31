@@ -29,11 +29,21 @@ in
       groupMembers = [ id.username ];
 
       instances.world_m1 = {
-        enable = true;
+        enable = false;
         maxPlayers = 4;
         memoryMax = "1.5G";
         cpuQuota = "50%";
         worldSize = "medium";
+        port = 7777;
+      };
+
+      instances."Probably_Cursed" = {
+        enable = true;
+        maxPlayers = 4;
+        memoryMax = "2.5G";
+        cpuQuota = "80%";
+        worldSize = "large";
+        worldDifficulty = "expert";
         port = 7777;
       };
     };
