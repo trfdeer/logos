@@ -141,11 +141,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1770335736,
-        "narHash": "sha256-kejbY45kK53xKRzqKbiy+AxU/6FMLuzQjW9uJTEDF7U=",
+        "lastModified": 1771116921,
+        "narHash": "sha256-CID/eq9RDzCECT6acXMb9Nu1I/kaYS00gvQxwECYbv8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "3b91d3991171d330eceba85fae28cad7d22f95ac",
+        "rev": "5225070d41b4be8ed48a2ba1bf823b1d57bb2677",
         "type": "github"
       },
       "original": {
@@ -218,15 +218,15 @@
       "locked": {
         "lastModified": 1769346623,
         "narHash": "sha256-G3R9znvV31g0UgfCcKw4UZGKKmnAJcfUH2+xa1/NqOU=",
-        "ref": "refs/heads/main",
+        "owner": "trfdeer",
+        "repo": "sqpkgs",
         "rev": "2bcb973e01b9be6a81f1ea17ce5ae7661f8d7285",
-        "revCount": 3,
-        "type": "git",
-        "url": "ssh://git@github.com/trfdeer/sqpkgs"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/trfdeer/sqpkgs"
+        "owner": "trfdeer",
+        "repo": "sqpkgs",
+        "type": "github"
       }
     }
   },

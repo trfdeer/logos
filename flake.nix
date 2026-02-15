@@ -20,7 +20,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sqpkgs = {
-      url = "git+ssh://git@github.com/trfdeer/sqpkgs";
+      url = "github:trfdeer/sqpkgs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -83,6 +83,7 @@
 
         rock = mkHost {
           name = "rock";
+          isDesktop = true;
           extraModules = [
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
@@ -123,42 +124,59 @@
         ];
 
         text = ''
-          set -euo pipefail
+           set -euo pipefail
 
-          # find repo root from current directory
-          root="$(git rev-parse --show-toplevel)"
+           # find repo root from current directory
+           root="$(git rev-parse --show-toplevel)"
 
-          secrets="$root/profiles/identities/secrets.json"
-          template="$root/profiles/identities/primary.nix.tmpl"
-          output="$root/profiles/identities/primary.nix"
+           secrets="$root/profiles/identities/secrets.json"
+           template="$root/profiles/identities/primary.nix.tmpl"
+           output="$root/profiles/identities/primary.nix"
 
-          user=""
+           fallback_key="$root/profiles/identities/key.age"
 
-          case "''${1:-}" in
-            -u)
-              read -rp "identity username: " user
-              ;;
-            "")
-              user="$USER"
-              ;;
-            *)
-              user="$1"
-            ;;
-          esac
+           user=""
 
-          export GI_USER="$user"
+           case "''${1:-}" in
+             -u)
+               read -rp "identity username: " user
+               ;;
+             "")
+               user="$USER"
+               ;;
+             *)
+               user="$1"
+             ;;
+           esac
 
-          sops -d "$secrets" \
-          | gomplate \
-              -d 'identities=stdin:///?type=application/json' \
-              -d 'user=env:///GI_USER?type=application/text' \
-              -f "$template" \
-          > "$output"
+           export GI_USER="$user"
 
-          # Make the generated file visible to flakes without staging contents
-          git add -fN "$output"
+           # try normal decryption first
+           if ! decrypted=$(sops -d "$secrets" 2>/dev/null); then
+             echo "Normal key decryption failed, using fallback passphrase key..." >&2
 
-          echo "generated $output for '$user'"
+             # create temporary key file
+             tmp_key=$(mktemp)
+             trap 'shred -u "$tmp_key"' EXIT
+
+             # decrypt passphrase-wrapped fallback key
+             age -d "$fallback_key" > "$tmp_key"
+             export SOPS_AGE_KEY_FILE="$tmp_key"
+
+             # decrypt SOPS secrets
+             decrypted=$(sops -d "$secrets")
+           fi
+
+          echo "$decrypted" | gomplate \
+               -d 'identities=stdin:///?type=application/json' \
+               -d 'user=env:///GI_USER?type=application/text' \
+               -f "$template" \
+           > "$output"
+
+           # Make the generated file visible to flakes without staging contents
+           git add -fN "$output"
+
+           echo "generated $output for '$user'"
         '';
       };
 

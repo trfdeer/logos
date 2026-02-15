@@ -1,3 +1,4 @@
 creation_rules:
-  - age: >-
-      age1gpyqnzp4frd9h7afmpz2yu5aeaudx869rgn654g83yvvq7wplpdsrkggac
+  - age:
+      - age1gpyqnzp4frd9h7afmpz2yu5aeaudx869rgn654g83yvvq7wplpdsrkggac
+      - age1dv0lxy4rhkstr9g9r58cqpmu9ra8rwxk68fsqkw5zu4zg7rtzs4s2reas0

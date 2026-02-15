@@ -61,6 +61,8 @@ in
       operator = id.username;
     };
 
+    kde.enable = true;
+
     ssh.enable = false;
   };
 

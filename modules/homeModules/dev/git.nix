@@ -44,13 +44,6 @@ in
         init.defaultBranch = "main";
         gpg.format = lib.mkIf (homeCfg.git.user.signingkey != "") "ssh";
       }
-      // lib.optionalAttrs (homeCfg.git.user.signingkey != "" && config.sqwer.env.has1Password) {
-        "gpg \"ssh\"".program =
-          if config.sqwer.env.isWsl then
-            "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl"
-          else
-            "/opt/1Password/op-ssh-sign";
-      }
       // lib.optionalAttrs config.sqwer.env.isWsl {
         core.sshCommand = "ssh.exe";
       };

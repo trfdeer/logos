@@ -13,6 +13,9 @@
 
       ./services/docker.nix
       ./services/ssh.nix
+
+      ./kde.nix
+      ./utils/_1password.nix
     ];
   };
 }
