@@ -57,10 +57,7 @@ in
   # ------------------------------------------------------------
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [
-      inputs.sqpkgs.overlays.default
-      (import "${inputs.self}/overlays/terraria-server.nix")
-    ];
+    overlays = [ inputs.sqpkgs.overlays.default ];
   };
 
   nix.settings = {
