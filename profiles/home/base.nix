@@ -44,6 +44,8 @@ in
       flavor = lib.mkDefault "mocha";
     };
 
+    _1password.enable = true;
+
     nix.enable = lib.mkDefault true;
   };
 }

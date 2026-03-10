@@ -2,6 +2,7 @@
   lib,
   pkgs,
   inputs,
+  isDesktop,
   modules,
   profiles,
   config,
@@ -49,6 +50,9 @@ in
       modules.homeModules.sqwerHome
       profiles.identities.primary
       profiles.home.base
+    ]
+    ++ lib.optionals isDesktop [
+      profiles.home.desktop
     ];
   };
 
@@ -78,6 +82,10 @@ in
 
   sqwer.system = {
     ssh.enable = lib.mkDefault true;
+    _1password = {
+      enable = true;
+      systemUsers = [ id.username ];
+    };
   };
 
   # ------------------------------------------------------------

@@ -1,177 +1,79 @@
-# NixOS / Home Manager Configuration
+# logos
 
-This repository contains a structured NixOS + Home Manager configuration designed for:
+NixOS + Home Manager configuration.
 
-* Single- or multi-host systems
-* Reusable profiles
-* Clear separation between identity, platform, OS behavior, and home behavior
+## Hosts
 
-The layout is intentionally opinionated and optimized for long-term maintainability.
+| Host | Role | Notes |
+|------|------|-------|
+| `rock` | Laptop | Dell Precision 3561, LUKS-encrypted root, Secure Boot (Lanzaboote) |
+| `sol` | Desktop | SS Fury, LUKS-encrypted root + separate vault partition, Samba share, Tailscale exit node |
+| `atlas` | VM | QEMU/Proxmox guest, static IP `172.16.11.102`, Docker, Tailscale |
+| `rift` | LXC container | Proxmox LXC, Terraria + Minecraft servers |
 
 ---
 
-## Repository Structure
+## Initial Installation
 
-```sh
-.
-├── flake.nix
-├── hosts/
-│   ├── <hostname>/
-│   │   ├── configuration.nix
-│   │   ├── home-configuration.nix
-│   │   └── ...
-│   └── <hostname>/
-│       └── ...
-│
-├── modules/
-│   ├── commonModules/      # Option schemas & namespaces (sqwer.*)
-│   ├── nixosModules/       # Low-level OS / infra features
-│   └── homeModules/        # Reusable Home Manager features
-│
-├── profiles/
-│   ├── identities/         # One file per human identity
-│   ├── platform.nix        # Lifecycle invariants (stateVersion, etc.)
-│   ├── nixosProfiles/      # Shared OS behavior (base system)
-│   └── homeProfiles/       # Home Manager behavior bundles
-│
+```bash
+sudo nixos-rebuild --flake .#<hostname> boot
 ```
 
----
+Before rebooting, set the user password:
 
-## Design Principles
-
-* Modules define capabilities, never values
-* Profiles compose behavior, not hosts
-* Hosts decide placement, nothing else
-
----
-
-## Initial Installation (First Boot)
-
-On first installation, use the following commandL
-
-```sh
-sudo nixos-rebuild --flake . boot
-```
-
-After the build completes, set a password for the primary user defined in the selected identity **before rebooting**.
-
-From the installer or live environment, enter the installed system and set the password:
-
-```sh
+```bash
 nixos-enter
 passwd <username>
-```
-
-After setting the password, reboot the system:
-
-```sh
+exit
 sudo reboot
 ```
 
 ---
 
-## Required Manual Steps (Post-Install)
+## Post-Install Steps
 
-Some steps cannot (or should not) be automated.
+### Identity file
 
-### Samba User Password
+The identity file is not tracked in the repo. Generate it from the template before building:
 
-If Samba is enabled on the host, you must manually create the Samba user password:
-
-```sh
-smbpasswd -a $USER
+```bash
+# fill in profiles/identities/primary.nix from the template
 ```
 
-Without this, the Samba share will exist but authentication will fail.
+### Secure Boot — `rock`, `sol`
 
----
+These hosts use Lanzaboote. Key generation and enrollment happen automatically on first boot if the firmware is in Setup Mode. After the first successful boot:
 
-### Secure Boot Key Enrollment (Lanzaboote)
-
-After the first successful boot, while the system is still in Secure Boot setup mode, enroll the keys:
-
-```sh
+```bash
 nix run "nixpkgs#sbctl" -- enroll-keys -m
+nix run "nixpkgs#sbctl" -- verify
 ```
 
-This only needs to be done once per machine.
+Then enroll the TPM2 key for the encrypted root (replace `<partition>` with the LUKS partition, e.g. `/dev/nvme0n1p1`):
 
-After enrolling the keys, reboot the system:
-
-```sh
+```bash
+systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7+8+12 <partition>
 sudo reboot
 ```
 
-Then enroll the TPM2 key for the encrypted root (replace `<encrypted partition>` accordingly):
+### Samba — `sol`
 
-```sh
-systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7+8+12 <encrypted partition>
+The Samba user password is not managed by NixOS and must be set manually:
+
+```bash
+smbpasswd -a <username>
 ```
 
-Reboot once more after enrollment:
-
-```sh
-sudo reboot
-```
-
-**Note:** Only perform Secure Boot key enrollment and TPM2 enrollment on machines where Secure Boot is enabled. Do not run these steps on systems without Secure Boot support or where it is intentionally disabled.
+The share is restricted to `100.64.0.0/10` (Tailscale range) and localhost. Access is authenticated — no guest access.
 
 ---
 
-## Home Manager Notes
+## Development
 
-* Home Manager users are created centrally in `profiles/nixosProfiles/base.nix`
-* Host-specific Home Manager tweaks live in `hosts/<hostname>/home-configuration.nix`
-* Do not redefine `home = { ... }` in host HM files — always set sub-options
+A devshell is available via `nix develop` (or automatically with `direnv`).
 
----
+A pre-commit hook is installed under `.githooks/` — set it up with:
 
-## Standalone Home Manager (Non-NixOS Systems)
-
-This repository also supports standalone Home Manager usage on non-NixOS systems (e.g. Arch Linux).
-
-### Important: Nix daemon trust model
-
-On non-NixOS systems, Nix is typically installed as a multi-user daemon.
-In this mode:
-
-* Home Manager only writes client-side configuration
-* Certain Nix settings are restricted and ignored unless the user is trusted
-
-If using the standalone Home Manager configuration and enabling nix.settings, you must add the user to the Nix daemon’s trusted users list.
-
-Edit /etc/nix/nix.conf as root:
-
-```nix
-trusted-users = root <username>
+```bash
+git config core.hooksPath .githooks
 ```
-
-Then restart the Nix daemon:
-
-```sh
-sudo systemctl restart nix-daemon
-```
-
-Without this step, the daemon will ignore restricted settings such as:
-
-* `auto-optimise-store`
-* `use-xdg-base-directories`
-
-This requirement does not apply on NixOS, where the system configuration owns the Nix daemon.
-
----
-
-## Notes for Future Maintenance
-
-* `system.stateVersion` and `home.stateVersion` are sourced from `profiles/platform.nix`
-* Identity files are one per user
-* Avoid importing host paths from profiles except via controlled mechanisms
-* If something feels duplicated, it likely belongs higher in the hierarchy
-
----
-
-## Status
-
-This repository is considered structurally complete.
-Future changes should primarily involve adding hosts or extending profiles — not restructuring the core.

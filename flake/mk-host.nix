@@ -1,4 +1,5 @@
 {
+  lib,
   nixpkgs,
   inputs,
   modules,
@@ -8,6 +9,7 @@
 }:
 {
   name,
+  isDesktop ? false,
   extraModules ? [ ],
   extraSpecialArgs ? { },
 }:
@@ -16,7 +18,12 @@ nixpkgs.lib.nixosSystem {
   inherit system;
 
   specialArgs = {
-    inherit inputs modules profiles;
+    inherit
+      inputs
+      modules
+      profiles
+      isDesktop
+      ;
     hostname = name;
   }
   // extraSpecialArgs;
@@ -34,6 +41,9 @@ nixpkgs.lib.nixosSystem {
     inputs.home-manager.nixosModules.home-manager
 
     profiles.system.base
+  ]
+  ++ lib.optionals isDesktop [
+    profiles.system.desktop
   ]
   ++ extraModules;
 }
