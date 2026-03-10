@@ -51,7 +51,7 @@ in
       profiles.identities.primary
       profiles.home.base
     ]
-    ++ lib.optionals (isDesktop) [
+    ++ lib.optionals isDesktop [
       profiles.home.desktop
     ];
   };
