@@ -40,10 +40,7 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [
-          sqpkgs.overlays.default
-          (import ./overlays/terraria-server.nix)
-        ];
+        overlays = [ sqpkgs.overlays.default ];
       };
 
       modules = import ./modules;
