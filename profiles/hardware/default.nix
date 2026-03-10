@@ -12,5 +12,7 @@
   devices = {
     ss-fury = ./devices/ss-fury.nix;
     dell-precision-3561 = ./devices/dell-precision-3561.nix;
+    desktop-zeph = ./devices/dell-precision-3561.nix;
+    optiplex-7050 = ./devices/optiplex-7050.nix;
   };
 }

@@ -95,14 +95,6 @@
             modules.nixosModules.standalone.hardware.proxmox-lxc
           ];
         };
-
-        # Proxmox VM
-        atlas = mkHost {
-          name = "atlas";
-          extraModules = [
-            disko.nixosModules.disko
-          ];
-        };
       };
 
       homeConfigurations = {

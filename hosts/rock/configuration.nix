@@ -62,7 +62,6 @@ in
     };
 
     kde.enable = true;
-
     ssh.enable = false;
   };
 
