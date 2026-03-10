@@ -8,7 +8,7 @@ in
     systemUsers = lib.mkOption {
       type = lib.types.listOf lib.types.nonEmptyStr;
       default = [ ];
-      description = "List if users allowed to use CLI integration / system authentiation";
+      description = "List of users allowed to use CLI integration / system authentiation";
     };
   };
 

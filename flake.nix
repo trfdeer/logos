@@ -48,6 +48,7 @@
       hosts = import ./hosts;
 
       mkHost = import ./flake/mk-host.nix {
+        lib = pkgs.lib;
         inherit
           nixpkgs
           inputs

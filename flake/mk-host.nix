@@ -1,4 +1,5 @@
 {
+  lib,
   nixpkgs,
   inputs,
   modules,
@@ -40,6 +41,8 @@ nixpkgs.lib.nixosSystem {
     inputs.home-manager.nixosModules.home-manager
 
     profiles.system.base
+  ] ++ lib.optionals (isDesktop) [
+    profiles.system.desktop
   ]
   ++ extraModules;
 }
