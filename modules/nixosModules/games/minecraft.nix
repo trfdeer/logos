@@ -57,7 +57,7 @@ in
         "L+ ${pluginsDir}/${plugin.pname}.jar - - - - ${plugin}/${jar}"
       ) cfg.plugins;
 
+    networking.firewall.allowedUDPPorts = [ 19132 ];
     users.extraGroups.minecraft.members = cfg.groupMembers;
-
   };
 }

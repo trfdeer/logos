@@ -43,11 +43,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769524058,
-        "narHash": "sha256-zygdD6X1PcVNR2PsyK4ptzrVEiAdbMqLos7utrMDEWE=",
+        "lastModified": 1773025010,
+        "narHash": "sha256-khlHllTsovXgT2GZ0WxT4+RvuMjNeR5OW0UYeEHPYQo=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "71a3fc97d80881e91710fe721f1158d3b96ae14d",
+        "rev": "7b9f7f88ab3b339f8142dc246445abb3c370d3d3",
         "type": "github"
       },
       "original": {
@@ -101,11 +101,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770260404,
-        "narHash": "sha256-3iVX1+7YUIt23hBx1WZsUllhbmP2EnXrV8tCRbLxHc8=",
+        "lastModified": 1772985280,
+        "narHash": "sha256-FdrNykOoY9VStevU4zjSUdvsL9SzJTcXt4omdEDZDLk=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "0d782ee42c86b196acff08acfbf41bb7d13eed5b",
+        "rev": "8f736f007139d7f70752657dff6a401a585d6cbc",
         "type": "github"
       },
       "original": {
@@ -141,11 +141,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1770335736,
-        "narHash": "sha256-kejbY45kK53xKRzqKbiy+AxU/6FMLuzQjW9uJTEDF7U=",
+        "lastModified": 1773108182,
+        "narHash": "sha256-B0QERtrrolYxeof5zW8XkHLKNRMn05hIgsRNTddE9q8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "3b91d3991171d330eceba85fae28cad7d22f95ac",
+        "rev": "ae98c98d678b65ef7df20c1a1174e351d476bc2b",
         "type": "github"
       },
       "original": {
@@ -216,17 +216,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1769346623,
-        "narHash": "sha256-G3R9znvV31g0UgfCcKw4UZGKKmnAJcfUH2+xa1/NqOU=",
-        "ref": "refs/heads/main",
-        "rev": "2bcb973e01b9be6a81f1ea17ce5ae7661f8d7285",
-        "revCount": 3,
-        "type": "git",
-        "url": "ssh://git@github.com/trfdeer/sqpkgs"
+        "lastModified": 1772411845,
+        "narHash": "sha256-bx06WWayJLgpu2DV/4JXoYkVIVkqfny3Omm97hkAouE=",
+        "owner": "trfdeer",
+        "repo": "sqpkgs",
+        "rev": "ba86f22188720390afb4c05e5efb189c84a135c3",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/trfdeer/sqpkgs"
+        "owner": "trfdeer",
+        "repo": "sqpkgs",
+        "type": "github"
       }
     }
   },
