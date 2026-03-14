@@ -88,6 +88,15 @@
           ];
         };
 
+        zeph = mkHost {
+          name = "zeph";
+          isDesktop = true;
+          extraModules = [
+            disko.nixosModules.disko
+            lanzaboote.nixosModules.lanzaboote
+          ];
+        };
+
         # Proxmox LXC Container
         rift = mkHost {
           name = "rift";
