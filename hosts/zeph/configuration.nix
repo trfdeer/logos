@@ -12,7 +12,7 @@ in
   imports = [
     profiles.hardware.devices.desktop-zeph
     (import profiles.storage.layouts.btrfs-luks-esp {
-      device = "/dev/disk/by-id/nvme-eui.0000000000000000a07501eacce6e4";
+      device = "/dev/disk/by-id/nvme-eui.000000000000000000a07501eacce6e4";
     })
   ];
 
