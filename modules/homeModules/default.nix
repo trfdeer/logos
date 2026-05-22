@@ -18,7 +18,6 @@
 
       ./misc/nix.nix
       ./misc/utils.nix
-      ./misc/catppuccin.nix
       ./misc/_1password.nix
 
       ./desktop/sound.nix

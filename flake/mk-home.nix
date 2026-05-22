@@ -17,8 +17,6 @@ inputs.home-manager.lib.homeManagerConfiguration {
     profiles.identities.primary
     profiles.platform
 
-    inputs.catppuccin.homeModules.catppuccin
-
     modules.homeModules.sqwerHome
     profiles.home.base
   ]

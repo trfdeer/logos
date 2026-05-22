@@ -37,7 +37,6 @@ nixpkgs.lib.nixosSystem {
 
     modules.nixosModules.sqwerSystem
 
-    inputs.catppuccin.nixosModules.catppuccin
     inputs.home-manager.nixosModules.home-manager
 
     profiles.system.base

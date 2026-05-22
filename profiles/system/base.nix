@@ -46,7 +46,6 @@ in
     ];
 
     users.${id.username}.imports = [
-      inputs.catppuccin.homeModules.catppuccin
       modules.homeModules.sqwerHome
       profiles.identities.primary
       profiles.home.base

@@ -39,11 +39,6 @@ in
       };
     };
 
-    catppuccin = {
-      enable = lib.mkDefault true;
-      flavor = lib.mkDefault "mocha";
-    };
-
     _1password.enable = true;
 
     nix.enable = lib.mkDefault true;
