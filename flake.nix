@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgsUnstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,6 +28,7 @@
       self,
       disko,
       nixpkgs,
+      nixpkgsUnstable,
       lanzaboote,
       sqpkgs,
       ...
@@ -34,6 +37,12 @@
       system = "x86_64-linux";
 
       pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [ sqpkgs.overlays.default ];
+      };
+
+      pkgsUnstable = import nixpkgsUnstable {
         inherit system;
         config.allowUnfree = true;
         overlays = [ sqpkgs.overlays.default ];
@@ -179,18 +188,24 @@
       # Dev Shell
       # ================================================================
       devShells.${system}.default = pkgs.mkShellNoCC {
-        packages = with pkgs; [
-          age
-          sops
-          helix
-          gomplate
-          ssh-to-age
-          git
-          self.packages.${system}.gi
+        packages =
+          with pkgs;
+          [
+            age
+            sops
+            helix
+            gomplate
+            ssh-to-age
+            git
+            self.packages.${system}.gi
 
-          nixd
-          nixfmt-rfc-style
-        ];
+            nixd
+            nixfmt-rfc-style
+          ]
+          ++ (with pkgsUnstable; [
+            just
+            nh
+          ]);
       };
     };
 }
