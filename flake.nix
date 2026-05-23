@@ -84,15 +84,6 @@
           ];
         };
 
-        rock = mkHost {
-          name = "rock";
-          isDesktop = true;
-          extraModules = [
-            disko.nixosModules.disko
-            lanzaboote.nixosModules.lanzaboote
-          ];
-        };
-
         zeph = mkHost {
           name = "zeph";
           isDesktop = true;
@@ -102,87 +93,22 @@
           ];
         };
 
-        # Proxmox LXC Container
-        rift = mkHost {
-          name = "rift";
-          extraModules = [
-            modules.nixosModules.standalone.hardware.proxmox-lxc
-          ];
-        };
+        # # Proxmox LXC Container
+        # rift = mkHost {
+        #   name = "rift";
+        #   extraModules = [
+        #     modules.nixosModules.standalone.hardware.proxmox-lxc
+        #   ];
+        # };
       };
 
-      homeConfigurations = {
-        primary = mkHome {
-          extraModules = [
-            profiles.home.desktop
-          ];
-        };
-      };
-
-      packages.${system}.gi = pkgs.writeShellApplication {
-        name = "gi";
-        runtimeInputs = [
-          pkgs.sops
-          pkgs.gomplate
-          pkgs.git
-        ];
-
-        text = ''
-           set -euo pipefail
-
-           # find repo root from current directory
-           root="$(git rev-parse --show-toplevel)"
-
-           secrets="$root/profiles/identities/secrets.json"
-           template="$root/profiles/identities/primary.nix.tmpl"
-           output="$root/profiles/identities/primary.nix"
-
-           fallback_key="$root/profiles/identities/key.age"
-
-           user=""
-
-           case "''${1:-}" in
-             -u)
-               read -rp "identity username: " user
-               ;;
-             "")
-               user="$USER"
-               ;;
-             *)
-               user="$1"
-             ;;
-           esac
-
-           export GI_USER="$user"
-
-           # try normal decryption first
-           if ! decrypted=$(sops -d "$secrets" 2>/dev/null); then
-             echo "Normal key decryption failed, using fallback passphrase key..." >&2
-
-             # create temporary key file
-             tmp_key=$(mktemp)
-             trap 'shred -u "$tmp_key"' EXIT
-
-             # decrypt passphrase-wrapped fallback key
-             age -d "$fallback_key" > "$tmp_key"
-             export SOPS_AGE_KEY_FILE="$tmp_key"
-
-             # decrypt SOPS secrets
-             decrypted=$(sops -d "$secrets")
-           fi
-
-          echo "$decrypted" | gomplate \
-               -d 'identities=stdin:///?type=application/json' \
-               -d 'user=env:///GI_USER?type=application/text' \
-               -f "$template" \
-           > "$output"
-
-           # Make the generated file visible to flakes without staging contents
-           git add -fN "$output"
-
-           echo "generated $output for '$user'"
-        '';
-      };
+      # homeConfigurations = {
+      #   primary = mkHome {
+      #     extraModules = [
+      #       profiles.home.desktop
+      #     ];
+      #   };
+      # };
 
       # ================================================================
       # Dev Shell
@@ -197,7 +123,6 @@
             gomplate
             ssh-to-age
             git
-            self.packages.${system}.gi
 
             nixd
             nixfmt-rfc-style

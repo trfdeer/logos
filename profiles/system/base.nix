@@ -6,6 +6,7 @@
   modules,
   profiles,
   config,
+  hostname,
   ...
 }:
 let
@@ -13,6 +14,7 @@ let
 in
 {
   sqwer.env.isNixosSystem = true;
+  sqwer.platform.hostName = hostname;
 
   # ------------------------------------------------------------
   # Locale / time (system-wide defaults)
@@ -41,13 +43,14 @@ in
 
     sharedModules = [
       modules.commonModules
-      profiles.identities.primary
       profiles.platform
+      {
+        sqwer.platform.hostName = hostname;
+      }
     ];
 
     users.${id.username}.imports = [
       modules.homeModules.sqwerHome
-      profiles.identities.primary
       profiles.home.base
     ]
     ++ lib.optionals isDesktop [

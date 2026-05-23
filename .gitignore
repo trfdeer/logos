@@ -1,3 +1,5 @@
-.direnv
-result
-profiles/identities/primary.nix
+/.env
+/result/
+/.direnv/
+
+/secrets/decrypted

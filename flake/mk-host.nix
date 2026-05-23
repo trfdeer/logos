@@ -32,7 +32,6 @@ nixpkgs.lib.nixosSystem {
     hosts.${name}
 
     modules.commonModules
-    profiles.identities.primary
     profiles.platform
 
     modules.nixosModules.sqwerSystem

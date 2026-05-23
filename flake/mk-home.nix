@@ -14,7 +14,6 @@ inputs.home-manager.lib.homeManagerConfiguration {
   modules = [
     modules.commonModules
     modules.homeModules.standalone.nix
-    profiles.identities.primary
     profiles.platform
 
     modules.homeModules.sqwerHome
