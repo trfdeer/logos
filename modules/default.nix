@@ -1,5 +1,5 @@
 {
-  commonModules = ./commonModules;
-  homeModules = ./homeModules;
-  nixosModules = import ./nixosModules;
+  common = ./common;
+  home = ./home;
+  system = import ./system;
 }

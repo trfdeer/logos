@@ -44,7 +44,7 @@ in
         init.defaultBranch = "main";
         gpg.format = lib.mkIf (homeCfg.git.user.signingkey != "") "ssh";
       }
-      // lib.optionalAttrs config.sqwer.env.isWsl {
+      // lib.optionalAttrs config.sqwer.platform.isWsl {
         core.sshCommand = "ssh.exe";
       };
     };

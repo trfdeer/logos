@@ -43,7 +43,7 @@ in
   # rift = makeSystem {
   #   name = "rift";
   #   extraModules = [
-  #     modules.nixosModules.standalone.hardware.proxmox-lxc
+  #     modules.system.standalone.hardware.proxmox-lxc
   #   ];
   # };
 }

@@ -12,10 +12,10 @@ inputs.home-manager.lib.homeManagerConfiguration {
   inherit pkgs;
 
   modules = [
-    modules.commonModules
+    modules.common
     profiles.platform
 
-    modules.homeModules
+    modules.home
     profiles.home.base
     {
       nix.package = pkgs.nix;

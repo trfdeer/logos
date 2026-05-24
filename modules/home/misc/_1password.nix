@@ -6,12 +6,12 @@
 }:
 let
   cfgHome = config.sqwer.home;
-  sqEnv = config.sqwer.env;
+  sqPlatform = config.sqwer.platform;
 
   opSshSignPath =
-    if sqEnv.isWsl then
+    if sqPlatform.isWsl then
       "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl"
-    else if sqEnv.isNixosSystem then
+    else if sqPlatform.isNixosSystem then
       "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}"
     else
       "/opt/1Password/op-ssh-sign";

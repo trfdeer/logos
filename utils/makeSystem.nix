@@ -30,10 +30,10 @@ inputs.nixpkgs.lib.nixosSystem {
   modules = [
     hosts.${name}
 
-    modules.commonModules
+    modules.common
     profiles.platform
 
-    modules.nixosModules.sqwerSystem
+    modules.system.sqwerSystem
 
     inputs.home-manager.nixosModules.home-manager
 

@@ -1,7 +1,15 @@
 { lib, ... }:
 {
-  # Environment and capability flags used for cross-module coordination.
-  options.sqwer.env = {
+  options.sqwer.platform = {
+    stateVersion = lib.mkOption {
+      type = lib.types.nonEmptyStr;
+      description = "System and Home Manager state version.";
+    };
+
+    hostName = lib.mkOption {
+      type = lib.types.nonEmptyStr;
+    };
+
     isWsl = lib.mkOption {
       type = lib.types.bool;
       default = false;

@@ -11,7 +11,7 @@ in
     enable = lib.mkEnableOption "Configure nix and enable home-manager";
   };
 
-  config = lib.mkIf (homeCfg.nix.enable && !config.sqwer.env.isNixosSystem) {
+  config = lib.mkIf (homeCfg.nix.enable && !config.sqwer.platform.isNixosSystem) {
     nix = {
 
       settings = {

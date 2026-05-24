@@ -49,7 +49,7 @@ in
       '';
       shellAliases = lib.mkMerge [
         (lib.mkIf homeCfg.utils.enable { ls = "exa"; })
-        (lib.mkIf config.sqwer.env.isWsl {
+        (lib.mkIf config.sqwer.platform.isWsl {
           ssh = "ssh.exe";
           ssh-add = "ssh-add.exe";
         })
