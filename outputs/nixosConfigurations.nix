@@ -39,11 +39,11 @@ in
     ];
   };
 
-  # # Proxmox LXC Container
-  # rift = makeSystem {
-  #   name = "rift";
-  #   extraModules = [
-  #     modules.system.standalone.hardware.proxmox-lxc
-  #   ];
-  # };
+  # Proxmox LXC Container
+  rift = makeSystem {
+    name = "rift";
+    extraModules = [
+      modules.system.standalone.hardware.proxmox-lxc
+    ];
+  };
 }

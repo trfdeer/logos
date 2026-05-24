@@ -10,11 +10,10 @@ WARNING := style("warning")
 
 # List available recipes
 @help:
-	@echo '{{COMMAND}}Available recipes{{NORMAL}}'
 	just --list
 
 # Decrypt and initialize secrets
-init:
+secret-init:
 	@echo '{{COMMAND}}Initializing secrets...{{NORMAL}}'
 
 	# enable repo hooks
@@ -38,10 +37,13 @@ init:
 	@echo '{{COMMAND}}Done{{NORMAL}}'
 
 # Open decrypted file in vscode for editing
-edit file:
+secret-edit file:
 	SOPS_AGE_KEY={{age_key}} EDITOR="code --wait" sops {{file}}
 
 # Remove generated files
-clean:
+secret-clean:
 	@echo '{{WARNING}}Cleaning secrets...{{NORMAL}}'
 	rm -rf secrets/decrypted
+
+build-container host:
+  nix build .#nixosConfigurations.{{host}}.config.system.build.tarball
