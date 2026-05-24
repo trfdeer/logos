@@ -1,10 +1,9 @@
 {
   lib,
-  nixpkgs,
+  pkgs,
   inputs,
   modules,
   profiles,
-  system,
   hosts,
 }:
 {
@@ -14,8 +13,8 @@
   extraSpecialArgs ? { },
 }:
 
-nixpkgs.lib.nixosSystem {
-  inherit system;
+inputs.nixpkgs.lib.nixosSystem {
+  system = pkgs.stdenv.hostPlatform.system;
 
   specialArgs = {
     inherit
@@ -39,6 +38,9 @@ nixpkgs.lib.nixosSystem {
     inputs.home-manager.nixosModules.home-manager
 
     profiles.system.base
+    {
+      nixpkgs = { inherit pkgs; };
+    }
   ]
   ++ lib.optionals isDesktop [
     profiles.system.desktop

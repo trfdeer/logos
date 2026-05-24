@@ -13,11 +13,13 @@ inputs.home-manager.lib.homeManagerConfiguration {
 
   modules = [
     modules.commonModules
-    modules.homeModules.standalone.nix
     profiles.platform
 
-    modules.homeModules.sqwerHome
+    modules.homeModules
     profiles.home.base
+    {
+      nix.package = pkgs.nix;
+    }
   ]
   ++ extraModules;
 }

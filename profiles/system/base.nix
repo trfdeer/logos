@@ -50,7 +50,7 @@ in
     ];
 
     users.${id.username}.imports = [
-      modules.homeModules.sqwerHome
+      modules.homeModules
       profiles.home.base
     ]
     ++ lib.optionals isDesktop [
@@ -61,11 +61,6 @@ in
   # ------------------------------------------------------------
   # Nix / nixpkgs policy
   # ------------------------------------------------------------
-  nixpkgs = {
-    config.allowUnfree = true;
-    overlays = [ inputs.sqpkgs.overlays.default ];
-  };
-
   nix.settings = {
     use-xdg-base-directories = true;
     auto-optimise-store = true;
