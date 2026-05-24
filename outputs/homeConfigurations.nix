@@ -17,7 +17,8 @@ let
   };
 in
 {
-  primary = makeHome {
+  "dwai@sol" = makeHome {
+    name = "sol";
     extraModules = [
       profiles.home.desktop
     ];

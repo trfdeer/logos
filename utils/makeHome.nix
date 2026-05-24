@@ -5,6 +5,7 @@
   inputs,
 }:
 {
+  name,
   extraModules ? [ ],
 }:
 
@@ -19,6 +20,7 @@ inputs.home-manager.lib.homeManagerConfiguration {
     profiles.home.base
     {
       nix.package = pkgs.nix;
+      sqwer.platform.hostName = name;
     }
   ]
   ++ extraModules;
