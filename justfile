@@ -45,5 +45,12 @@ secret-clean:
 	@echo '{{WARNING}}Cleaning secrets...{{NORMAL}}'
 	rm -rf secrets/decrypted
 
-build-container host:
-  nix build .#nixosConfigurations.{{host}}.config.system.build.tarball
+# Build system image. Supported types: tarball isoImage
+build-image host type:
+  nix build .#nixosConfigurations.{{host}}.config.system.build.{{type}}
+
+build-lxc host:
+  just build-image {{host}} tarball
+
+build-iso host:
+  just build-image {{host}} isoImage

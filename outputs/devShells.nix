@@ -12,6 +12,8 @@
 
       age
       sops
+
+      nixos-anywhere
     ];
   };
 }

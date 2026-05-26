@@ -22,6 +22,10 @@ let
   };
 in
 {
+  seed = makeSystem {
+    name = "seed";
+  };
+
   sol = makeSystem {
     name = "sol";
     extraModules = [

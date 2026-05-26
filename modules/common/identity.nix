@@ -12,22 +12,6 @@ let
 
   # 4. Find the identity in the secrets list
   targetIdentity = lib.findFirst (id: id._id == targetUserId) null config.sqwer.secrets.identities;
-
-  # Safety check
-  _assert =
-    if targetIdentity == null then
-      throw "Identity '${targetUserId}' not found in identities.json for host '${currentHostname}'"
-    else
-      true;
-
-  # Helpers
-  getVal = field: if targetIdentity ? ${field} then targetIdentity.${field} else null;
-  getNested =
-    parent: field:
-    if targetIdentity ? ${parent} && targetIdentity.${parent} ? ${field} then
-      targetIdentity.${parent}.${field}
-    else
-      null;
 in
 {
   options.sqwer.identity = {

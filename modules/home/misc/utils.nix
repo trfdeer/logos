@@ -10,29 +10,33 @@
   };
 
   config = lib.mkIf config.sqwer.home.utils.enable {
-    home.packages = with pkgs; [
-      zsh
-      tmux
-      git
-      devenv
-      just
+    home.packages =
+      with pkgs;
+      [
+        zsh
+        tmux
+        git
+        just
 
-      coreutils
-      aria2
-      curl
-      wget
-      file
+        coreutils
+        aria2
+        curl
+        wget
+        file
 
-      eza
-      bat
-      ripgrep
-      fzf
-      nnn
-      btop
-      fd
+        eza
+        bat
+        ripgrep
+        fzf
+        nnn
+        btop
+        fd
 
-      lm_sensors
-    ];
+        lm_sensors
+      ]
+      ++ (with pkgs.unstable; [
+        devenv
+      ]);
 
     programs.btop.enable = true;
 
