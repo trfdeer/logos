@@ -10,19 +10,19 @@ let
 in
 {
   imports = [
-    profiles.hardware.devices.desktop-zeph
-    (import profiles.storage-layouts.btrfs-luks-esp {
+    profiles.hardware.vm.qemu-guest
+    (import profiles.storage-layouts.btrfs-esp {
       inherit lib;
 
       name = "nixos";
-      device = config.sqwer.secrets.devices.ll-comput.drive_paths.root;
+      device = "/dev/sda";
     })
   ];
 
   # ------------------------------------------------------------
   # Host identity
   # ------------------------------------------------------------
-  networking.hostName = "zeph";
+  networking.hostName = "beet";
   networking.networkmanager.enable = true;
 
   # ------------------------------------------------------------
@@ -36,18 +36,11 @@ in
 
     loader = {
       systemd-boot = {
-        enable = lib.mkForce false;
+        enable = true;
         consoleMode = "max";
         configurationLimit = 3;
       };
       efi.canTouchEfiVariables = true;
-    };
-
-    lanzaboote = {
-      enable = true;
-      autoGenerateKeys.enable = true;
-      autoEnrollKeys.enable = true;
-      pkiBundle = "/etc/secureboot";
     };
 
     supportedFilesystems = [ "btrfs" ];
@@ -56,14 +49,14 @@ in
   # ------------------------------------------------------------
   # Host-specific services
   # ------------------------------------------------------------
-  sqwer.system = {
-    tailscale = {
-      enable = true;
-      operator = id.username;
-    };
-  };
+  # sqwer.system = {
+  #   tailscale = {
+  #     enable = true;
+  #     operator = id.username;
+  #   };
+  # };
 
-  services.fstrim.enable = true;
+  # services.fstrim.enable = true;
 
   # ------------------------------------------------------------
   # Host-specific Home Manager deltas

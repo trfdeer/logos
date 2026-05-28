@@ -11,9 +11,21 @@ in
 {
   imports = [
     profiles.hardware.devices.ss-fury
-    (import profiles.storage.layouts.btrfs-luks-esp {
-      device = "/dev/disk/by-id/nvme-Vi3000_Internal_PCIe_NVMe_M.2_SSD_1TB_493754484830002";
+
+    (import profiles.storage-layouts.btrfs-luks-esp {
+      inherit lib;
+
+      name = "nixos";
+      device = config.sqwer.secrets.devices.ss-minipc.drive_paths.root;
     })
+
+    (import profiles.storage-layouts.btrfs-luks-data {
+      inherit lib;
+
+      name = "vault0";
+      device = config.sqwer.secrets.devices.ss-minipc.drive_paths.data;
+    })
+
   ];
 
   # ------------------------------------------------------------
@@ -30,11 +42,11 @@ in
     kernelPackages = pkgs.linuxPackages_latest;
 
     initrd = {
-      luks.devices.vault = {
-        device = "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b402b400e-part1";
-        name = "vault-crypt";
-        allowDiscards = true;
-      };
+      # luks.devices.vault = {
+      #   device = "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b402b400e-part1";
+      #   name = "vault-crypt";
+      #   allowDiscards = true;
+      # };
       systemd.enable = true;
     };
 

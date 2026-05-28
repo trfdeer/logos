@@ -1,14 +1,22 @@
-{ device, ... }:
+{
+  lib,
+  name,
+  device,
+  disableCow ? false,
+  ...
+}:
 let
   btrfsOpts = [
     "compress=zstd"
     "noatime"
     "ssd"
     "space_cache=v2"
-  ];
+  ]
+  ++ (lib.optional disableCow [ "nodatacow" ]);
+
 in
 {
-  disko.devices.disk.main = {
+  disko.devices.disk.${name} = {
     inherit device;
     type = "disk";
 

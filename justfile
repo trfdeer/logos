@@ -49,8 +49,14 @@ secret-clean:
 build-image host type:
   nix build .#nixosConfigurations.{{host}}.config.system.build.{{type}}
 
+# Build LXC container image tarball
 build-lxc host:
   just build-image {{host}} tarball
 
+# Build ISO image
 build-iso host:
   just build-image {{host}} isoImage
+
+# Install `output` to `target` host
+deploy output host port *args:
+  nixos-anywhere --target-host "root@{{host}}" -p "{{port}}" -f ".#{{output}}" {{args}}

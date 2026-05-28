@@ -2,6 +2,6 @@
   home = import ./home;
   system = import ./system;
   hardware = import ./hardware;
-  storage = import ./storage;
+  storage-layouts = import ./storage-layouts;
   platform = ./platform.nix;
 }

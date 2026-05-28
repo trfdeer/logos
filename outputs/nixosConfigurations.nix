@@ -50,4 +50,12 @@ in
       modules.system.standalone.hardware.proxmox-lxc
     ];
   };
+
+  # QEMU VMs
+  beet = makeSystem {
+    name = "beet";
+    extraModules = [
+      disko.nixosModules.disko
+    ];
+  };
 }
