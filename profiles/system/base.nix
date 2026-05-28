@@ -1,18 +1,21 @@
 {
   lib,
   pkgs,
-  inputs,
   isDesktop,
   modules,
   profiles,
   config,
+  hostname,
   ...
 }:
 let
   id = config.sqwer.identity;
 in
 {
-  sqwer.env.isNixosSystem = true;
+  sqwer.platform = {
+    isNixosSystem = true;
+    hostName = hostname;
+  };
 
   # ------------------------------------------------------------
   # Locale / time (system-wide defaults)
@@ -30,6 +33,7 @@ in
     extraGroups = [ "wheel" ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = id.sshPublicKeys;
+    initialHashedPassword = lib.mkForce id.hashedPassword;
   };
 
   # ------------------------------------------------------------
@@ -40,15 +44,15 @@ in
     useUserPackages = true;
 
     sharedModules = [
-      modules.commonModules
-      profiles.identities.primary
+      modules.common
       profiles.platform
+      {
+        sqwer.platform.hostName = hostname;
+      }
     ];
 
     users.${id.username}.imports = [
-      inputs.catppuccin.homeModules.catppuccin
-      modules.homeModules.sqwerHome
-      profiles.identities.primary
+      modules.home
       profiles.home.base
     ]
     ++ lib.optionals isDesktop [
@@ -59,11 +63,6 @@ in
   # ------------------------------------------------------------
   # Nix / nixpkgs policy
   # ------------------------------------------------------------
-  nixpkgs = {
-    config.allowUnfree = true;
-    overlays = [ inputs.sqpkgs.overlays.default ];
-  };
-
   nix.settings = {
     use-xdg-base-directories = true;
     auto-optimise-store = true;

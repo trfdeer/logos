@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   sqwer = {
-    env.isDesktop = true;
+    platform.isDesktop = true;
 
     home.sound = {
       disable-hsp = lib.mkDefault true;

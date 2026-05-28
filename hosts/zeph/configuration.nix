@@ -10,28 +10,19 @@ let
 in
 {
   imports = [
-    profiles.hardware.devices.ss-fury
-
+    profiles.hardware.devices.desktop-zeph
     (import profiles.storage-layouts.btrfs-luks-esp {
       inherit lib;
 
       name = "nixos";
-      device = config.sqwer.secrets.devices.ss-minipc.drive_paths.root;
+      device = config.sqwer.secrets.devices.ll-comput.drive_paths.root;
     })
-
-    (import profiles.storage-layouts.btrfs-luks-data {
-      inherit lib;
-
-      name = "vault0";
-      device = config.sqwer.secrets.devices.ss-minipc.drive_paths.data;
-    })
-
   ];
 
   # ------------------------------------------------------------
   # Host identity
   # ------------------------------------------------------------
-  networking.hostName = "sol";
+  networking.hostName = "zeph";
   networking.networkmanager.enable = true;
 
   # ------------------------------------------------------------
@@ -41,14 +32,7 @@ in
     bootspec.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
 
-    initrd = {
-      # luks.devices.vault = {
-      #   device = "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b402b400e-part1";
-      #   name = "vault-crypt";
-      #   allowDiscards = true;
-      # };
-      systemd.enable = true;
-    };
+    initrd.systemd.enable = true;
 
     loader = {
       systemd-boot = {
@@ -69,18 +53,6 @@ in
     supportedFilesystems = [ "btrfs" ];
   };
 
-  fileSystems."/srv/vault" = {
-    device = "/dev/mapper/vault";
-    fsType = "btrfs";
-    options = [
-      "subvol=@vault"
-      "ssd"
-      "space_cache=v2"
-      "compress=zstd"
-      "noatime"
-    ];
-  };
-
   # ------------------------------------------------------------
   # Host-specific services
   # ------------------------------------------------------------
@@ -88,14 +60,6 @@ in
     tailscale = {
       enable = true;
       operator = id.username;
-      advertiseRoutes = "172.16.10.0/24";
-    };
-
-    samba = {
-      enable = true;
-      name = "vault";
-      path = "/srv/vault";
-      owner = id.username;
     };
   };
 
