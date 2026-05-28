@@ -33,6 +33,7 @@ in
     extraGroups = [ "wheel" ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = id.sshPublicKeys;
+    initialHashedPassword = lib.mkForce id.hashedPassword;
   };
 
   # ------------------------------------------------------------

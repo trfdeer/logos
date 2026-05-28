@@ -24,6 +24,14 @@ in
       '';
     };
 
+    hashedPassword = lib.mkOption {
+      type = lib.types.nonEmptyStr;
+      description = ''
+        Hashed password for the human user.
+        Created using `mkpasswd` utility.
+      '';
+    };
+
     fullName = lib.mkOption {
       type = lib.types.str;
       description = ''
@@ -98,6 +106,7 @@ in
 
     sqwer.identity = {
       username = targetIdentity.username;
+      hashedPassword = targetIdentity.password_hash;
 
       # Handle nullable fullname, fallback to username
       fullName =

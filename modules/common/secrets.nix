@@ -19,6 +19,7 @@ in
             _id = lib.mkOption { type = lib.types.nonEmptyStr; };
             username = lib.mkOption { type = lib.types.nonEmptyStr; };
             is_system_account = lib.mkOption { type = lib.types.bool; };
+            password_hash = lib.mkOption { type = lib.types.nonEmptyStr; };
 
             fullname = lib.mkOption {
               type = lib.types.nullOr lib.types.nonEmptyStr;
