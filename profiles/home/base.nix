@@ -39,8 +39,9 @@ in
       };
     };
 
-    _1password.enable = true;
-
     nix.enable = lib.mkDefault true;
+  }
+  // lib.optionalAttrs (config.sqwer.platform.isDesktop) {
+    _1password.enable = true;
   };
 }
