@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  modulesPath,
   isDesktop,
   modules,
   profiles,
@@ -12,6 +13,10 @@ let
   id = config.sqwer.identity;
 in
 {
+  imports = [
+    "${modulesPath}/profiles/perlless.nix"
+  ];
+
   sqwer.platform = {
     isNixosSystem = true;
     hostName = hostname;
@@ -93,4 +98,7 @@ in
   # Lifecycle
   # ------------------------------------------------------------
   system.stateVersion = config.sqwer.platform.stateVersion;
+
+  boot.zfs.forceImportRoot = lib.mkForce false;
+  environment.defaultPackages = [ ];
 }

@@ -25,7 +25,7 @@ in
   config = lib.mkIf cfgHome._1password.enable (
     lib.mkMerge [
       (lib.mkIf cfgHome.ssh.enable {
-        programs.ssh.matchBlocks."*".identityAgent = "${config.home.homeDirectory}/.1password/agent.sock";
+        programs.ssh.settings."*".IdentityAgent = "${config.home.homeDirectory}/.1password/agent.sock";
       })
       (lib.mkIf cfgHome.git.enable {
         programs.git.settings."gpg \"ssh\"".program = opSshSignPath;

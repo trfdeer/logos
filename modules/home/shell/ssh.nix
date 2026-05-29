@@ -54,17 +54,12 @@ in
       enable = true;
       enableDefaultConfig = false;
 
-      matchBlocks = lib.mkMerge [
-        ({
-          "*" = {
-            forwardAgent = true;
-          };
-        })
+      settings = lib.mkMerge [
         (lib.mapAttrs (name: host: {
-          hostname = host.domain;
-          user = host.user;
-          identityFile = "${config.home.homeDirectory}/.ssh/${name}.pub";
-          identitiesOnly = true;
+          HostName = host.domain;
+          User = host.user;
+          IdentityFile = "${config.home.homeDirectory}/.ssh/${name}.pub";
+          IdentitiesOnly = true;
         }) effectiveHosts)
       ];
     };

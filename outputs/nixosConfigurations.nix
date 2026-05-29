@@ -54,6 +54,7 @@ in
   # QEMU VMs
   beet = makeSystem {
     name = "beet";
+    isAmnesic = true;
     extraModules = [
       disko.nixosModules.disko
       lanzaboote.nixosModules.lanzaboote

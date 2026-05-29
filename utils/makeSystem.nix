@@ -9,6 +9,7 @@
 {
   name,
   isDesktop ? false,
+  isAmnesic ? false,
   extraModules ? [ ],
   extraSpecialArgs ? { },
 }:
@@ -41,6 +42,9 @@ inputs.nixpkgs.lib.nixosSystem {
     {
       nixpkgs = { inherit pkgs; };
     }
+  ]
+  ++ lib.optionals isAmnesic [
+    inputs.preservation.nixosModules.preservation
   ]
   ++ lib.optionals isDesktop [
     profiles.system.desktop
