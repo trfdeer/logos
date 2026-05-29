@@ -81,6 +81,8 @@ in
 
   sqwer.system = {
     ssh.enable = lib.mkDefault true;
+  }
+  // lib.optionalAttrs (config.sqwer.platform.isDesktop) {
     _1password = {
       enable = true;
       systemUsers = [ id.username ];
