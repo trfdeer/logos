@@ -56,6 +56,7 @@ in
     name = "beet";
     extraModules = [
       disko.nixosModules.disko
+      lanzaboote.nixosModules.lanzaboote
     ];
   };
 }

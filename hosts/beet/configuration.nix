@@ -36,11 +36,18 @@ in
 
     loader = {
       systemd-boot = {
-        enable = true;
+        enable = lib.mkForce false;
         consoleMode = "max";
         configurationLimit = 3;
       };
       efi.canTouchEfiVariables = true;
+    };
+
+    lanzaboote = {
+      enable = true;
+      autoGenerateKeys.enable = true;
+      autoEnrollKeys.enable = true;
+      pkiBundle = "/var/lib/sbctl";
     };
 
     supportedFilesystems = [ "btrfs" ];
