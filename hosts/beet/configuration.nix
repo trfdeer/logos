@@ -11,12 +11,13 @@ in
 {
   imports = [
     profiles.hardware.vm.qemu-guest
-    (import profiles.storage-layouts.btrfs-esp {
+    (import profiles.storage-layouts.imperm-luks-esp {
       inherit lib;
 
       name = "nixos";
       device = "/dev/sda";
     })
+    ./preservation.nix
   ];
 
   # ------------------------------------------------------------

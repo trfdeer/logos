@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  modulesPath,
   isDesktop,
   modules,
   profiles,
@@ -13,10 +12,6 @@ let
   id = config.sqwer.identity;
 in
 {
-  imports = [
-    "${modulesPath}/profiles/perlless.nix"
-  ];
-
   sqwer.platform = {
     isNixosSystem = true;
     hostName = hostname;

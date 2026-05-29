@@ -46,16 +46,16 @@ secret-clean:
 	rm -rf secrets/decrypted
 
 # Build system image. Supported types: tarball isoImage
-build-image host type:
-  nix build .#nixosConfigurations.{{host}}.config.system.build.{{type}}
+build-image host type *args:
+  nix build .#nixosConfigurations.{{host}}.config.system.build.{{type}} {{args}}
 
 # Build LXC container image tarball
-build-lxc host:
-  just build-image {{host}} tarball
+build-lxc host *args:
+  just build-image {{host}} tarball {{args}}
 
 # Build ISO image
-build-iso host:
-  just build-image {{host}} isoImage
+build-iso host *args:
+  just build-image {{host}} isoImage {{args}}
 
 # Install `output` to `target` host
 deploy output host port *args:
