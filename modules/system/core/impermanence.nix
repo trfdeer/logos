@@ -1,11 +1,22 @@
-{ config, ... }:
+{
+  lib,
+  config,
+  ...
+}:
 let
   id = config.sqwer.identity;
+  cfg = config.sqwer.system.impermanence;
 in
 {
-  preservation = {
-    enable = true;
-    preserveAt."/persistent" = {
+  options.sqwer.system.impermanence = {
+    enable = lib.mkEnableOption false;
+  };
+
+  config = lib.mkIf cfg.enable {
+    systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
+
+    preservation.enable = true;
+    preservation.preserveAt."/persistent" = {
       files = [
         {
           file = "/etc/machine-id";
@@ -24,17 +35,15 @@ in
       ];
 
       directories = [
-        "/var/lib/sbctl"
-        "/var/lib/tailscale"
-      ];
+
+      ]
+      ++ lib.optional config.sqwer.system.boot.secureBoot.enable "/var/lib/sbctl"
+      ++ lib.optional config.sqwer.system.tailscale.enable "/var/lib/tailscale";
 
       users.${id.username} = {
         files = [ ];
-
         directories = [ ];
       };
     };
   };
-
-  systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 }

@@ -14,6 +14,8 @@ in
   ];
   installer.cloneConfig = false;
 
+  sqwer.system.boot.doNotConfigure = true;
+
   boot.kernelParams = [ "console=ttyS0,115200" ];
   boot.loader.timeout = 10;
   networking.hostName = "seed";

@@ -14,6 +14,7 @@ in
 
   sqwer.system = {
     ssh.enable = true;
+    boot.doNotConfigure = true;
 
     tailscale = {
       enable = true;

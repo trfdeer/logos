@@ -15,9 +15,6 @@
 let
   prefs' = {
     isDesktop = false;
-    isAmnesic = true;
-    provisionDisks = true;
-    useSecureBoot = true;
   }
   // prefs;
 in
@@ -40,6 +37,9 @@ inputs.nixpkgs.lib.nixosSystem {
 
     modules.system.sqwerSystem
 
+    inputs.disko.nixosModules.disko
+    inputs.lanzaboote.nixosModules.lanzaboote
+    inputs.preservation.nixosModules.preservation
     inputs.home-manager.nixosModules.home-manager
 
     profiles.system.base
@@ -47,9 +47,6 @@ inputs.nixpkgs.lib.nixosSystem {
       nixpkgs = { inherit pkgs; };
     }
   ]
-  ++ lib.optional prefs'.isAmnesic inputs.preservation.nixosModules.preservation
-  ++ lib.optional prefs'.useSecureBoot inputs.lanzaboote.nixosModules.lanzaboote
-  ++ lib.optional prefs'.provisionDisks inputs.disko.nixosModules.disko
   ++ lib.optional prefs'.isDesktop profiles.system.desktop
   ++ extraModules;
 }
