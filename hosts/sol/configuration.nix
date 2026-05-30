@@ -69,18 +69,6 @@ in
     supportedFilesystems = [ "btrfs" ];
   };
 
-  fileSystems."/srv/vault" = {
-    device = "/dev/mapper/vault";
-    fsType = "btrfs";
-    options = [
-      "subvol=@vault"
-      "ssd"
-      "space_cache=v2"
-      "compress=zstd"
-      "noatime"
-    ];
-  };
-
   # ------------------------------------------------------------
   # Host-specific services
   # ------------------------------------------------------------
@@ -88,14 +76,6 @@ in
     tailscale = {
       enable = true;
       operator = id.username;
-      advertiseRoutes = "172.16.10.0/24";
-    };
-
-    samba = {
-      enable = true;
-      name = "vault";
-      path = "/srv/vault";
-      owner = id.username;
     };
   };
 
