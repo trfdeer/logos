@@ -26,6 +26,15 @@ in
     name = "seed";
   };
 
+  brim = makeSystem {
+    name = "brim";
+    isAmnesic = true;
+    extraModules = [
+      disko.nixosModules.disko
+      lanzaboote.nixosModules.lanzaboote
+    ];
+  };
+
   sol = makeSystem {
     name = "sol";
     extraModules = [
