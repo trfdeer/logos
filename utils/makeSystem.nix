@@ -8,21 +8,23 @@
 }:
 {
   name,
-  isDesktop ? false,
+  prefs ? { },
   extraModules ? [ ],
   extraSpecialArgs ? { },
 }:
-
+let
+  prefs' = {
+    isDesktop = false;
+  }
+  // prefs;
+in
 inputs.nixpkgs.lib.nixosSystem {
   system = pkgs.stdenv.hostPlatform.system;
 
   specialArgs = {
-    inherit
-      inputs
-      modules
-      profiles
-      isDesktop
-      ;
+    inherit inputs modules profiles;
+
+    isDesktop = prefs'.isDesktop;
     hostname = name;
   }
   // extraSpecialArgs;
@@ -35,6 +37,9 @@ inputs.nixpkgs.lib.nixosSystem {
 
     modules.system.sqwerSystem
 
+    inputs.disko.nixosModules.disko
+    inputs.lanzaboote.nixosModules.lanzaboote
+    inputs.preservation.nixosModules.preservation
     inputs.home-manager.nixosModules.home-manager
 
     profiles.system.base
@@ -42,8 +47,6 @@ inputs.nixpkgs.lib.nixosSystem {
       nixpkgs = { inherit pkgs; };
     }
   ]
-  ++ lib.optionals isDesktop [
-    profiles.system.desktop
-  ]
+  ++ lib.optional prefs'.isDesktop profiles.system.desktop
   ++ extraModules;
 }

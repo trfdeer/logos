@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   config,
   profiles,
   ...
@@ -11,7 +10,7 @@ in
 {
   imports = [
     profiles.hardware.vm.qemu-guest
-    (import profiles.storage-layouts.btrfs-esp {
+    (import profiles.storage-layouts.imperm-luks-esp {
       inherit lib;
 
       name = "nixos";
@@ -28,33 +27,19 @@ in
   # ------------------------------------------------------------
   # Boot / storage (WSL + encrypted vault)
   # ------------------------------------------------------------
-  boot = {
-    bootspec.enable = true;
-    kernelPackages = pkgs.linuxPackages_latest;
-
-    initrd.systemd.enable = true;
-
-    loader = {
-      systemd-boot = {
-        enable = true;
-        consoleMode = "max";
-        configurationLimit = 3;
-      };
-      efi.canTouchEfiVariables = true;
-    };
-
-    supportedFilesystems = [ "btrfs" ];
-  };
 
   # ------------------------------------------------------------
   # Host-specific services
   # ------------------------------------------------------------
-  # sqwer.system = {
-  #   tailscale = {
-  #     enable = true;
-  #     operator = id.username;
-  #   };
-  # };
+  sqwer.system = {
+    impermanence.enable = true;
+    boot.secureBoot.enable = true;
+
+    #   tailscale = {
+    #     enable = true;
+    #     operator = id.username;
+    #   };
+  };
 
   # services.fstrim.enable = true;
 

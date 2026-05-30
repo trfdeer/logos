@@ -13,12 +13,12 @@
     home.packages =
       with pkgs;
       [
+        nh
         zsh
         tmux
         git
         just
 
-        coreutils
         aria2
         curl
         wget
@@ -31,6 +31,7 @@
         nnn
         btop
         fd
+        jq
 
         lm_sensors
       ]

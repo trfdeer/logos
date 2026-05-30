@@ -8,8 +8,6 @@
   ...
 }:
 let
-  inherit (inputs) disko lanzaboote;
-
   makeSystem = import utils.makeSystem {
     lib = pkgs.lib;
     inherit
@@ -22,40 +20,18 @@ let
   };
 in
 {
-  seed = makeSystem {
-    name = "seed";
-  };
+  # Installer & Test VM
+  seed = makeSystem { name = "seed"; };
+  beet = makeSystem { name = "beet"; };
 
-  sol = makeSystem {
-    name = "sol";
-    extraModules = [
-      disko.nixosModules.disko
-      lanzaboote.nixosModules.lanzaboote
-    ];
-  };
-
-  zeph = makeSystem {
-    name = "zeph";
-    isDesktop = true;
-    extraModules = [
-      disko.nixosModules.disko
-      lanzaboote.nixosModules.lanzaboote
-    ];
-  };
+  # Devices
+  brim = makeSystem { name = "brim"; };
+  sol = makeSystem { name = "sol"; };
+  zeph = makeSystem { name = "zeph"; };
 
   # Proxmox LXC Container
   rift = makeSystem {
     name = "rift";
-    extraModules = [
-      modules.system.standalone.hardware.proxmox-lxc
-    ];
-  };
-
-  # QEMU VMs
-  beet = makeSystem {
-    name = "beet";
-    extraModules = [
-      disko.nixosModules.disko
-    ];
+    extraModules = [ modules.system.standalone.hardware.proxmox-lxc ];
   };
 }

@@ -15,6 +15,8 @@
       ./services/ssh.nix
 
       ./kde.nix
+      ./core/impermanence.nix
+      ./core/boot.nix
       ./utils/_1password.nix
     ];
   };

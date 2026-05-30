@@ -81,6 +81,8 @@ in
 
   sqwer.system = {
     ssh.enable = lib.mkDefault true;
+  }
+  // lib.optionalAttrs (config.sqwer.platform.isDesktop) {
     _1password = {
       enable = true;
       systemUsers = [ id.username ];
@@ -91,4 +93,7 @@ in
   # Lifecycle
   # ------------------------------------------------------------
   system.stateVersion = config.sqwer.platform.stateVersion;
+
+  boot.zfs.forceImportRoot = lib.mkForce false;
+  environment.defaultPackages = [ ];
 }

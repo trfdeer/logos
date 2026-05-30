@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   config,
   profiles,
   ...
@@ -10,25 +9,34 @@ let
 in
 {
   imports = [
-    profiles.hardware.devices.desktop-zeph
-    (import profiles.storage-layouts.btrfs-luks-esp {
+    profiles.hardware.devices.optiplex-7050
+
+    (import profiles.storage-layouts.imperm-luks-esp {
       inherit lib;
 
       name = "nixos";
-      device = config.sqwer.secrets.devices.ll-comput.drive_paths.root;
+      device = config.sqwer.secrets.devices.op-server.drive_paths.root;
+    })
+
+    (import profiles.storage-layouts.btrfs-luks-data {
+      inherit lib;
+
+      name = "vault0";
+      device = config.sqwer.secrets.devices.op-server.drive_paths.data;
     })
   ];
 
   # ------------------------------------------------------------
   # Host identity
   # ------------------------------------------------------------
-  networking.hostName = "zeph";
+  networking.hostName = "brim";
   networking.networkmanager.enable = true;
 
   # ------------------------------------------------------------
   # Host-specific services
   # ------------------------------------------------------------
   sqwer.system = {
+    impermanence.enable = true;
     boot.secureBoot.enable = true;
 
     tailscale = {

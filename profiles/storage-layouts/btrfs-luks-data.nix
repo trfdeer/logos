@@ -24,7 +24,7 @@ in
 
     content = {
       type = "gpt";
-      partitions.${partlabel} = {
+      partitions.data = {
         size = "100%";
 
         content = {

@@ -25,11 +25,11 @@ in
         # Decide whether tmux auto-start should be skipped
         SKIP_TMUX=0
 
-        if [[ "$TERM_PROGRAM" == "vscode" ]] || [[ -n "$VSCODE_PID" ]]; then
+        if [[ $(tty) == /dev/tty[0-9]* ]]; then
           SKIP_TMUX=1
-        fi
-
-        if [[ -n "$SSH_ORIGINAL_COMMAND" ]]; then
+        elif [[ "$TERM_PROGRAM" == "vscode" ]] || [[ -n "$VSCODE_PID" ]]; then
+          SKIP_TMUX=1
+        elif [[ -n "$SSH_ORIGINAL_COMMAND" ]]; then
           SKIP_TMUX=1
         fi
 
