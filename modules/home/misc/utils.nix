@@ -32,6 +32,7 @@
         nnn
         btop
         fd
+        jq
 
         lm_sensors
       ]
