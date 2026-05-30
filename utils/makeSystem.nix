@@ -8,22 +8,26 @@
 }:
 {
   name,
-  isDesktop ? false,
-  isAmnesic ? false,
+  prefs ? { },
   extraModules ? [ ],
   extraSpecialArgs ? { },
 }:
-
+let
+  prefs' = {
+    isDesktop = false;
+    isAmnesic = true;
+    provisionDisks = true;
+    useSecureBoot = true;
+  }
+  // prefs;
+in
 inputs.nixpkgs.lib.nixosSystem {
   system = pkgs.stdenv.hostPlatform.system;
 
   specialArgs = {
-    inherit
-      inputs
-      modules
-      profiles
-      isDesktop
-      ;
+    inherit inputs modules profiles;
+
+    isDesktop = prefs'.isDesktop;
     hostname = name;
   }
   // extraSpecialArgs;
@@ -43,11 +47,9 @@ inputs.nixpkgs.lib.nixosSystem {
       nixpkgs = { inherit pkgs; };
     }
   ]
-  ++ lib.optionals isAmnesic [
-    inputs.preservation.nixosModules.preservation
-  ]
-  ++ lib.optionals isDesktop [
-    profiles.system.desktop
-  ]
+  ++ lib.optional prefs'.isAmnesic inputs.preservation.nixosModules.preservation
+  ++ lib.optional prefs'.useSecureBoot inputs.lanzaboote.nixosModules.lanzaboote
+  ++ lib.optional prefs'.provisionDisks inputs.disko.nixosModules.disko
+  ++ lib.optional prefs'.isDesktop profiles.system.desktop
   ++ extraModules;
 }

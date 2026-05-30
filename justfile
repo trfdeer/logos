@@ -60,3 +60,6 @@ build-iso host *args:
 # Install `output` to `target` host
 deploy output host port *args:
   nixos-anywhere --target-host "root@{{host}}" -p "{{port}}" -f ".#{{output}}" {{args}}
+
+switch output host *args:
+  nh os switch .#{{output}} --target-host {{host}}

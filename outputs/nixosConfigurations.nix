@@ -20,53 +20,38 @@ let
       hosts
       ;
   };
+
+  makeVirtualSystem =
+    args:
+    makeSystem (
+      args
+      // {
+        prefs = {
+          provisionDisks = false;
+          useSecureBoot = false;
+          isAmnesic = false;
+        }
+        // (args.prefs or { });
+      }
+    );
+
 in
 {
-  seed = makeSystem {
-    name = "seed";
-  };
+  # Installer & Test VM
+  seed = makeVirtualSystem { name = "seed"; };
+  beet = makeSystem { name = "beet"; };
 
-  brim = makeSystem {
-    name = "brim";
-    isAmnesic = true;
-    extraModules = [
-      disko.nixosModules.disko
-      lanzaboote.nixosModules.lanzaboote
-    ];
-  };
-
-  sol = makeSystem {
-    name = "sol";
-    extraModules = [
-      disko.nixosModules.disko
-      lanzaboote.nixosModules.lanzaboote
-    ];
-  };
-
+  # Devices
+  brim = makeSystem { name = "brim"; };
+  sol = makeSystem { name = "sol"; };
   zeph = makeSystem {
     name = "zeph";
-    isDesktop = true;
-    extraModules = [
-      disko.nixosModules.disko
-      lanzaboote.nixosModules.lanzaboote
-    ];
+    prefs.isDesktop = true;
   };
 
   # Proxmox LXC Container
-  rift = makeSystem {
+  rift = makeVirtualSystem {
     name = "rift";
-    extraModules = [
-      modules.system.standalone.hardware.proxmox-lxc
-    ];
-  };
-
-  # QEMU VMs
-  beet = makeSystem {
-    name = "beet";
-    isAmnesic = true;
-    extraModules = [
-      disko.nixosModules.disko
-      lanzaboote.nixosModules.lanzaboote
-    ];
+    extraModules = [ modules.system.standalone.hardware.proxmox-lxc ];
   };
 }
