@@ -11,7 +11,7 @@ in
 {
   imports = [
     profiles.hardware.devices.desktop-zeph
-    (import profiles.storage-layouts.btrfs-luks-esp {
+    (import profiles.storage-layouts.imperm-luks-esp {
       inherit lib;
 
       name = "nixos";
@@ -29,6 +29,7 @@ in
   # Host-specific services
   # ------------------------------------------------------------
   sqwer.system = {
+    impermanence.enable = true;
     boot.secureBoot.enable = true;
 
     tailscale = {
@@ -36,6 +37,7 @@ in
       operator = id.username;
     };
   };
+  environment.systemPackages = with pkgs; [ amdgpu_top ];
 
   services.fstrim.enable = true;
 
