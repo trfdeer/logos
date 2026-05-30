@@ -19,7 +19,6 @@
         git
         just
 
-        coreutils
         aria2
         curl
         wget

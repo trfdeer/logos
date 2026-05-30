@@ -47,8 +47,11 @@ in
     lanzaboote = {
       enable = true;
       autoGenerateKeys.enable = true;
-      autoEnrollKeys.enable = true;
-      pkiBundle = "/var/lib/sbctl";
+      autoEnrollKeys = {
+        enable = true;
+        autoReboot = true;
+      };
+      pkiBundle = "/var/lib/sbctl/pki";
     };
 
     supportedFilesystems = [ "btrfs" ];

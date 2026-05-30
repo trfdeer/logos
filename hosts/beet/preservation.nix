@@ -25,6 +25,7 @@ in
 
       directories = [
         "/var/lib/bluetooth"
+        "/var/lib/sbctl"
       ];
 
       users.${id.username} = {

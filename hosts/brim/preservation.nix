@@ -24,7 +24,7 @@ in
       ];
 
       directories = [
-        "/var/lib/bluetooth"
+        "/var/lib/sbctl"
         "/var/lib/tailscale"
       ];
 
