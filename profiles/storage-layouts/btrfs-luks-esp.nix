@@ -38,7 +38,12 @@ in
           content = {
             type = "luks";
             name = "cryptroot";
-            settings.allowDiscards = true;
+
+            settings = {
+              allowDiscards = true;
+              crypttabExtraOpts = [ "tpm2-measure-pcr=yes" ];
+            };
+
             content = {
               type = "btrfs";
               extraArgs = [

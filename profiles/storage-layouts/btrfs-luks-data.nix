@@ -31,7 +31,10 @@ in
           type = "luks";
           name = "${partlabel}-crypt";
 
-          settings.allowDiscards = true;
+          settings = {
+            allowDiscards = true;
+            crypttabExtraOpts = [ "tpm2-measure-pcr=yes" ];
+          };
 
           content.type = "btrfs";
           content.extraArgs = [
