@@ -33,7 +33,10 @@ in
 
           settings = {
             allowDiscards = true;
-            crypttabExtraOpts = [ "tpm2-measure-pcr=yes" ];
+            crypttabExtraOpts = [
+              "tpm2-device=auto"
+              "tpm2-measure-pcr=yes"
+            ];
           };
 
           content.type = "btrfs";
