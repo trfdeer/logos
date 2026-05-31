@@ -131,7 +131,7 @@ in
         map (host: {
           name = host.alias;
           value = {
-            domain = host.alias;
+            domain = host.hostname;
             user = host.username;
             sshPubKey = host.sshPubkey;
           };

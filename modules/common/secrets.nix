@@ -80,6 +80,7 @@ in
           options = {
             _id = lib.mkOption { type = lib.types.nonEmptyStr; };
             alias = lib.mkOption { type = lib.types.nonEmptyStr; };
+            hostname = lib.mkOption { type = lib.types.nonEmptyStr; };
             username = lib.mkOption { type = lib.types.nonEmptyStr; };
             sshPubkey = lib.mkOption {
               type = lib.types.str;
