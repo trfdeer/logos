@@ -13,6 +13,8 @@ let
     "space_cache=v2"
   ]
   ++ (lib.optional disableCow [ "nodatacow" ]);
+
+  partlabel = "${name}-root";
 in
 {
   disko.devices.nodev."/" = {
@@ -44,7 +46,7 @@ in
 
       content = {
         type = "luks";
-        name = "persistent-crypt";
+        name = "${partlabel}-crypt";
 
         settings = {
           allowDiscards = true;
@@ -56,7 +58,7 @@ in
           extraArgs = [
             "-f"
             "-L"
-            "root"
+            partlabel
           ];
           subvolumes = {
             "@persistent" = {

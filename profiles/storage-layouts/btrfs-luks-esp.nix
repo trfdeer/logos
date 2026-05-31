@@ -14,6 +14,7 @@ let
   ]
   ++ (lib.optional disableCow [ "nodatacow" ]);
 
+  partlabel = "${name}-root";
 in
 {
   disko.devices.disk.${name} = {
@@ -37,7 +38,7 @@ in
           size = "100%";
           content = {
             type = "luks";
-            name = "cryptroot";
+            name = "${partlabel}-root";
 
             settings = {
               allowDiscards = true;
@@ -49,7 +50,7 @@ in
               extraArgs = [
                 "-f"
                 "-L"
-                "root"
+                partlabel
               ];
               subvolumes = {
                 "@root" = {
