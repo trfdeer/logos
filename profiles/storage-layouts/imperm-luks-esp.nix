@@ -13,6 +13,8 @@ let
     "space_cache=v2"
   ]
   ++ (lib.optional disableCow [ "nodatacow" ]);
+
+  partlabel = "${name}-root";
 in
 {
   disko.devices.nodev."/" = {
@@ -44,15 +46,22 @@ in
 
       content = {
         type = "luks";
-        name = "persistent-crypt";
-        settings.allowDiscards = true;
+        name = "${partlabel}-crypt";
+
+        settings = {
+          allowDiscards = true;
+          crypttabExtraOpts = [
+            "tpm2-device=auto"
+            "tpm2-measure-pcr=yes"
+          ];
+        };
 
         content = {
           type = "btrfs";
           extraArgs = [
             "-f"
             "-L"
-            "root"
+            partlabel
           ];
           subvolumes = {
             "@persistent" = {
@@ -68,4 +77,6 @@ in
       };
     };
   };
+
+  fileSystems."/persistent".neededForBoot = true;
 }
