@@ -14,7 +14,7 @@ let
   ]
   ++ (lib.optional disableCow [ "nodatacow" ]);
 
-  partlabel = "${name}-root";
+  partlabel = "${name}-persistent";
 in
 {
   disko.devices.nodev."/" = {

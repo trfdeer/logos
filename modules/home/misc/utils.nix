@@ -33,6 +33,7 @@
         fd
         jq
 
+        _7zz
         lm_sensors
       ]
       ++ (with pkgs.unstable; [

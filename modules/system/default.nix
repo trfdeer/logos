@@ -13,6 +13,7 @@
 
       ./services/docker.nix
       ./services/ssh.nix
+      ./services/libvirtd.nix
 
       ./kde.nix
       ./core/impermanence.nix

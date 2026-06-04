@@ -43,6 +43,17 @@ in
       enable = true;
       operator = id.username;
     };
+
+    docker = {
+      enable = true;
+      useBtrfsDriver = true;
+      enableRootless = true;
+    };
+
+    libvirtd = {
+      enable = true;
+      users = [ id.username ];
+    };
   };
 
   services.fstrim.enable = true;
