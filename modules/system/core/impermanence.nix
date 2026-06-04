@@ -9,14 +9,14 @@ let
 in
 {
   options.sqwer.system.impermanence = {
-    enable = lib.mkEnableOption false;
+    enable = lib.mkEnableOption "Enable Secure Boot";
   };
 
   config = lib.mkIf cfg.enable {
     systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 
     preservation.enable = true;
-    preservation.preserveAt."/persistent" = {
+    preservation.preserveAt."/persistent/nixos" = {
       files = [
         {
           file = "/etc/machine-id";
@@ -38,11 +38,13 @@ in
 
       ]
       ++ lib.optional config.sqwer.system.boot.secureBoot.enable "/var/lib/sbctl"
-      ++ lib.optional config.sqwer.system.tailscale.enable "/var/lib/tailscale";
+      ++ lib.optional config.sqwer.system.tailscale.enable "/var/lib/tailscale"
+      ++ lib.optional config.sqwer.system.docker.enable "/var/lib/docker"
+      ++ lib.optional config.sqwer.system.tailscale.enable "/var/lib/libvirt";
 
       users.${id.username} = {
         files = [ ];
-        directories = [ ];
+        directories = [ ] ++ lib.optional config.sqwer.system.docker.enable ".local/share/docker";
       };
     };
   };

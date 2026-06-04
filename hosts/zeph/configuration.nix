@@ -36,6 +36,12 @@ in
       enable = true;
       operator = id.username;
     };
+
+    docker = {
+      enable = true;
+      useBtrfsDriver = true;
+      enableRootless = true;
+    };
   };
   environment.systemPackages = with pkgs; [ amdgpu_top ];
 

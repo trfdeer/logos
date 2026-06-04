@@ -9,7 +9,7 @@ let
 in
 {
   options.sqwer.system.boot = {
-    doNotConfigure = lib.mkEnableOption false;
+    doNotConfigure = lib.mkEnableOption "Skip configuring boot options";
 
     kernelPackage = lib.mkOption {
       type = lib.types.attrs;
@@ -19,7 +19,7 @@ in
     secureBoot = lib.mkOption {
       type = lib.types.submodule {
         options = {
-          enable = lib.mkEnableOption false;
+          enable = lib.mkEnableOption "Enable Secure Boot";
         };
       };
     };

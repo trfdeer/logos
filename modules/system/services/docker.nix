@@ -6,7 +6,7 @@ in
   options.sqwer.system.docker = {
     enable = lib.mkEnableOption "Enable docker";
     useBtrfsDriver = lib.mkEnableOption "Use btrfs storage driver";
-    rootless.enable = lib.mkEnableOption "Use rootless docker";
+    enableRootless = lib.mkEnableOption "Use rootless docker";
     users = lib.mkOption {
       type = lib.types.listOf lib.types.nonEmptyStr;
       default = [ ];
@@ -16,19 +16,25 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    virtualisation.docker = {
-      enable = true;
-      storageDriver = lib.mkIf cfg.useBtrfsDriver "btrfs";
+  config =
+    lib.mkIf cfg.enable {
+      virtualisation.docker = {
+        enable = true;
+        storageDriver = lib.mkIf cfg.useBtrfsDriver "btrfs";
+      };
 
+      users.extraGroups.docker.members = cfg.users;
+    }
+    // lib.mkIf (cfg.enableRootless) {
       # Have to enable per user with `systemctl --user enable --now docker`
-      rootless = lib.mkIf cfg.rootless.enable {
+
+      virtualisation.docker.rootless = {
         enable = true;
         setSocketVariable = true;
       };
+
+      boot.kernel.sysctl = {
+        "net.ipv4.ip_unprivileged_port_start" = 80;
+      };
     };
-
-    users.extraGroups.docker.members = cfg.users;
-
-  };
 }
