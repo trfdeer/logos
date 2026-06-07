@@ -48,13 +48,7 @@ in
         fi
       '';
 
-      shellAliases =
-        { }
-        // lib.optionalAttrs homeCfg.utils.enable { ls = "exa"; }
-        // lib.optionalAttrs config.sqwer.platform.isWsl {
-          ssh = "ssh.exe";
-          ssh-add = "ssh-add.exe";
-        };
+      shellAliases = { } // lib.optionalAttrs homeCfg.utils.enable { ls = "exa"; };
 
       oh-my-zsh = {
         enable = true;
