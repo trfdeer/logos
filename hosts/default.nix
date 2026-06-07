@@ -5,4 +5,5 @@
   rift = ./rift/configuration.nix;
   zeph = ./zeph/configuration.nix;
   beet = ./beet/configuration.nix;
+  wol = ./wol/configuration.nix;
 }

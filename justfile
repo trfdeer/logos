@@ -57,6 +57,10 @@ build-lxc host *args:
 build-iso host *args:
   just build-image {{host}} isoImage {{args}}
 
+# Build WSL tarball
+build-wslbuilder host *args:
+  just build-image {{host}} tarballBuilder
+
 # Install `output` to `target` host
 deploy output host port *args:
   nixos-anywhere --target-host "root@{{host}}" -p "{{port}}" -f ".#{{output}}" {{args}}

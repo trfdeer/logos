@@ -14,6 +14,9 @@
 }:
 let
   prefs' = {
+    isWsl = false;
+    isLxc = false;
+
     isDesktop = false;
   }
   // prefs;
@@ -30,23 +33,25 @@ inputs.nixpkgs.lib.nixosSystem {
   // extraSpecialArgs;
 
   modules = [
-    hosts.${name}
-
-    modules.common
-    profiles.platform
-
-    modules.system.sqwerSystem
+    { nixpkgs = { inherit pkgs; }; }
 
     inputs.disko.nixosModules.disko
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.preservation.nixosModules.preservation
     inputs.home-manager.nixosModules.home-manager
 
+    modules.common
+    modules.system.sqwerSystem
+
+    hosts.${name}
+    profiles.platform
     profiles.system.base
-    {
-      nixpkgs = { inherit pkgs; };
-    }
   ]
   ++ lib.optional prefs'.isDesktop profiles.system.desktop
+  ++ lib.optional prefs'.isLxc modules.system.standalone.hardware.proxmox-lxc
+  ++ lib.optionals prefs'.isWsl [
+    inputs.nixos-wsl.nixosModules.default
+    profiles.system.wsl
+  ]
   ++ extraModules;
 }

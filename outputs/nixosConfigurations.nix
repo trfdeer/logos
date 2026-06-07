@@ -28,10 +28,14 @@ in
   brim = makeSystem { name = "brim"; };
   sol = makeSystem { name = "sol"; };
   zeph = makeSystem { name = "zeph"; };
+  wol = makeSystem {
+    name = "wol";
+    prefs.isWsl = true;
+  };
 
   # Proxmox LXC Container
   rift = makeSystem {
     name = "rift";
-    extraModules = [ modules.system.standalone.hardware.proxmox-lxc ];
+    prefs.isLxc = true;
   };
 }

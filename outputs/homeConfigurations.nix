@@ -23,4 +23,12 @@ in
       profiles.home.desktop
     ];
   };
+
+  "dwai@wol" = makeHome {
+    name = "wol";
+    prefs.isWsl = true;
+    extraModules = [
+      profiles.home.desktop
+    ];
+  };
 }

@@ -47,13 +47,15 @@ in
           fi
         fi
       '';
-      shellAliases = lib.mkMerge [
-        (lib.mkIf homeCfg.utils.enable { ls = "exa"; })
-        (lib.mkIf config.sqwer.platform.isWsl {
+
+      shellAliases =
+        { }
+        // lib.optionalAttrs homeCfg.utils.enable { ls = "exa"; }
+        // lib.optionalAttrs config.sqwer.platform.isWsl {
           ssh = "ssh.exe";
           ssh-add = "ssh-add.exe";
-        })
-      ];
+        };
+
       oh-my-zsh = {
         enable = true;
         plugins = [
