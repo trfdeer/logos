@@ -44,10 +44,9 @@ in
       operator = id.username;
     };
 
-    docker = {
+    podman = {
       enable = true;
-      useBtrfsDriver = true;
-      enableRootless = true;
+      users = [ id.username ];
     };
 
     libvirtd = {

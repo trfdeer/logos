@@ -44,7 +44,11 @@ in
 
       users.${id.username} = {
         files = [ ];
-        directories = [ ] ++ lib.optional config.sqwer.system.docker.enable ".local/share/docker";
+        directories =
+          [ ]
+          ++ lib.optional config.sqwer.system.docker.enable ".local/share/docker"
+          ++ lib.optional config.sqwer.system.podman.enable ".local/share/containers";
+
       };
     };
   };
