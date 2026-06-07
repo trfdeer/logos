@@ -45,10 +45,7 @@ in
 
     sharedModules = [
       modules.common
-      profiles.platform
-      {
-        sqwer.platform.hostName = hostname;
-      }
+      { sqwer.platform = config.sqwer.platform; }
     ];
 
     users.${id.username}.imports = [
