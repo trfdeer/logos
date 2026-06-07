@@ -12,6 +12,7 @@
       ./games/minecraft.nix
 
       ./services/docker.nix
+      ./services/podman.nix
       ./services/ssh.nix
       ./services/libvirtd.nix
 
