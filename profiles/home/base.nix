@@ -20,6 +20,7 @@ in
       prefixKey = lib.mkDefault "C-a";
     };
 
+    gpg.enable = true;
     ssh = {
       enable = lib.mkDefault true;
       strict = lib.mkDefault false;
@@ -40,8 +41,5 @@ in
     };
 
     nix.enable = lib.mkDefault true;
-  }
-  // lib.optionalAttrs (config.sqwer.platform.isDesktop) {
-    _1password.enable = true;
   };
 }
