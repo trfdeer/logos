@@ -28,6 +28,9 @@ in
       (lib.mkIf cfgHome.git.enable {
         programs.git.settings."gpg \"ssh\"".program = opSshSignPath;
       })
+      (lib.mkIf cfgHome.ssh.enable {
+        programs.ssh.settings."*".IdentityAgent = "${config.home.homeDirectory}/.1password/agent.sock";
+      })
     ]
   );
 }
