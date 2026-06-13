@@ -2,6 +2,7 @@
   imports = [
     ./shell/ssh.nix
     ./shell/zsh.nix
+    ./shell/gpg.nix
     ./shell/tmux.nix
     ./shell/direnv.nix
     ./shell/starship.nix
