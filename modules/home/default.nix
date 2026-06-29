@@ -8,6 +8,7 @@
     ./shell/starship.nix
     ./shell/session_vars.nix
 
+    ./dev/k8s.nix
     ./dev/git.nix
     ./dev/helix.nix
     ./dev/lazygit.nix

@@ -43,7 +43,10 @@ in
       enableRootless = true;
     };
   };
-  environment.systemPackages = with pkgs; [ amdgpu_top ];
+  environment.systemPackages = with pkgs; [
+    amdgpu_top
+    rocmPackages.rocm-smi
+  ];
 
   services.fstrim.enable = true;
 

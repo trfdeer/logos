@@ -5,8 +5,8 @@
 
     home = {
       sound = {
-        disable-hsp = lib.mkDefault true;
-        disable-hw-volume = lib.mkDefault true;
+        disable-hsp = lib.mkDefault false;
+        disable-hw-volume = lib.mkDefault false;
       };
       _1password.enable = true;
       fonts.enable = true;

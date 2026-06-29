@@ -30,8 +30,8 @@ inputs.home-manager.lib.homeManagerConfiguration {
         hostName = name;
         isWsl = prefs'.isWsl;
       };
-
     }
+    (import ../hosts/${name}/home-configuration.nix)
   ]
   ++ extraModules;
 }

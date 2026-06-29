@@ -30,6 +30,7 @@ in
     lazygit.enable = lib.mkDefault true;
     helix.enable = lib.mkDefault true;
     direnv.enable = lib.mkDefault true;
+    k8s.enable = lib.mkDefault false;
 
     git = {
       enable = lib.mkDefault true;
