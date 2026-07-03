@@ -77,8 +77,8 @@ in
             user = lib.mkOption {
               type = lib.types.nonEmptyStr;
             };
-            sshPubKey = lib.mkOption {
-              type = lib.types.nonEmptyStr;
+            identityFiles = lib.mkOption {
+              type = lib.types.listOf lib.types.nonEmptyStr;
             };
           };
         }
@@ -133,7 +133,7 @@ in
           value = {
             domain = host.hostname;
             user = host.username;
-            sshPubKey = host.sshPubkey;
+            identityFiles = host.identityFiles;
           };
         }) config.sqwer.secrets.sshHosts
       );

@@ -82,9 +82,9 @@ in
             alias = lib.mkOption { type = lib.types.nonEmptyStr; };
             hostname = lib.mkOption { type = lib.types.nonEmptyStr; };
             username = lib.mkOption { type = lib.types.nonEmptyStr; };
-            sshPubkey = lib.mkOption {
-              type = lib.types.str;
-              default = "";
+            identityFiles = lib.mkOption {
+              type = lib.types.listOf lib.types.nonEmptyStr;
+              default = [ ];
             };
           };
         }

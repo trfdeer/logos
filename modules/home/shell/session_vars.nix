@@ -12,13 +12,14 @@
       DOTNET_CLI_TELEMETRY_OPTOUT = 1;
 
       GNUPGHOME = "${config.xdg.dataHome}/gnupg";
-      GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc";
-
-      RENPY_PATH_TO_SAVES = "${config.xdg.dataHome}/renpy";
     }
     // lib.optionalAttrs (config.sqwer.home.k8s.enable == true) {
       KUBECONFIG = "${config.xdg.configHome}/kube/config";
       TALOS_HOME = "${config.xdg.stateHome}/talos";
+    }
+    // lib.optionalAttrs (config.sqwer.platform.isDesktop) {
+      GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+      RENPY_PATH_TO_SAVES = "${config.xdg.dataHome}/renpy";
     };
   };
 }

@@ -38,7 +38,10 @@ in
           options = {
             domain = lib.mkOption { type = lib.types.nonEmptyStr; };
             user = lib.mkOption { type = lib.types.nonEmptyStr; };
-            sshPubKey = lib.mkOption { type = lib.types.nonEmptyStr; };
+            identityFiles = lib.mkOption {
+              type = lib.types.listOf lib.types.nonEmptyStr;
+              description = "One or more SSH identity files for this host.";
+            };
           };
         }
       );
@@ -58,15 +61,12 @@ in
         (lib.mapAttrs (name: host: {
           HostName = host.domain;
           User = host.user;
-          IdentityFile = "${config.home.homeDirectory}/.ssh/${name}.pub";
+          IdentityFile = lib.imap0 (
+            i: idFileName: "${config.home.homeDirectory}/.ssh/${idFileName}"
+          ) host.identityFiles;
           IdentitiesOnly = true;
         }) effectiveHosts)
       ];
     };
-
-    home.file = lib.mapAttrs' (name: host: {
-      name = ".ssh/${name}.pub";
-      value.text = host.sshPubKey;
-    }) effectiveHosts;
   };
 }

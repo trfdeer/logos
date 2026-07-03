@@ -38,7 +38,7 @@ secret-init:
 
 # Open decrypted file in vscode for editing
 secret-edit file:
-	SOPS_AGE_KEY={{age_key}} EDITOR="code --wait" sops {{file}}
+	SOPS_AGE_KEY={{age_key}} sops {{file}}
 
 # Remove generated files
 secret-clean:
