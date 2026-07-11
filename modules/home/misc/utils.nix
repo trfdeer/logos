@@ -13,7 +13,6 @@
     home.packages =
       with pkgs;
       [
-        nh
         zsh
         tmux
         git
@@ -37,6 +36,7 @@
         lm_sensors
       ]
       ++ (with pkgs.unstable; [
+        nh
         devenv
       ]);
 
