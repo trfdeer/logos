@@ -6,6 +6,7 @@
 }:
 let
   id = config.sqwer.identity;
+  hostName = "brim";
 in
 {
   imports = [
@@ -29,8 +30,12 @@ in
   # ------------------------------------------------------------
   # Host identity
   # ------------------------------------------------------------
-  networking.hostName = "brim";
-  networking.networkmanager.enable = true;
+  networking = {
+    inherit hostName;
+    domain = config.sqwer.secrets.outConfig."${hostName}".domain;
+
+    networkmanager.enable = true;
+  };
 
   # ------------------------------------------------------------
   # Host-specific services
@@ -43,13 +48,17 @@ in
       enable = true;
       operator = id.username;
     };
+
     tailscale-serve = {
       enable = true;
       port = 9090;
     };
 
     podman.enable = true;
-    cockpit.enable = true;
+    cockpit = {
+      enable = true;
+      allowedOrigins = [ "https://${config.networking.fqdn}" ];
+    };
 
     libvirtd = {
       enable = true;

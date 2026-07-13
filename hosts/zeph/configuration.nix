@@ -7,6 +7,7 @@
 }:
 let
   id = config.sqwer.identity;
+  hostName = "zeph";
 in
 {
   imports = [
@@ -22,8 +23,12 @@ in
   # ------------------------------------------------------------
   # Host identity
   # ------------------------------------------------------------
-  networking.hostName = "zeph";
-  networking.networkmanager.enable = true;
+  networking = {
+    inherit hostName;
+    domain = config.sqwer.secrets.outConfig."${hostName}".domain;
+
+    networkmanager.enable = true;
+  };
 
   # ------------------------------------------------------------
   # Host-specific services

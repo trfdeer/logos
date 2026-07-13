@@ -100,6 +100,10 @@ in
               defaultUser = lib.mkOption {
                 type = lib.types.str;
               };
+              domain = lib.mkOption {
+                type = lib.types.nullOr lib.types.nonEmptyStr;
+                default = null;
+              };
               allowedSshHosts = lib.mkOption {
                 type = lib.types.listOf lib.types.nonEmptyStr;
                 default = [ ];

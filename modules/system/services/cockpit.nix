@@ -10,6 +10,11 @@ in
 {
   options.sqwer.system.cockpit = {
     enable = lib.mkEnableOption "Enable cockpit";
+    allowedOrigins = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "List of allowed origins for cockpit";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -19,6 +24,7 @@ in
 
       port = 9090;
       openFirewall = false;
+      allowed-origins = cfg.allowedOrigins;
 
       plugins =
         with pkgs;
