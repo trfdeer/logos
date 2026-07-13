@@ -43,11 +43,13 @@ in
       enable = true;
       operator = id.username;
     };
-
-    podman = {
+    tailscale-serve = {
       enable = true;
-      users = [ id.username ];
+      port = 9090;
     };
+
+    podman.enable = true;
+    cockpit.enable = true;
 
     libvirtd = {
       enable = true;

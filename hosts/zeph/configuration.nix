@@ -37,11 +37,7 @@ in
       operator = id.username;
     };
 
-    docker = {
-      enable = true;
-      useBtrfsDriver = true;
-      enableRootless = true;
-    };
+    podman.enable = true;
   };
   environment.systemPackages = with pkgs; [
     amdgpu_top

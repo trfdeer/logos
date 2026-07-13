@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   cfg = config.sqwer.system.tailscale;
 in
@@ -25,7 +30,9 @@ in
   config = lib.mkIf cfg.enable {
     services.tailscale = {
       enable = true;
-      useRoutingFeatures = lib.mkIf (cfg.advertiseRoutes != "") "both";
+      disableUpstreamLogging = true;
+      useRoutingFeatures = if cfg.advertiseRoutes != "" then "both" else "none";
+
       extraSetFlags = [
         "--ssh=false"
         "--accept-dns=true"
@@ -41,14 +48,6 @@ in
       ++ lib.optionals (cfg.acceptRoutes) [
         "--accept-routes=true"
       ];
-      extraDaemonFlags = [ "--no-logs-no-support" ];
-    };
-
-    boot.kernel.sysctl = lib.mkIf (cfg.advertiseRoutes != "") {
-      "net.ipv4.conf.all.forwarding" = true;
-      "net.ipv4.conf.default.forwarding" = true;
-      "net.ipv6.conf.all.forwarding" = true;
-      "net.ipv6.conf.default.forwarding" = true;
     };
   };
 }

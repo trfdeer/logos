@@ -6,6 +6,7 @@
   sqwerSystem = {
     imports = [
       ./network/tailscale.nix
+      ./network/tailscale-serve.nix
       ./network/samba.nix
 
       ./games/terraria.nix
@@ -15,6 +16,7 @@
       ./services/podman.nix
       ./services/ssh.nix
       ./services/libvirtd.nix
+      ./services/cockpit.nix
 
       ./kde.nix
       ./core/impermanence.nix

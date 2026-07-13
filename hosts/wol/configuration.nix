@@ -7,10 +7,7 @@ let
 in
 {
   sqwer.system = {
-    podman = {
-      enable = true;
-      users = [ id.username ];
-    };
+    podman.enable = true;
     ssh.enable = false;
   };
 
