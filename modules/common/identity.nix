@@ -141,6 +141,7 @@ in
 
     sqwer.identity = {
       username = targetIdentity.username;
+      fullName = if targetIdentity.fullname == null then "" else targetIdentity.fullname;
       hashedPassword = targetIdentity.password_hash;
 
       inherit (targetIdentity) git;
