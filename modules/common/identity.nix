@@ -12,6 +12,34 @@ let
 
   # 4. Find the identity in the secrets list
   targetIdentity = lib.findFirst (id: id._id == targetUserId) null config.sqwer.secrets.identities;
+
+  gitGitPrimaryIdCfg =
+    fieldName:
+    if
+      targetIdentity ? git
+      && targetIdentity.git ? primaryIdentity
+      && targetIdentity.git.primaryIdentity ? "${fieldName}"
+    then
+      targetIdentity.git.primaryIdentity."${fieldName}"
+    else
+      "";
+
+  gitIdentityType = lib.types.submodule {
+    options = {
+      name = lib.mkOption {
+        type = lib.types.nonEmptyStr;
+      };
+
+      email = lib.mkOption {
+        type = lib.types.nonEmptyStr;
+      };
+
+      sshpubkey = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+      };
+    };
+  };
 in
 {
   options.sqwer.identity = {
@@ -41,12 +69,28 @@ in
       '';
     };
 
-    email = lib.mkOption {
-      type = lib.types.str;
-      description = ''
-        Primary email address associated with the user.
-        Typically used for Git commits and related tooling.
-      '';
+    git = lib.mkOption {
+      type = lib.types.nullOr (
+        lib.types.submodule {
+          options = {
+            primaryIdentity = lib.mkOption { type = gitIdentityType; };
+
+            additionalIdentities = lib.mkOption {
+              type = lib.types.listOf (
+                lib.types.submodule {
+                  options = {
+                    condition = lib.mkOption { type = lib.types.nonEmptyStr; };
+                    config = lib.mkOption { type = gitIdentityType; };
+                  };
+                }
+              );
+
+              default = [ ];
+            };
+          };
+        }
+      );
+      default = null;
     };
 
     sshPublicKeys = lib.mkOption {
@@ -55,15 +99,6 @@ in
       description = ''
         SSH public keys used for general-purpose access to remote systems.
         These keys may be installed into authorized_keys for the user.
-      '';
-    };
-
-    gitSshPublicKey = lib.mkOption {
-      type = lib.types.str;
-      description = ''
-        SSH public key used exclusively for Git authentication.
-        Intended for signing or accessing Git remotes when a
-        dedicated key is preferred.
       '';
     };
 
@@ -108,12 +143,7 @@ in
       username = targetIdentity.username;
       hashedPassword = targetIdentity.password_hash;
 
-      # Handle nullable fullname, fallback to username
-      fullName =
-        if targetIdentity.fullname != null then targetIdentity.fullname else targetIdentity.username;
-
-      # Handle nullable git.email, fallback to empty string or username
-      email = if targetIdentity ? git && targetIdentity.git ? email then targetIdentity.git.email else "";
+      inherit (targetIdentity) git;
 
       # SSH Keys
       sshPublicKeys =
@@ -121,10 +151,6 @@ in
           targetIdentity.ssh.authorized_keys
         else
           [ ];
-
-      # Git SSH Key
-      gitSshPublicKey =
-        if targetIdentity ? git && targetIdentity.git ? sshpubkey then targetIdentity.git.sshpubkey else "";
 
       # Map sshHosts list to attrs
       sshHosts = lib.listToAttrs (

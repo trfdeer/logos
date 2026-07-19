@@ -1,4 +1,7 @@
 { ... }:
 {
-  sqwer.home.tmux.enable = false;
+  sqwer.home = {
+    git.enable = false;
+    tmux.enable = false;
+  };
 }

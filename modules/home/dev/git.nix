@@ -4,49 +4,79 @@
   ...
 }:
 let
-  homeCfg = config.sqwer.home;
+  cfg = config.sqwer.home.git;
+
+  gitIdentityType = lib.types.submodule {
+    options = {
+      name = lib.mkOption {
+        type = lib.types.nonEmptyStr;
+      };
+
+      email = lib.mkOption {
+        type = lib.types.nonEmptyStr;
+      };
+
+      sshpubkey = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+      };
+    };
+  };
 in
 {
   options.sqwer.home.git = {
     enable = lib.mkEnableOption "Enable Git";
-    user = {
-      name = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        description = "Git user name";
-      };
-      email = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        description = "Git user email";
-      };
-      signingkey = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        description = "Git user signingkey";
-      };
+    identity = lib.mkOption { type = gitIdentityType; };
+
+    additionalIdentities = lib.mkOption {
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options = {
+            condition = lib.mkOption { type = lib.types.nonEmptyStr; };
+            config = lib.mkOption { type = gitIdentityType; };
+          };
+        }
+      );
+
+      default = [ ];
     };
   };
 
-  config = lib.mkIf homeCfg.git.enable {
+  config = lib.mkIf cfg.enable {
     programs.git = {
       enable = true;
       lfs.enable = true;
       signing = {
-        key = homeCfg.git.user.signingkey;
-        signByDefault = homeCfg.git.user.signingkey != "";
+        key = cfg.identity.sshpubkey;
+        signByDefault = cfg.identity.sshpubkey != "";
       };
+
       settings = {
         user = {
-          name = homeCfg.git.user.name;
-          email = homeCfg.git.user.email;
+          name = cfg.identity.name;
+          email = cfg.identity.email;
         };
         init.defaultBranch = "main";
-        gpg.format = lib.mkIf (homeCfg.git.user.signingkey != "") "ssh";
+        gpg.format = lib.mkIf (cfg.identity.sshpubkey != "") "ssh";
       }
       // lib.optionalAttrs config.sqwer.platform.isWsl {
         core.sshCommand = "ssh.exe";
       };
+
+      includes = map (identity: {
+        condition = identity.condition;
+
+        contents = {
+          user = {
+            name = identity.config.name;
+            email = identity.config.email;
+            signingkey = identity.config.sshpubkey;
+          };
+          gpg = lib.optionalAttrs (identity.config.sshpubkey != "") {
+            format = "ssh";
+          };
+        };
+      }) cfg.additionalIdentities;
     };
   };
 }

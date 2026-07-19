@@ -34,11 +34,9 @@ in
 
     git = {
       enable = lib.mkDefault true;
-      user = {
-        name = id.fullName;
-        email = id.email;
-        signingkey = id.gitSshPublicKey;
-      };
+      identity = id.git.primaryIdentity;
+
+      inherit (id.git) additionalIdentities;
     };
 
     nix.enable = lib.mkDefault true;

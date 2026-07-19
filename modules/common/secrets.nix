@@ -9,6 +9,24 @@ let
   parsedDevices = builtins.fromJSON (builtins.readFile "${secrets}/devices.json");
   parsedSshHosts = builtins.fromJSON (builtins.readFile "${secrets}/sshHosts.json");
   parsedOutConfig = builtins.fromJSON (builtins.readFile "${secrets}/outConfig.json");
+
+  identityType = lib.types.submodule {
+    options = {
+      name = lib.mkOption {
+        type = lib.types.nonEmptyStr;
+      };
+
+      email = lib.mkOption {
+        type = lib.types.nonEmptyStr;
+      };
+
+      sshpubkey = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+      };
+    };
+  };
+
 in
 {
   options.sqwer.secrets = {
@@ -30,8 +48,20 @@ in
               type = lib.types.nullOr (
                 lib.types.submodule {
                   options = {
-                    email = lib.mkOption { type = lib.types.nonEmptyStr; };
-                    sshpubkey = lib.mkOption { type = lib.types.nonEmptyStr; };
+                    primaryIdentity = lib.mkOption { type = identityType; };
+
+                    additionalIdentities = lib.mkOption {
+                      type = lib.types.listOf (
+                        lib.types.submodule {
+                          options = {
+                            condition = lib.mkOption { type = lib.types.nonEmptyStr; };
+                            config = lib.mkOption { type = identityType; };
+                          };
+                        }
+                      );
+
+                      default = [ ];
+                    };
                   };
                 }
               );
