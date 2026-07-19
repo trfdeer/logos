@@ -42,7 +42,21 @@ in
       operator = id.username;
     };
 
+    tailscale-serve = {
+      enable = true;
+      port = 9090;
+    };
+
     podman.enable = true;
+    cockpit = {
+      enable = true;
+      allowedOrigins = [ "https://${config.networking.fqdn}" ];
+    };
+
+    libvirtd = {
+      enable = true;
+      users = [ id.username ];
+    };
   };
   environment.systemPackages = with pkgs; [
     amdgpu_top

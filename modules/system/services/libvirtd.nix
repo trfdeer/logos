@@ -26,10 +26,15 @@ in
     virtualisation.libvirtd = {
       enable = true;
       qemu.swtpm.enable = true;
+    }
+    // lib.optionalAttrs (config.sqwer.system.cockpit.enable) {
+      dbus.enable = true;
     };
     virtualisation.spiceUSBRedirection.enable = true;
 
-    environment.systemPackages = with pkgs; [ OVMF ];
+    environment.systemPackages =
+      with pkgs;
+      [ OVMF ] ++ lib.optional config.sqwer.system.cockpit.enable pkgs.virt-manager;
 
     users.extraGroups.kvm.members = cfg.users;
     users.extraGroups.qemu.members = cfg.users;
