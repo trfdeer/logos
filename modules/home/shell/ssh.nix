@@ -58,6 +58,14 @@ in
       enableDefaultConfig = false;
 
       settings = lib.mkMerge [
+        {
+          "*" = {
+            ControlMaster = "auto";
+            ControlPersist = "10m";
+            ControlPath = "${config.xdg.stateHome}/ssh/control/%C";
+          };
+        }
+
         (lib.mapAttrs (name: host: {
           HostName = host.domain;
           User = host.user;
