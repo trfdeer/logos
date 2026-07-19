@@ -31,4 +31,8 @@ in
       profiles.home.desktop
     ];
   };
+
+  "dwai@zeph" = makeHome {
+    name = "zeph";
+  };
 }

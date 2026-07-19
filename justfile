@@ -65,5 +65,12 @@ build-wslbuilder host *args:
 deploy output host port *args:
   nixos-anywhere --target-host "root@{{host}}" -p "{{port}}" -f ".#{{output}}" {{args}}
 
+# Rebuild OS on remote target
 switch output host *args:
   nh os switch .#{{output}} --target-host {{host}}
+
+# Rebuilt home on remote taraget
+switch-home output host *args:
+  home-manager build --flake .#"{{output}}"
+  nix copy --to ssh-ng://{{host}} .#homeConfigurations."{{output}}".activationPackage
+  ssh {{host}} "$(nix path-info .#homeConfigurations.\"{{output}}\".activationPackage)/activate"
