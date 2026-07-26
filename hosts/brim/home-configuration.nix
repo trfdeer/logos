@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
-  sqwer.home.tmux.prefixKey = "C-s";
+  home.packages = with pkgs; [ nix-tree ];
 }

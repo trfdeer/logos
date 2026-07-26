@@ -1,8 +1,7 @@
 { pkgs, ... }:
 {
-  sqwer.home = {
-    k8s.enable = true;
-  };
-
-  home.packages = with pkgs; [ yubikey-manager ];
+  home.packages = with pkgs; [
+    yubikey-manager
+    nix-tree
+  ];
 }

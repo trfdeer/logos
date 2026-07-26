@@ -4,51 +4,50 @@
   pkgs,
   ...
 }:
+let
+  cfg = config.sqwer.home.utils;
+in
 {
   options.sqwer.home.utils = {
-    enable = lib.mkEnableOption "Install common tools";
+    enable = lib.mkEnableOption "core shell utilities" // {
+      default = true;
+    };
+    dev = lib.mkEnableOption "development tools";
   };
 
-  config = lib.mkIf config.sqwer.home.utils.enable {
-    home.packages =
-      with pkgs;
-      [
-        zsh
-        tmux
-        git
-        just
-
-        aria2
-        curl
-        wget
-        file
-
-        eza
-        bat
-        ripgrep
-        fzf
-        nnn
-        btop
-        fd
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      home.packages = with pkgs; [
         jq
-
-        _7zz
-        lm_sensors
-      ]
-      ++ (with pkgs.unstable; [
         nh
-        devenv
-      ]);
+        eza
+        vim
+        zsh
+        ripgrep
+        _7zip-zstd
+        lm_sensors
+      ];
 
-    programs.btop.enable = true;
-
-    programs.topgrade = {
-      enable = true;
-      settings = {
-        misc = {
-          cleanup = true;
+      programs.btop = {
+        enable = true;
+        package = pkgs.btop;
+        settings = {
+          theme_background = false;
         };
       };
-    };
-  };
+    })
+
+    (lib.mkIf (cfg.enable && cfg.dev) {
+      home.packages =
+        with pkgs;
+        [
+          git
+          helix
+          go-task
+        ]
+        ++ (with pkgs.unstable; [
+          secretspec
+        ]);
+    })
+  ];
 }

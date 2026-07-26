@@ -25,7 +25,10 @@ in
   config = lib.mkIf cfg.enable {
     virtualisation.libvirtd = {
       enable = true;
-      qemu.swtpm.enable = true;
+      qemu = {
+        package = pkgs.qemu_kvm;
+        swtpm.enable = true;
+      };
     }
     // lib.optionalAttrs (config.sqwer.system.cockpit.enable) {
       dbus.enable = true;

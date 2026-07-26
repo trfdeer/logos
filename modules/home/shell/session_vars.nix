@@ -17,7 +17,7 @@
       KUBECONFIG = "${config.xdg.configHome}/kube/config";
       TALOS_HOME = "${config.xdg.stateHome}/talos";
     }
-    // lib.optionalAttrs (config.sqwer.platform.isDesktop) {
+    // lib.optionalAttrs (lib.elem "desktop" config.sqwer.platform.roles) {
       GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/gtkrc";
       RENPY_PATH_TO_SAVES = "${config.xdg.dataHome}/renpy";
     };

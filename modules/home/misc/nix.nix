@@ -8,7 +8,9 @@ let
 in
 {
   options.sqwer.home.nix = {
-    enable = lib.mkEnableOption "Configure nix and enable home-manager";
+    enable = lib.mkEnableOption "Configure nix and enable home-manager" // {
+      default = true;
+    };
   };
 
   config = lib.mkIf (homeCfg.nix.enable && !config.sqwer.platform.isNixosSystem) {

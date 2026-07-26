@@ -4,7 +4,9 @@ let
 in
 {
   options.sqwer.home.zsh = {
-    enable = lib.mkEnableOption "Enable ZSH";
+    enable = lib.mkEnableOption "Enable ZSH" // {
+      default = true;
+    };
   };
 
   config = lib.mkIf config.sqwer.home.zsh.enable {
