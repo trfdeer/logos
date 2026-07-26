@@ -1,7 +1,7 @@
 {
   lib,
   pkgs,
-  isDesktop,
+  roles,
   modules,
   profiles,
   config,
@@ -15,6 +15,7 @@ in
   sqwer.platform = {
     isNixosSystem = true;
     hostName = hostname;
+    roles = roles;
   };
 
   # ------------------------------------------------------------
@@ -52,9 +53,9 @@ in
       modules.home
       profiles.home.base
     ]
-    ++ lib.optionals isDesktop [
-      profiles.home.desktop
-    ];
+    ++ lib.optional (lib.elem "desktop" roles) profiles.home.desktop
+    ++ lib.optional (lib.elem "server" roles) profiles.home.server
+    ++ lib.optional (lib.elem "dev" roles) profiles.home.dev;
   };
 
   # ------------------------------------------------------------
@@ -79,7 +80,7 @@ in
   sqwer.system = {
     ssh.enable = lib.mkDefault true;
   }
-  // lib.optionalAttrs (config.sqwer.platform.isDesktop) {
+  // lib.optionalAttrs (lib.elem "desktop" config.sqwer.platform.roles) {
     _1password = {
       enable = true;
       systemUsers = [ id.username ];

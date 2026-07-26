@@ -10,6 +10,17 @@
       type = lib.types.nonEmptyStr;
     };
 
+    roles = lib.mkOption {
+      type = lib.types.listOf (
+        lib.types.enum [
+          "desktop"
+          "server"
+
+          "dev"
+        ]
+      );
+    };
+
     isWsl = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -18,15 +29,6 @@
         Windows Subsystem for Linux (WSL).
 
         Used by other modules to apply WSL-specific behavior or workarounds.
-      '';
-    };
-
-    isDesktop = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = ''
-        Indiciates that the Home Manager configuration is running inside
-        an interactive desktop environment.
       '';
     };
 

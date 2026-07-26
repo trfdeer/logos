@@ -10,8 +10,11 @@
   extraModules ? [ ],
 }:
 let
+  inherit (pkgs) lib;
+
   prefs' = {
     isWsl = false;
+    roles = [ ];
   }
   // prefs;
 in
@@ -29,9 +32,13 @@ inputs.home-manager.lib.homeManagerConfiguration {
       sqwer.platform = {
         hostName = name;
         isWsl = prefs'.isWsl;
+        roles = prefs'.roles;
       };
     }
     (import ../hosts/${name}/home-configuration.nix)
   ]
+  ++ lib.optional (lib.elem "dev" prefs'.roles) profiles.home.dev
+  ++ lib.optional (lib.elem "desktop" prefs'.roles) profiles.home.desktop
+  ++ lib.optional (lib.elem "server" prefs'.roles) profiles.home.server
   ++ extraModules;
 }

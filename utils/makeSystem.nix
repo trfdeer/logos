@@ -17,7 +17,7 @@ let
     isWsl = false;
     isLxc = false;
 
-    isDesktop = false;
+    roles = [ ];
   }
   // prefs;
 in
@@ -27,7 +27,7 @@ inputs.nixpkgs.lib.nixosSystem {
   specialArgs = {
     inherit inputs modules profiles;
 
-    isDesktop = prefs'.isDesktop;
+    roles = prefs'.roles;
     hostname = name;
   }
   // extraSpecialArgs;
@@ -47,7 +47,7 @@ inputs.nixpkgs.lib.nixosSystem {
     profiles.platform
     profiles.system.base
   ]
-  ++ lib.optional prefs'.isDesktop profiles.system.desktop
+  ++ lib.optional (lib.elem "desktop" prefs'.roles) profiles.system.desktop
   ++ lib.optional prefs'.isLxc modules.system.standalone.hardware.proxmox-lxc
   ++ lib.optionals prefs'.isWsl [
     inputs.nixos-wsl.nixosModules.default

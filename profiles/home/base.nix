@@ -11,34 +11,4 @@ in
 
   xdg.enable = true;
   xdg.mime.enable = true;
-
-  sqwer.home = {
-    zsh.enable = lib.mkDefault true;
-    starship.enable = lib.mkDefault true;
-    tmux = {
-      enable = lib.mkDefault true;
-      prefixKey = lib.mkDefault "C-a";
-    };
-
-    gpg.enable = true;
-    ssh = {
-      enable = lib.mkDefault true;
-      strict = lib.mkDefault false;
-    };
-
-    utils.enable = lib.mkDefault true;
-    lazygit.enable = lib.mkDefault true;
-    helix.enable = lib.mkDefault true;
-    direnv.enable = lib.mkDefault true;
-    k8s.enable = lib.mkDefault false;
-
-    git = {
-      enable = lib.mkDefault true;
-      identity = id.git.primaryIdentity;
-
-      inherit (id.git) additionalIdentities;
-    };
-
-    nix.enable = lib.mkDefault true;
-  };
 }

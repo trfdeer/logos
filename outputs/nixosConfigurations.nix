@@ -25,8 +25,17 @@ in
   beet = makeSystem { name = "beet"; };
 
   # Devices
-  brim = makeSystem { name = "brim"; };
-  sol = makeSystem { name = "sol"; };
+  brim = makeSystem {
+    name = "brim";
+    prefs.roles = [ "server" ];
+  };
+  sol = makeSystem {
+    name = "sol";
+    prefs.roles = [
+      "desktop"
+      "dev"
+    ];
+  };
   zeph = makeSystem { name = "zeph"; };
   wol = makeSystem {
     name = "wol";

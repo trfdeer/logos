@@ -19,20 +19,22 @@ in
 {
   "dwai@sol" = makeHome {
     name = "sol";
-    extraModules = [
-      profiles.home.desktop
+    prefs.roles = [
+      "dev"
+      "desktop"
     ];
   };
 
   "dwai@wol" = makeHome {
     name = "wol";
-    prefs.isWsl = true;
-    extraModules = [
-      profiles.home.desktop
-    ];
+    prefs = {
+      isWsl = true;
+      roles = [ "server" ];
+    };
   };
 
   "dwai@zeph" = makeHome {
     name = "zeph";
+    prefs.roles = [ "server" ];
   };
 }
