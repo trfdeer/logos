@@ -8,7 +8,7 @@
 
       nh
       git
-      just
+      go-task
 
       age
       sops

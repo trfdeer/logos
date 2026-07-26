@@ -1,0 +1,32 @@
+version: "3"
+
+tasks:
+  install:
+    desc: Install output to target host
+    vars:
+      PORT: 22
+    requires:
+      vars: [OUTPUT, HOST, PORT]
+    cmds:
+      - |
+        nixos-anywhere \
+          --target-host "root@{{.HOST}}" \
+          -p "{{.PORT}}" \
+          -f ".#{{.OUTPUT}}" \
+          {{.CLI_ARGS}}
+
+  os:
+    desc: Rebuild OS on remote target
+    requires:
+      vars: [HOST, OUTPUT]
+    cmds:
+      - nh os switch ".#{{.OUTPUT}}" --target-host {{.HOST}}
+
+  home:
+    desc: Rebuild Home Manager on remote target
+    requires:
+      vars: [HOST, OUTPUT]
+    cmds:
+      - home-manager build --flake ".#{{.OUTPUT}}"
+      - nix copy --to ssh-ng://{{.HOST}} .#homeConfigurations."{{.OUTPUT}}".activationPackage
+      - ssh {{.HOST}} "$(nix path-info .#homeConfigurations.\"{{.OUTPUT}}\".activationPackage)/activate"

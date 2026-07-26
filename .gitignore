@@ -3,3 +3,6 @@
 /.direnv/
 
 /secrets/decrypted
+
+[Tt]askfile.yml
+[Tt]askfile.yaml

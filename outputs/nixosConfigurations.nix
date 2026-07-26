@@ -36,7 +36,10 @@ in
       "dev"
     ];
   };
-  zeph = makeSystem { name = "zeph"; };
+  zeph = makeSystem {
+    name = "zeph";
+    prefs.roles = [ "server" ];
+  };
   wol = makeSystem {
     name = "wol";
     prefs.isWsl = true;
