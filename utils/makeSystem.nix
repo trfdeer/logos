@@ -48,6 +48,7 @@ inputs.nixpkgs.lib.nixosSystem {
     profiles.system.base
   ]
   ++ lib.optional (lib.elem "desktop" prefs'.roles) profiles.system.desktop
+  ++ lib.optional (lib.elem "server" prefs'.roles) profiles.system.server
   ++ lib.optional prefs'.isLxc modules.system.standalone.hardware.proxmox-lxc
   ++ lib.optionals prefs'.isWsl [
     inputs.nixos-wsl.nixosModules.default

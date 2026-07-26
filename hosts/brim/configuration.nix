@@ -33,8 +33,6 @@ in
   networking = {
     inherit hostName;
     domain = config.sqwer.secrets.outConfig."${hostName}".domain;
-
-    networkmanager.enable = true;
   };
 
   # ------------------------------------------------------------
@@ -44,17 +42,17 @@ in
     impermanence.enable = true;
     boot.secureBoot.enable = true;
 
+    network = {
+      enable = true;
+      interface = "en*";
+    };
+
     tailscale = {
       enable = true;
       operator = id.username;
     };
 
     podman.enable = true;
-
-    libvirtd = {
-      enable = true;
-      users = [ id.username ];
-    };
   };
 
   services.fstrim.enable = true;
