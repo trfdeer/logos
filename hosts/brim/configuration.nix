@@ -52,7 +52,12 @@ in
       operator = id.username;
     };
 
-    podman.enable = true;
+    docker = {
+      enable = true;
+      enableRootless = true;
+      useBtrfsDriver = true;
+      users = [ id.username ];
+    };
   };
 
   services.fstrim.enable = true;
