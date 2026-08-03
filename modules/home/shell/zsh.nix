@@ -53,8 +53,10 @@ in
       shellAliases = {
         nr = "nix run";
       }
-      // lib.optionalAttrs homeCfg.k8s.enable {
+      // lib.optionalAttrs homeCfg.utils.enable {
         ls = "exa";
+      }
+      // lib.optionalAttrs homeCfg.k8s.enable {
         k = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl";
         kd = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl describe";
         kubectl = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl";

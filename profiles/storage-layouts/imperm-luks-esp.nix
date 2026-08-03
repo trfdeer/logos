@@ -11,8 +11,9 @@ let
     "noatime"
     "ssd"
     "space_cache=v2"
+    "discard=async"
   ]
-  ++ (lib.optional disableCow [ "nodatacow" ]);
+  ++ lib.optional disableCow "nodatacow";
 
   partlabel = "${name}-persistent";
 in
@@ -33,7 +34,7 @@ in
     content.partitions.boot = {
       name = "boot";
       size = "1G";
-      type = "EF02";
+      type = "EF00";
 
       content = {
         type = "filesystem";

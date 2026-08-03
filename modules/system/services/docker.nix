@@ -7,6 +7,7 @@ in
     enable = lib.mkEnableOption "Enable docker";
     useBtrfsDriver = lib.mkEnableOption "Use btrfs storage driver";
     enableRootless = lib.mkEnableOption "Use rootless docker";
+    openSwarmPorts = lib.mkEnableOption "Open swarm ports (2377, 7946, 4789)";
     users = lib.mkOption {
       type = lib.types.listOf lib.types.nonEmptyStr;
       default = [ ];
@@ -16,25 +17,39 @@ in
     };
   };
 
-  config =
-    lib.mkIf cfg.enable {
-      virtualisation.docker = {
-        enable = true;
-        storageDriver = lib.mkIf cfg.useBtrfsDriver "btrfs";
-      };
+  config = lib.mkIf cfg.enable (
+    lib.mkMerge [
+      {
+        virtualisation.docker = {
+          enable = true;
+          storageDriver = lib.mkIf cfg.useBtrfsDriver "btrfs";
+        };
 
-      users.extraGroups.docker.members = cfg.users;
-    }
-    // lib.mkIf (cfg.enableRootless) {
-      # Have to enable per user with `systemctl --user enable --now docker`
+        users.extraGroups.docker.members = cfg.users;
+      }
+      (lib.mkIf (cfg.enableRootless) {
+        # Have to enable per user with `systemctl --user enable --now docker`
 
-      virtualisation.docker.rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
+        virtualisation.docker.rootless = {
+          enable = true;
+          setSocketVariable = true;
+        };
 
-      boot.kernel.sysctl = {
-        "net.ipv4.ip_unprivileged_port_start" = 80;
-      };
-    };
+        boot.kernel.sysctl = {
+          "net.ipv4.ip_unprivileged_port_start" = 80;
+        };
+      })
+      (lib.mkIf (cfg.openSwarmPorts) {
+        networking.firewall.allowedTCPPorts = [
+          2377
+          7946
+        ];
+
+        networking.firewall.allowedUDPPorts = [
+          7946
+          4789
+        ];
+      })
+    ]
+  );
 }

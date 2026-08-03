@@ -3,6 +3,10 @@
   options = { };
 
   config = {
+    home.sessionPath = [
+      "${config.home.homeDirectory}/.local/bin"
+    ];
+
     home.sessionVariables = {
       GOPATH = "${config.home.homeDirectory}/code/go";
 

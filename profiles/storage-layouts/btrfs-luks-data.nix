@@ -2,6 +2,7 @@
   lib,
   name,
   device,
+  noFail ? false,
   disableCow ? false,
   ...
 }:
@@ -13,7 +14,8 @@ let
     "ssd"
     "space_cache=v2"
   ]
-  ++ (lib.optional disableCow [ "nodatacow" ]);
+  ++ lib.optional disableCow "nodatacow"
+  ++ lib.optional noFail "nofail";
 
   partlabel = "${name}-data";
 in

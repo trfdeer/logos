@@ -6,6 +6,7 @@
 let
   id = config.sqwer.identity;
   cfg = config.sqwer.system.impermanence;
+  isServer = lib.elem "server" config.sqwer.platform.roles;
 in
 {
   options.sqwer.system.impermanence = {
@@ -22,25 +23,26 @@ in
           file = "/etc/machine-id";
           inInitrd = true;
         }
-        {
-          file = "/etc/ssh/ssh_host_rsa_key";
-          how = "symlink";
-          configureParent = true;
-        }
+
         {
           file = "/etc/ssh/ssh_host_ed25519_key";
           how = "symlink";
           configureParent = true;
         }
+
+        {
+          file = "/etc/ssh/ssh_host_rsa_key";
+          how = "symlink";
+          configureParent = true;
+        }
       ];
 
-      directories = [
-
-      ]
-      ++ lib.optional config.sqwer.system.boot.secureBoot.enable "/var/lib/sbctl"
-      ++ lib.optional config.sqwer.system.tailscale.enable "/var/lib/tailscale"
-      ++ lib.optional config.sqwer.system.docker.enable "/var/lib/docker"
-      ++ lib.optional config.sqwer.system.tailscale.enable "/var/lib/libvirt";
+      directories =
+        [ ]
+        ++ lib.optional config.sqwer.system.docker.enable "/var/lib/docker"
+        ++ lib.optional config.sqwer.system.boot.secureBoot.enable "/var/lib/sbctl"
+        ++ lib.optional config.sqwer.system.tailscale.enable "/var/lib/tailscale"
+        ++ lib.optional isServer "/srv/containers";
 
       users.${id.username} = {
         files = [ ];

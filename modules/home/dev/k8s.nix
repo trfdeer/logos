@@ -10,7 +10,7 @@ in
 {
   options.sqwer.home.k8s = {
     enable = lib.mkEnableOption "Enable Kubernetes tools";
-    clusterPackage = lib.mkPackageOption pkgs "talosctl" {
+    clusterPackage = lib.mkPackageOption pkgs.unstable "k3d" {
       nullable = true;
     };
   };

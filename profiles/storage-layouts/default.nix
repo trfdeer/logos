@@ -3,4 +3,5 @@
   btrfs-luks-esp = ./btrfs-luks-esp.nix;
   btrfs-luks-data = ./btrfs-luks-data.nix;
   imperm-luks-esp = ./imperm-luks-esp.nix;
+  server-imperm-luks-esp = ./server-imperm-luks-esp.nix;
 }

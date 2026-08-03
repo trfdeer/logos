@@ -28,7 +28,7 @@ in
       };
     };
 
-    environment.systemPackages = with pkgs; [ podman-compose ];
+    environment.systemPackages = with pkgs; [ docker-compose ];
     users.extraGroups.podman.members = cfg.users;
   };
 }

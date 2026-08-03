@@ -12,18 +12,11 @@ in
   imports = [
     profiles.hardware.devices.optiplex-7050
 
-    (import profiles.storage-layouts.imperm-luks-esp {
+    (import profiles.storage-layouts.server-imperm-luks-esp {
       inherit lib;
 
       name = "nixos";
       device = config.sqwer.secrets.devices.op-server.drive_paths.root;
-    })
-
-    (import profiles.storage-layouts.btrfs-luks-data {
-      inherit lib;
-
-      name = "vault0";
-      device = config.sqwer.secrets.devices.op-server.drive_paths.data;
     })
   ];
 
@@ -52,12 +45,7 @@ in
       operator = id.username;
     };
 
-    docker = {
-      enable = true;
-      enableRootless = true;
-      useBtrfsDriver = true;
-      users = [ id.username ];
-    };
+    podman.enable = true;
   };
 
   services.fstrim.enable = true;
