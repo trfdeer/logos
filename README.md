@@ -1,79 +1,105 @@
 # logos
 
-NixOS + Home Manager configuration.
+A NixOS and Home Manager flake for declaratively managing multiple machines.
 
-## Hosts
+## Repository layout
 
-| Host | Role | Notes |
-|------|------|-------|
-| `rock` | Laptop | Dell Precision 3561, LUKS-encrypted root, Secure Boot (Lanzaboote) |
-| `sol` | Desktop | SS Fury, LUKS-encrypted root + separate vault partition, Samba share, Tailscale exit node |
-| `atlas` | VM | QEMU/Proxmox guest, static IP `172.16.11.102`, Docker, Tailscale |
-| `rift` | LXC container | Proxmox LXC, Terraria + Minecraft servers |
+| Directory | Purpose |
+| --------- | ------- |
+| [flake.nix](flake.nix) | Flake inputs, including nixpkgs, home-manager, lanzaboote, disko, and sqpkgs. |
+| [hosts/](hosts/) | One directory per machine, containing `configuration.nix` and usually `home-configuration.nix`. |
+| [modules/](modules/) | Reusable configuration modules using the `sqwer.*` option namespace. |
+| [profiles/](profiles/) | Composed selections of modules for system, home, hardware, and storage layouts. |
+| [utils/](utils/) | Helpers for assembling system and home configurations. |
+| [outputs/](outputs/) | Flake outputs for dev shells, formatters, home configurations, and NixOS configurations. |
+| [secrets/](secrets/) | SOPS-encrypted JSON files consumed by the configuration. |
+| [just/](just/) | Just recipes for secrets management, image builds, and remote upgrades. |
 
----
+## Build and deploy
 
-## Initial Installation
-
-```bash
-sudo nixos-rebuild --flake .#<hostname> boot
-```
-
-Before rebooting, set the user password:
+Format the repository:
 
 ```bash
-nixos-enter
-passwd <username>
-exit
-sudo reboot
+nix fmt
 ```
 
----
-
-## Post-Install Steps
-
-### Identity file
-
-The identity file is not tracked in the repo. Generate it from the template before building:
+Build a host's NixOS closure:
 
 ```bash
-# fill in profiles/identities/primary.nix from the template
+nix build ".#nixosConfigurations.<host>.config.system.build.toplevel"
 ```
 
-### Secure Boot — `rock`, `sol`
-
-These hosts use Lanzaboote. Key generation and enrollment happen automatically on first boot if the firmware is in Setup Mode. After the first successful boot:
+Build images:
 
 ```bash
-nix run "nixpkgs#sbctl" -- enroll-keys -m
-nix run "nixpkgs#sbctl" -- verify
+just build iso <host>                  # installer ISO
+just build lxc <host>                  # Proxmox LXC tarball
+just build wsl <host>                  # WSL tarball
+just build image <host> <TYPE>         # generic system.build.TYPE
 ```
 
-Then enroll the TPM2 key for the encrypted root (replace `<partition>` with the LUKS partition, e.g. `/dev/nvme0n1p1`):
+Deploy remotely:
 
 ```bash
-systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7+8+12 <partition>
-sudo reboot
+just upgrade os <target-host> <flake-output>
+just upgrade home <target-host> "dwai@<host>"
+just upgrade install <flake-output> <target-host> [port]
 ```
 
-### Samba — `sol`
+## Conventions
 
-The Samba user password is not managed by NixOS and must be set manually:
+- Project-specific configuration lives under the `sqwer.*` option namespace.
+  - `sqwer.platform.*` — host metadata: `hostName`, `roles`, `stateVersion`, `isWsl`, `isNixosSystem`.
+  - `sqwer.identity.*` — derived from decrypted secrets: `username`, `fullName`, `hashedPassword`, `git`, `sshPublicKeys`, `sshHosts`.
+  - `sqwer.secrets.*` — parsed raw JSON from `secrets/decrypted/`.
+  - `sqwer.system.*` — NixOS-only options.
+  - `sqwer.home.*` — Home Manager-only options.
+- Modules follow the standard `mkEnableOption` / `mkIf cfg.enable` pattern.
+- Profiles use `lib.mkDefault` for values hosts may override.
+- Host `roles` are limited to `"desktop"`, `"server"`, and `"dev"`.
+  - `profiles/system/base.nix` maps roles to home profiles.
+  - `makeSystem` imports `profiles.system.desktop` when `"desktop"` is in roles, and `profiles.system.server` when `"server"` is in roles.
+
+## Secrets workflow
+
+Encrypted files are tracked under `secrets/`. Do not edit them as plain JSON.
 
 ```bash
-smbpasswd -a <username>
+just secrets init                      # decrypt and configure git hooks
+just secrets edit secrets/<file>.json  # edit an encrypted file
+just secrets clean                     # remove plaintext files
 ```
 
-The share is restricted to `100.64.0.0/10` (Tailscale range) and localhost. Access is authenticated — no guest access.
+`just secrets init` also sets `core.hooksPath` to `.githooks` and stages decrypted files with `git add -fN`. Do not commit `secrets/decrypted/`.
 
----
+## Adding a host
 
-## Development
+1. Create `hosts/<name>/configuration.nix` and `home-configuration.nix` if needed.
+2. Register it in [hosts/default.nix](hosts/default.nix).
+3. Declare it in [outputs/nixosConfigurations.nix](outputs/nixosConfigurations.nix) and its standalone home config in [outputs/homeConfigurations.nix](outputs/homeConfigurations.nix).
+4. Add a `<name>` entry in `secrets/outConfig.json` so `sqwer.identity` resolves, then re-encrypt.
+5. Import the appropriate hardware profile from [profiles/hardware/](profiles/hardware/) and, if needed, a storage-layout profile from [profiles/storage-layouts/](profiles/storage-layouts/).
 
-A devshell is available via `nix develop` (or automatically with `direnv`).
+## Adding a module or profile
 
-A pre-commit hook is installed under `.githooks/` — set it up with:
+- New module: add under `modules/<area>/`, import it in the nearest `default.nix`, and follow the `sqwer.<subsystem>.<name>` option pattern.
+- New profile: add under `profiles/system/` or `profiles/home/` and register it in the corresponding `default.nix`.
+- New hardware/storage profile: add under `profiles/hardware/` or `profiles/storage-layouts/` and register it in the corresponding `default.nix`.
 
-```bash
-git config core.hooksPath .githooks
-```
+## Important notes
+
+- A host must exist in `secrets/outConfig.json` or evaluation fails with an assertion in [modules/common/identity.nix](modules/common/identity.nix).
+- Enabling `sqwer.system.boot.secureBoot.enable` disables `boot.loader.systemd-boot` via lanzaboote.
+  - Secure Boot must be enabled and be in Setup Mode in firmware before booting the installer.
+  - After installation, enroll the LUKS TPM2 key by running:
+
+    ```bash
+    systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=2+7+12 <LUKS-DEVICE>
+    ```
+
+- Impermanence uses the `preservation` project, preserving files on `/persistent/nixos`.
+- Proxmox LXC hosts set `nix.settings.sandbox = false`.
+
+## Validation
+
+CI runs `nixfmt-tree --ci .` only. Run `nix flake check` and per-host evaluation locally before submitting changes.
