@@ -1,14 +1,18 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
-  home.packages = with pkgs; [
+  home.packages = with pkgs.unstable; [
     yubikey-manager
     nix-tree
-    opentofu
+    bws
   ];
-
-  sqwer.home.k8s.enable = true;
 
   home.sessionPath = [
-    "$HOME/.opencode/bin"
+    "${config.home.homeDirectory}/.bun/bin"
   ];
+
+  sqwer.home = {
+    sound = {
+      disable-hw-volume = true;
+    };
+  };
 }

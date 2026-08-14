@@ -17,16 +17,19 @@ in
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      home.packages = with pkgs; [
-        jq
-        nh
-        eza
-        vim
-        zsh
-        ripgrep
-        _7zip-zstd
-        lm_sensors
-      ];
+      home.packages =
+        with pkgs;
+        [
+          jq
+          nh
+          eza
+          vim
+          zsh
+          ripgrep
+          _7zip-zstd
+          lm_sensors
+        ]
+        ++ (with pkgs.unstable; [ just ]);
 
       programs.btop = {
         enable = true;

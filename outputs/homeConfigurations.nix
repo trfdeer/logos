@@ -39,7 +39,7 @@ in
   };
 
   "dwai@brim" = makeHome {
-    name = "zeph";
+    name = "brim";
     prefs.roles = [ "server" ];
   };
 }

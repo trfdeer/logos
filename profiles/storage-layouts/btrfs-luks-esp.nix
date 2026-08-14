@@ -12,7 +12,7 @@ let
     "ssd"
     "space_cache=v2"
   ]
-  ++ (lib.optional disableCow [ "nodatacow" ]);
+  ++ lib.optional disableCow "nodatacow";
 
   partlabel = "${name}-root";
 in

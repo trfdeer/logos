@@ -12,6 +12,7 @@
     ./dev/git.nix
     ./dev/helix.nix
     ./dev/lazygit.nix
+    ./dev/podman.nix
 
     ./misc/nix.nix
     ./misc/utils.nix
