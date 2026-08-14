@@ -69,10 +69,12 @@ just build image <host> <TYPE>  # generic system.build.TYPE
 Remote deployment:
 
 ```bash
-just upgrade os <target-host> <flake-output>
-just upgrade home <target-host> "dwai@<host>"
-just upgrade install <flake-output> <target-host> [port]
+just upgrade os <flake-output> [<target-host>]
+just upgrade home <flake-output> [<target-host>]
+just upgrade install <flake-output> [<target-host>] [port]
 ```
+
+If `<target-host>` is omitted, it defaults to the same value as `<flake-output>`.
 
 ## Secrets workflow
 

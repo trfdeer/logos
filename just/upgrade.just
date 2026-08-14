@@ -1,21 +1,23 @@
 # Upgrade targets in place
+set default-list
 
 PORT := "22"
+ROOT := justfile_directory()
 
 # Upgrade OS on remote target
-os HOST OUTPUT:
-    nh os switch ".#{{OUTPUT}}" --target-host {{HOST}}
+os CONFIG HOST=CONFIG:
+    nh os switch "{{ROOT}}#{{CONFIG}}" --target-host {{HOST}}
 
 # Upgrade Home Manager on remote target
-home HOST OUTPUT:
-    home-manager build --flake ".#{{OUTPUT}}"
-    nix copy --to ssh-ng://{{HOST}} .#homeConfigurations."{{OUTPUT}}".activationPackage
-    ssh {{HOST}} "$(nix path-info .#homeConfigurations.\"{{OUTPUT}}\".activationPackage)/activate"
+home CONFIG HOST=CONFIG:
+    home-manager build --flake "{{ROOT}}#{{CONFIG}}"
+    nix copy --to ssh-ng://{{HOST}} {{ROOT}}#homeConfigurations."{{CONFIG}}".activationPackage
+    ssh {{HOST}} "$(nix path-info {{ROOT}}#homeConfigurations.\"{{CONFIG}}\".activationPackage)/activate"
 
 # Install (bootstrap) OS onto target host
-install OUTPUT HOST PORT=PORT *ARGS:
+install CONFIG HOST=CONFIG PORT=PORT *ARGS:
     nixos-anywhere \
       --target-host "root@{{HOST}}" \
       -p "{{PORT}}" \
-      -f ".#{{OUTPUT}}" \
+      -f "{{ROOT}}#{{CONFIG}}" \
       {{ARGS}}

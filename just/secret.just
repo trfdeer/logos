@@ -1,11 +1,13 @@
 # Secrets management
+set default-list
+
+ROOT := justfile_directory()
 
 SECRET_FILES := "identities devices sshHosts outConfig"
-DECRYPTED_DIR := "secrets/decrypted"
 
-[private]
-get-age-key:
-    @op read op://sqwer/sqwer_age/password
+DECRYPTED_DIR := ROOT / "secrets/decrypted"
+
+AGE_KEY := `op read op://sqwer/sqwer_age/password`
 
 # Decrypt and initialize secrets
 init:
@@ -15,12 +17,11 @@ init:
     git config core.hooksPath ".githooks"
     rm -rf "{{DECRYPTED_DIR}}"
     mkdir -p "{{DECRYPTED_DIR}}"
-    AGE_KEY=$(just secrets/get-age-key)
     for file in {{SECRET_FILES}}; do
       echo "→ decrypting $file.json"
-      SOPS_AGE_KEY="$AGE_KEY" sops \
+      SOPS_AGE_KEY="{{AGE_KEY}}" sops \
         --output "{{DECRYPTED_DIR}}/$file.json" \
-        -d "secrets/$file.json"
+        -d "{{ROOT}}/secrets/$file.json"
     done
     find "{{DECRYPTED_DIR}}" -type f -exec git add -fN {} \;
     echo 'Done'

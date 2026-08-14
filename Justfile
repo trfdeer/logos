@@ -1,8 +1,8 @@
-set shell := ['bash', '-cu']
+set lazy
 set positional-arguments
 
-# secet management
-mod secrets './just/secrets.just'
+# secret management
+mod secret './just/secret.just'
 
 # build images
 mod build './just/build.just'
