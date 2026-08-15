@@ -2,6 +2,7 @@
 {
   sqwer.home = {
     podman.enable = true;
+    helix.enable = true;
   };
 
   home.packages = with pkgs.unstable; [

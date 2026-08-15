@@ -51,10 +51,14 @@ in
 
   services.fstrim.enable = true;
 
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
+  networking.firewall = {
+    allowedTCPPorts = [
+      80
+      22
+      443
+    ];
+    allowedUDPPorts = [ 443 ];
+  };
 
   # ------------------------------------------------------------
   # Host-specific Home Manager deltas
