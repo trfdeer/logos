@@ -10,11 +10,13 @@ in
 {
   imports = [
     profiles.hardware.vm.qemu-guest
-    (import profiles.storage-layouts.imperm-luks-esp {
-      inherit lib;
-
+    (profiles.storage-layouts.makeStorageLayout {
       name = "nixos";
       device = "/dev/sda";
+      filesystem = "btrfs";
+      encrypted = true;
+      impermanent = true;
+      subvolumes = profiles.storage-layouts.btrfsSubvols.impermanent;
     })
   ];
 

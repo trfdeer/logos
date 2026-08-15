@@ -10,6 +10,7 @@ in
 {
   options.sqwer.system.podman = {
     enable = lib.mkEnableOption "Enable Podman";
+    useBtrfsDriver = lib.mkEnableOption "Use btrfs driver";
     users = lib.mkOption {
       type = lib.types.listOf lib.types.nonEmptyStr;
       description = "Users to add to podman group.";
@@ -24,11 +25,13 @@ in
         containersConf.settings = {
           containers.userns = "auto";
         };
-        storage.settings.storage = {
-          driver = "btrfs";
-          graphroot = "/var/lib/containers/storage";
-          runroot = "/run/containers/storage";
-        };
+        storage.settings.storage =
+          { }
+          // (lib.optionalAttrs cfg.useBtrfsDriver {
+            driver = "btrfs";
+            graphroot = "/var/lib/containers/storage";
+            runroot = "/run/containers/storage";
+          });
       };
 
       podman = {

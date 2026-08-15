@@ -40,6 +40,7 @@ in
       directories =
         [ ]
         ++ lib.optional config.sqwer.system.docker.enable "/var/lib/docker"
+        ++ lib.optional config.sqwer.system.podman.enable "/var/lib/containers"
         ++ lib.optional config.sqwer.system.boot.secureBoot.enable "/var/lib/sbctl"
         ++ lib.optional config.sqwer.system.tailscale.enable "/var/lib/tailscale"
         ++ lib.optional isServer "/srv/containers";

@@ -12,11 +12,12 @@ in
   imports = [
     profiles.hardware.devices.optiplex-7050
 
-    (import profiles.storage-layouts.server-imperm-luks-esp {
-      inherit lib;
-
+    (profiles.storage-layouts.makeStorageLayout {
       name = "nixos";
       device = config.sqwer.secrets.devices.op-server.drive_paths.root;
+      filesystem = "xfs";
+      encrypted = true;
+      impermanent = false;
     })
   ];
 

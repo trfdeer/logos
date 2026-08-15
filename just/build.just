@@ -6,16 +6,16 @@ ROOT := justfile_directory()
 
 # Build system image (requires OUTPUT and TYPE)
 image OUTPUT TYPE *ARGS:
-    nix build "{{ROOT}}#nixosConfigurations.{{OUTPUT}}.config.system.build.{{TYPE}}" {{ARGS}}
+    cd {{ROOT}} && nix build "{{ROOT}}#nixosConfigurations.{{OUTPUT}}.config.system.build.{{TYPE}}" {{ARGS}}
 
 # Build LXC container image tarball
 lxc OUTPUT *ARGS:
-    just build image {{OUTPUT}} tarball {{ARGS}}
+    cd {{ROOT}} && just build image {{OUTPUT}} tarball {{ARGS}}
 
 # Build ISO image
 iso OUTPUT *ARGS:
-    just build image {{OUTPUT}} isoImage {{ARGS}}
+    cd {{ROOT}} && just build image {{OUTPUT}} isoImage {{ARGS}}
 
 # Build WSL tarball
 wsl OUTPUT *ARGS:
-    just build image {{OUTPUT}} tarballBuilder {{ARGS}}
+    cd {{ROOT}} && just build image {{OUTPUT}} tarballBuilder {{ARGS}}

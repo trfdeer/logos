@@ -12,11 +12,12 @@ in
 {
   imports = [
     profiles.hardware.devices.desktop-zeph
-    (import profiles.storage-layouts.imperm-luks-esp {
-      inherit lib;
-
+    (profiles.storage-layouts.makeStorageLayout {
       name = "nixos";
       device = config.sqwer.secrets.devices.ll-comput.drive_paths.root;
+      filesystem = "xfs";
+      encrypted = true;
+      impermanent = true;
     })
   ];
 
@@ -60,25 +61,7 @@ in
 
   services.fstrim.enable = true;
 
-    networking.firewall.allowedTCPPorts = [8080];
-
-    boot.initrd.luks.devices.vault = {
-      device = "${config.sqwer.secrets.devices.op-server.drive_paths.data}-part1";
-      name = "vault-crypt";
-      allowDiscards = true;
-    };
-
-    fileSystems."/srv/vault" = {
-      device = "/dev/mapper/vault";
-      fsType = "btrfs";
-      options = [
-        "nofail"
-        "defaults"
-        "noatime"
-        "compress=no"
-        "space_cache=v2"
-      ];
-    };
+  networking.firewall.allowedTCPPorts = [ 8080 ];
 
   # ------------------------------------------------------------
   # Host-specific Home Manager deltas
