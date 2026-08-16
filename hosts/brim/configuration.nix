@@ -47,14 +47,16 @@ in
     };
 
     podman.enable = true;
+
+    ssh.port = 2222;
   };
 
   services.fstrim.enable = true;
 
   networking.firewall = {
     allowedTCPPorts = [
-      80
       22
+      80
       443
     ];
     allowedUDPPorts = [ 443 ];
