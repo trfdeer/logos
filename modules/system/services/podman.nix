@@ -22,9 +22,6 @@ in
     virtualisation = {
       containers = {
         enable = true;
-        containersConf.settings = {
-          containers.userns = "auto";
-        };
         storage.settings.storage =
           { }
           // (lib.optionalAttrs cfg.useBtrfsDriver {

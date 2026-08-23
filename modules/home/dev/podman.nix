@@ -17,12 +17,6 @@ in
       }
 
       (lib.mkIf cfg.useBtrfsDriver {
-
-        xdg.configFile."containers/containers.conf".text = ''
-          [containers]
-          userns = "auto"
-        '';
-
         xdg.configFile."containers/storage.conf".text = ''
           [storage]
           driver = "btrfs"
