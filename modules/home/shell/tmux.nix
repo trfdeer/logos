@@ -21,7 +21,8 @@ in
       sensibleOnTop = true;
       escapeTime = 0;
       historyLimit = 20000;
-      mouse = true;
+      keyMode = "vi";
+      mouse = false;
       terminal = "tmux-256color";
       prefix = cfg.prefixKey;
     };

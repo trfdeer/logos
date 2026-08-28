@@ -23,9 +23,9 @@ in
           jq
           nh
           eza
-          vim
           zsh
           ripgrep
+          neovim
           _7zip-zstd
           lm_sensors
         ]
@@ -37,6 +37,15 @@ in
           theme_background = false;
         };
       };
+
+      programs.zoxide = {
+        enable = true;
+      }
+      // (lib.optionalAttrs config.sqwer.home.zsh.enable {
+        enableZshIntegration = true;
+      });
+
+      home.shellAliases.cd = "z";
     })
 
     (lib.mkIf (cfg.enable && cfg.dev) {
