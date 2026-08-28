@@ -2,6 +2,7 @@ inputs@{
   nixpkgs,
   nixpkgsUnstable,
   sqpkgs,
+  wor,
   ...
 }:
 let
@@ -12,6 +13,8 @@ let
     config.allowUnfree = true;
     overlays = [
       sqpkgs.overlays.default
+      wor.overlays.default
+
       (final: prev: {
         unstable = import nixpkgsUnstable {
           inherit system;

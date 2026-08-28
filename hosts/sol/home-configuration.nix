@@ -1,16 +1,19 @@
 { config, pkgs, ... }:
 {
-  home.packages = with pkgs.unstable; [
-    yubikey-manager
-    nix-tree
-    bws
-  ];
-
-  home.sessionPath = [
-    "${config.home.homeDirectory}/.bun/bin"
-  ];
+  home.packages =
+    with pkgs.unstable;
+    [
+      yubikey-manager
+      nix-tree
+      bws
+    ]
+    ++ (with pkgs; [
+      wor.wor-kvm
+    ]);
 
   sqwer.home = {
+    opencode.enable = true;
+
     sound = {
       disable-hw-volume = true;
     };

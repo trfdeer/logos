@@ -32,5 +32,9 @@
       url = "github:trfdeer/sqpkgs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    wor = {
+      url = "git+ssh://cbgit/trfdeer/wor";
+    };
   };
 }
