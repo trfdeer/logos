@@ -8,11 +8,11 @@
 
       nh
       git
-      go-task
 
       age
       sops
 
+      deploy-rs
       nixos-anywhere
     ];
   };

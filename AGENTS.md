@@ -154,6 +154,7 @@ Encrypted files are under `secrets/`; do not edit them as plain JSON.
 
 ## Important pitfalls
 
+- Never use `/tmp` for testing changes; use `.runtime/agent/` instead.
 - A host **must** exist in `secrets/outConfig.json` or evaluation fails with an assertion in `modules/common/identity.nix`.
 - `sqwer.system.boot.secureBoot.enable = true;` forces `boot.loader.systemd-boot` off via `lanzaboote`.
 - Impermanence uses `preservation`, not `impermanence.nix`, preserving files on `/persistent/nixos`.

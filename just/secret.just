@@ -1,39 +1,44 @@
 # Secrets management
+set quiet
 set default-list
 
 ROOT := justfile_directory()
+SECRETS_DIR := ROOT / "secrets"
+RUNTIME_DIR := ROOT / ".runtime"
+SOPS := "secretspec run --scope sops -- sops"
 
-SECRET_FILES := "identities devices sshHosts outConfig"
+SECRET_FILES := shell('ls ' + SECRETS_DIR + '/*.json | tr "\n" " "')
+RUNTIME_FACTER_DIR := RUNTIME_DIR / "facter"
 
-RUNTIME_SECRETS_DIR := ROOT / ".runtime" / "secrets"
-
-AGE_KEY := `op read op://sqwer/sqwer_age/password`
+FACTER_FILES := shell('ls ' + SECRETS_DIR + '/facter/*.json | tr "\n" " "')
+RUNTIME_SECRETS_DIR := RUNTIME_DIR / "secrets"
 
 # Decrypt and initialize secrets
-init:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    echo 'Initializing secrets...'
+init: clean
     git config core.hooksPath ".githooks"
-    rm -rf "{{RUNTIME_SECRETS_DIR}}"
-    mkdir -p "{{RUNTIME_SECRETS_DIR}}"
-    for file in {{SECRET_FILES}}; do
-      echo "→ decrypting $file.json"
-      SOPS_AGE_KEY="{{AGE_KEY}}" sops \
-        --output "{{RUNTIME_SECRETS_DIR}}/$file.json" \
-        -d "{{ROOT}}/secrets/$file.json"
-    done
-    find "{{RUNTIME_SECRETS_DIR}}" -type f -exec git add -fN {} \;
-    echo 'Done'
+    mkdir -p {{RUNTIME_SECRETS_DIR}} {{RUNTIME_FACTER_DIR}}
+
+    for f in {{FACTER_FILES}}; do {{SOPS}} --input-type binary --output-type binary -d "$f" | bzip2 -d > {{RUNTIME_FACTER_DIR}}/"$(basename "$f")"; done
+    for f in {{SECRET_FILES}}; do {{SOPS}} --output {{RUNTIME_SECRETS_DIR}}/"$(basename "$f")" -d "$f"; done
+
+    git add -fN -- {{RUNTIME_SECRETS_DIR}}/* {{RUNTIME_FACTER_DIR}}/*
 
 # Open encrypted file with sops
 edit *ARGS:
+    {{SOPS}} {{ARGS}}
+
+# Fill in a temporary file, then bzip2-compress and sops-encrypt it into secrets/facter
+edit-facter name:
     #!/usr/bin/env bash
     set -euo pipefail
-    AGE_KEY=$(just secrets/get-age-key)
-    SOPS_AGE_KEY="$AGE_KEY" sops {{ARGS}}
+    tmp="$(mktemp --suffix=.json)"
+    trap 'rm -f "$tmp"' EXIT
+    "${EDITOR:-nvim}" "$tmp"
+    bzip2 -c "$tmp" | {{SOPS}} --input-type binary --output-type binary --encrypt /dev/stdin > {{SECRETS_DIR}}/facter/{{name}}.json
 
 # Remove generated files
 clean:
-    echo 'Cleaning secrets...'
-    rm -rf "{{RUNTIME_SECRETS_DIR}}"
+    rm -rf {{RUNTIME_FACTER_DIR}}
+    rm -rf {{RUNTIME_SECRETS_DIR}}
+
+    git add -fN -- {{RUNTIME_SECRETS_DIR}}/* {{RUNTIME_FACTER_DIR}}/*
