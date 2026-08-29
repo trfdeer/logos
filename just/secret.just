@@ -24,6 +24,7 @@ init: clean
     git add -fN -- {{RUNTIME_SECRETS_DIR}}/* {{RUNTIME_FACTER_DIR}}/*
 
 # Open encrypted file with sops
+[working-directory(ROOT)]
 edit *ARGS:
     {{SOPS}} {{ARGS}}
 
@@ -38,7 +39,12 @@ edit-facter name:
 
 # Remove generated files
 clean:
-    rm -rf {{RUNTIME_FACTER_DIR}}
-    rm -rf {{RUNTIME_SECRETS_DIR}}
+    #!/usr/bin/env bash
+    set -euo pipefail
 
-    git add -fN -- {{RUNTIME_SECRETS_DIR}}/* {{RUNTIME_FACTER_DIR}}/*
+    for dir in {{RUNTIME_SECRETS_DIR}} {{RUNTIME_FACTER_DIR}}; do
+        if [ -n "$(git ls-files "$dir")" ]; then
+            git rm -r --cached --quiet --ignore-unmatch "$dir"
+        fi
+        rm -rf "$dir"
+    done
