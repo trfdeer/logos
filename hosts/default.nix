@@ -6,4 +6,5 @@
   zeph = ./zeph/configuration.nix;
   beet = ./beet/configuration.nix;
   wol = ./wol/configuration.nix;
+  star = ./star/configuration.nix;
 }

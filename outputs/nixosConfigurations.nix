@@ -50,4 +50,10 @@ in
     name = "rift";
     prefs.isLxc = true;
   };
+
+  # VPS
+  star = makeSystem {
+    name = "star";
+    prefs.roles = [ "server" ];
+  };
 }

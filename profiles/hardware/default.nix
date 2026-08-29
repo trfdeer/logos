@@ -3,6 +3,7 @@
     hyperv = ./vm/hyper-v.nix;
     vmware = ./vm/vmware.nix;
     qemu-guest = ./vm/qemu-guest.nix;
+    vps01 = ./vm/vps01.nix;
   };
 
   ct = {
