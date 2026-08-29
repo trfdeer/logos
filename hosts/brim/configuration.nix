@@ -41,6 +41,37 @@ in
       interface = "en*";
     };
 
+    firewall = {
+      enable = true;
+      zones = {
+        lan = {
+          match.interfaces = [ "en*" ];
+          allowedTCPPorts = [
+            2222
+            53
+            80
+            443
+          ];
+          allowedUDPPorts = [
+            53
+            443
+          ];
+        };
+        mesh = {
+          allowedTCPPorts = [
+            2222
+            53
+            80
+            443
+          ];
+          allowedUDPPorts = [
+            53
+            443
+          ];
+        };
+      };
+    };
+
     tailscale = {
       enable = true;
       operator = id.username;
@@ -52,19 +83,6 @@ in
   };
 
   services.fstrim.enable = true;
-
-  networking.firewall = {
-    allowedTCPPorts = [
-      22
-      53
-      80
-      443
-    ];
-    allowedUDPPorts = [
-      53
-      443
-    ];
-  };
 
   # ------------------------------------------------------------
   # Host-specific Home Manager deltas

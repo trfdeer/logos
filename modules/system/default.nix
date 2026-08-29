@@ -6,6 +6,7 @@
   sqwerSystem = {
     imports = [
       ./network/network.nix
+      ./network/firewall.nix
       ./network/tailscale.nix
       ./network/tailscale-serve.nix
       ./network/samba.nix
