@@ -1,7 +1,7 @@
 { lib, ... }:
 let
   secrets = builtins.path {
-    path = ../../secrets/decrypted;
+    path = ../../.runtime/secrets;
     name = "secrets";
   };
 

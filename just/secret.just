@@ -5,7 +5,7 @@ ROOT := justfile_directory()
 
 SECRET_FILES := "identities devices sshHosts outConfig"
 
-DECRYPTED_DIR := ROOT / "secrets/decrypted"
+RUNTIME_SECRETS_DIR := ROOT / ".runtime" / "secrets"
 
 AGE_KEY := `op read op://sqwer/sqwer_age/password`
 
@@ -15,15 +15,15 @@ init:
     set -euo pipefail
     echo 'Initializing secrets...'
     git config core.hooksPath ".githooks"
-    rm -rf "{{DECRYPTED_DIR}}"
-    mkdir -p "{{DECRYPTED_DIR}}"
+    rm -rf "{{RUNTIME_SECRETS_DIR}}"
+    mkdir -p "{{RUNTIME_SECRETS_DIR}}"
     for file in {{SECRET_FILES}}; do
       echo "→ decrypting $file.json"
       SOPS_AGE_KEY="{{AGE_KEY}}" sops \
-        --output "{{DECRYPTED_DIR}}/$file.json" \
+        --output "{{RUNTIME_SECRETS_DIR}}/$file.json" \
         -d "{{ROOT}}/secrets/$file.json"
     done
-    find "{{DECRYPTED_DIR}}" -type f -exec git add -fN {} \;
+    find "{{RUNTIME_SECRETS_DIR}}" -type f -exec git add -fN {} \;
     echo 'Done'
 
 # Open encrypted file with sops
@@ -36,4 +36,4 @@ edit *ARGS:
 # Remove generated files
 clean:
     echo 'Cleaning secrets...'
-    rm -rf "{{DECRYPTED_DIR}}"
+    rm -rf "{{RUNTIME_SECRETS_DIR}}"

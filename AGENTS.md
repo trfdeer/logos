@@ -17,7 +17,7 @@ This repository is a NixOS / Home Manager flake for managing multiple machines (
 - Use the custom `sqwer.*` option namespace for project-specific configuration.
   - `sqwer.platform.*` — host metadata: `hostName`, `roles`, `stateVersion`, `isWsl`, `isNixosSystem`.
   - `sqwer.identity.*` — derived from decrypted secrets: `username`, `fullName`, `hashedPassword`, `git`, `sshPublicKeys`, `sshHosts`.
-  - `sqwer.secrets.*` — parsed raw JSON from `secrets/decrypted/`.
+  - `sqwer.secrets.*` — parsed raw JSON from `.runtime/secrets/`.
   - `sqwer.system.*` — NixOS-only options.
   - `sqwer.home.*` — Home Manager-only options.
 - Module skeleton:
@@ -134,9 +134,9 @@ Encrypted files are under `secrets/`; do not edit them as plain JSON.
 2. Edit: `just secrets edit secrets/<file>.json`
 3. Remove plaintext: `just secrets clean`
 
-`just secrets init` also sets `core.hooksPath` to `.githooks` and stages decrypted files with `git add -fN`. Never commit `secrets/decrypted/`.
+`just secrets init` also sets `core.hooksPath` to `.githooks` and stages decrypted files with `git add -fN`. Never commit `.runtime/`.
 
-> **NEVER read files under `secrets/` or `secrets/decrypted/` under any circumstances.** These files contain encrypted or plaintext secrets; they must not be inspected, summarized, copied, or transmitted by an AI agent. Use `just secrets edit` if the user needs to change secrets.
+> **NEVER read files under `secrets/` or `.runtime/` under any circumstances.** These files contain encrypted or plaintext secrets; they must not be inspected, summarized, copied, or transmitted by an AI agent. Use `just secrets edit` if the user needs to change secrets.
 
 ## Adding a new host
 

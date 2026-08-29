@@ -34,7 +34,7 @@ Use this skill when the user wants to add a new machine to the `logos` flake.
 
 5. **Add the secrets entry**
    - Run `just secrets init` to decrypt.
-   - Add a `<name>` entry in `secrets/decrypted/outConfig.json` that references a user from `identities.json`.
+   - Add a `<name>` entry in `.runtime/secrets/outConfig.json` that references a user from `identities.json`.
    - Re-encrypt with `just secrets edit secrets/outConfig.json`.
    - Run `just secrets clean` when done.
 
@@ -55,4 +55,4 @@ Use this skill when the user wants to add a new machine to the `logos` flake.
 
 - Forgetting the `outConfig.json` entry causes an assertion failure in `modules/common/identity.nix`.
 - Passing the wrong `name` to `makeHome` (see existing `"dwai@brim"` bug in `outputs/homeConfigurations.nix`).
-- Committing `secrets/decrypted/`; they are staged with `git add -fN` but must remain untracked.
+- Committing `.runtime/`; they are staged with `git add -fN` but must remain untracked.

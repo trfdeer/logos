@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if git diff --cached --name-only | grep -Eq '^secrets/decrypted/'; then
-    echo "ERROR: refusing to commit decrypted secrets"
+if git diff --cached --name-only | grep -Eq '^.runtime/'; then
+    echo "ERROR: refusing to commit runtime files"
     exit 1
 fi

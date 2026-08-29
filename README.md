@@ -53,7 +53,7 @@ If `<target-host>` is omitted, it defaults to the same value as `<flake-output>`
 - Project-specific configuration lives under the `sqwer.*` option namespace.
   - `sqwer.platform.*` — host metadata: `hostName`, `roles`, `stateVersion`, `isWsl`, `isNixosSystem`.
   - `sqwer.identity.*` — derived from decrypted secrets: `username`, `fullName`, `hashedPassword`, `git`, `sshPublicKeys`, `sshHosts`.
-  - `sqwer.secrets.*` — parsed raw JSON from `secrets/decrypted/`.
+  - `sqwer.secrets.*` — parsed raw JSON from `.runtime/secrets/`.
   - `sqwer.system.*` — NixOS-only options.
   - `sqwer.home.*` — Home Manager-only options.
 - Modules follow the standard `mkEnableOption` / `mkIf cfg.enable` pattern.
@@ -72,7 +72,7 @@ just secrets edit secrets/<file>.json  # edit an encrypted file
 just secrets clean                     # remove plaintext files
 ```
 
-`just secrets init` also sets `core.hooksPath` to `.githooks` and stages decrypted files with `git add -fN`. Do not commit `secrets/decrypted/`.
+`just secrets init` also sets `core.hooksPath` to `.githooks` and stages decrypted files with `git add -fN`. Do not commit `.runtime/`.
 
 ## Adding a host
 
