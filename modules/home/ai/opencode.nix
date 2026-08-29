@@ -30,16 +30,8 @@ in
 
         disabled_providers = [ "opencode" ];
         provider = {
-          openai.whitelist = [
-            "gpt-5.6-luna"
-            "gpt-5.6-sol"
-            "gpt-5.6-terra"
-          ];
-
           hyper.whitelist = [
-            "deepseek-v4-flash"
-            "kimi-k2.7-code"
-            "minimax-m3"
+            "deepseek-v4-flash-0731"
             "qwen3.8-flash"
           ];
 
