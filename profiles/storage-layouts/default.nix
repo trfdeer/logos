@@ -4,24 +4,32 @@
       name,
       device,
       filesystem,
-      encrypted ? true,
+      encrypted ? { },
       impermanent ? false,
       bootSize ? "1G",
       subvolumes ? [ ],
     }:
     { lib, ... }:
     let
+      encryption = {
+        enable = true;
+        method = "tpm";
+      }
+      // (if builtins.isAttrs encrypted then encrypted else { enable = encrypted; });
+
       helpers = import ./lib.nix {
         inherit
           lib
           name
           device
           filesystem
-          encrypted
           impermanent
           bootSize
           subvolumes
           ;
+
+        encrypted = encryption.enable;
+        inherit (encryption) method;
       };
 
       diskDefinition = {
@@ -44,6 +52,15 @@
         {
           assertion = filesystem == "btrfs" || subvolumes == [ ];
           message = "makeStorageLayout: subvolumes must be empty when filesystem is not btrfs";
+        }
+        {
+          assertion =
+            !encryption.enable
+            || lib.elem encryption.method [
+              "tpm"
+              "ssh"
+            ];
+          message = "makeStorageLayout: encrypted.method must be \"tpm\" or \"ssh\"";
         }
       ];
 

@@ -14,7 +14,7 @@ in
       name = "nixos";
       device = "/dev/sda";
       filesystem = "btrfs";
-      encrypted = true;
+      encrypted = { };
       impermanent = true;
       subvolumes = profiles.storage-layouts.btrfsSubvols.impermanent;
     })

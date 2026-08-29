@@ -16,7 +16,7 @@ in
       name = "nixos";
       device = config.sqwer.secrets.devices.op-server.drive_paths.root;
       filesystem = "xfs";
-      encrypted = true;
+      encrypted = { };
       impermanent = false;
     })
   ];

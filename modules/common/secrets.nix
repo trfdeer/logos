@@ -142,6 +142,45 @@ in
                 type = lib.types.listOf lib.types.nonEmptyStr;
                 default = [ ];
               };
+              initrdNetwork = lib.mkOption {
+                type = lib.types.nullOr (
+                  lib.types.submodule {
+                    options = {
+                      mode = lib.mkOption {
+                        type = lib.types.enum [
+                          "auto"
+                          "manual"
+                        ];
+                        default = "auto";
+                      };
+                      manualConfiguration = lib.mkOption {
+                        type = lib.types.nullOr (
+                          lib.types.submodule {
+                            options = {
+                              address = lib.mkOption {
+                                type = lib.types.strMatching ".+/.+";
+                              };
+                              gateway = lib.mkOption {
+                                type = lib.types.str;
+                              };
+                              dns = lib.mkOption {
+                                type = lib.types.listOf lib.types.str;
+                                default = [ ];
+                              };
+                            };
+                          }
+                        );
+                        default = null;
+                      };
+                    };
+                  }
+                );
+                default = null;
+              };
+              initrdTailscaleIp = lib.mkOption {
+                type = lib.types.nullOr lib.types.str;
+                default = null;
+              };
             };
           }
         )

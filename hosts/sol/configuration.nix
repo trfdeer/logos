@@ -17,7 +17,7 @@ in
       name = "nixos";
       device = config.sqwer.secrets.devices.ss-minipc.drive_paths.root;
       filesystem = "btrfs";
-      encrypted = true;
+      encrypted = { };
       impermanent = false;
       subvolumes = profiles.storage-layouts.btrfsSubvols.root;
     })

@@ -4,6 +4,7 @@
   device,
   filesystem,
   encrypted,
+  method ? "tpm",
   impermanent,
   bootSize,
   subvolumes,
@@ -14,11 +15,13 @@ let
 
   luksSettings = {
     allowDiscards = true;
+  }
+  // (lib.optionalAttrs (method == "tpm") {
     crypttabExtraOpts = [
       "tpm2-device=auto"
       "tpm2-measure-pcr=yes"
     ];
-  };
+  });
 
   mkLuks = content: {
     type = "luks";

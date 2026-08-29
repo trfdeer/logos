@@ -22,6 +22,7 @@
       ./kde.nix
       ./core/impermanence.nix
       ./core/boot.nix
+      ./core/initrd-ssh.nix
       ./utils/_1password.nix
     ];
   };
