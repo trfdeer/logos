@@ -11,9 +11,7 @@ in
 
     git = {
       enable = lib.mkDefault true;
-      identity = id.git.primaryIdentity;
-
-      inherit (id.git) additionalIdentities;
+      inherit (id.git) identities;
     };
   };
 }

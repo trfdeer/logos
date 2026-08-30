@@ -48,9 +48,7 @@ in
               type = lib.types.nullOr (
                 lib.types.submodule {
                   options = {
-                    primaryIdentity = lib.mkOption { type = identityType; };
-
-                    additionalIdentities = lib.mkOption {
+                    identities = lib.mkOption {
                       type = lib.types.listOf (
                         lib.types.submodule {
                           options = {

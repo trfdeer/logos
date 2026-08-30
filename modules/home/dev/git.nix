@@ -1,10 +1,12 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
   cfg = config.sqwer.home.git;
+  cfgOp = config.sqwer.home._1password;
 
   gitIdentityType = lib.types.submodule {
     options = {
@@ -26,9 +28,8 @@ in
 {
   options.sqwer.home.git = {
     enable = lib.mkEnableOption "Enable Git";
-    identity = lib.mkOption { type = gitIdentityType; };
 
-    additionalIdentities = lib.mkOption {
+    identities = lib.mkOption {
       type = lib.types.listOf (
         lib.types.submodule {
           options = {
@@ -46,21 +47,23 @@ in
     programs.git = {
       enable = true;
       lfs.enable = true;
-      signing = {
-        key = cfg.identity.sshpubkey;
-        signByDefault = cfg.identity.sshpubkey != "";
-      };
+      signing.signByDefault = true;
 
       settings = {
-        user = {
-          name = cfg.identity.name;
-          email = cfg.identity.email;
-        };
         init.defaultBranch = "main";
-        gpg.format = lib.mkIf (cfg.identity.sshpubkey != "") "ssh";
+        user.useConfigOnly = true;
       }
       // lib.optionalAttrs config.sqwer.platform.isWsl {
         core.sshCommand = "ssh.exe";
+      }
+      // lib.optionalAttrs cfgOp.enable {
+        "gpg \"ssh\"".program =
+          if (config.sqwer.platform.isNixosSystem) then
+            "${pkgs._1password-cli}/out/op"
+          else if (config.sqwer.platform.isWsl) then
+            "op-ssh-sign.exe"
+          else
+            "/opt/1Password/op-ssh-sign";
       };
 
       includes = map (identity: {
@@ -72,11 +75,11 @@ in
             email = identity.config.email;
             signingkey = identity.config.sshpubkey;
           };
-          gpg = lib.optionalAttrs (identity.config.sshpubkey != "") {
-            format = "ssh";
-          };
+        }
+        // lib.optionalAttrs (identity.config.sshpubkey != "") {
+          gpg.format = "ssh";
         };
-      }) cfg.additionalIdentities;
+      }) cfg.identities;
     };
   };
 }

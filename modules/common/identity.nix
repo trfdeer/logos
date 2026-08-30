@@ -13,17 +13,6 @@ let
   # 4. Find the identity in the secrets list
   targetIdentity = lib.findFirst (id: id._id == targetUserId) null config.sqwer.secrets.identities;
 
-  gitGitPrimaryIdCfg =
-    fieldName:
-    if
-      targetIdentity ? git
-      && targetIdentity.git ? primaryIdentity
-      && targetIdentity.git.primaryIdentity ? "${fieldName}"
-    then
-      targetIdentity.git.primaryIdentity."${fieldName}"
-    else
-      "";
-
   gitIdentityType = lib.types.submodule {
     options = {
       name = lib.mkOption {
@@ -73,9 +62,7 @@ in
       type = lib.types.nullOr (
         lib.types.submodule {
           options = {
-            primaryIdentity = lib.mkOption { type = gitIdentityType; };
-
-            additionalIdentities = lib.mkOption {
+            identities = lib.mkOption {
               type = lib.types.listOf (
                 lib.types.submodule {
                   options = {

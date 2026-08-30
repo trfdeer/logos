@@ -13,6 +13,7 @@
 
   sqwer.home = {
     opencode.enable = true;
+    _1password.enable = true;
 
     sound = {
       disable-hw-volume = true;

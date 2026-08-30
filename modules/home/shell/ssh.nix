@@ -1,6 +1,7 @@
 { lib, config, ... }:
 let
   cfg = config.sqwer.home.ssh;
+  cfgOp = config.sqwer.home._1password;
   id = config.sqwer.identity;
 
   filteredIdentityHosts =
@@ -57,23 +58,28 @@ in
       enable = true;
       enableDefaultConfig = false;
 
-      settings = lib.mkMerge [
-        {
-          "*" = {
-            ControlMaster = "auto";
-            ControlPersist = "10m";
-            ControlPath = "${config.xdg.stateHome}/ssh/control/%C";
-          };
-        }
+      includes = [ ] ++ lib.optional cfgOp.enable "~/.ssh/1Password/config";
 
-        (lib.mapAttrs (name: host: {
-          HostName = host.domain;
-          User = host.user;
-          IdentityFile = lib.imap0 (
-            i: idFileName: "${config.home.homeDirectory}/.ssh/${idFileName}"
-          ) host.identityFiles;
-          IdentitiesOnly = true;
-        }) effectiveHosts)
+      settings = lib.mkMerge [
+        (lib.mkIf cfgOp.enable {
+          "*" = {
+            IdentityAgent = "~/.1password/agent.sock";
+          };
+        })
+
+        (lib.mapAttrs (
+          name: host:
+          {
+            HostName = host.domain;
+            User = host.user;
+          }
+          // (lib.optionalAttrs (!cfgOp.enable) {
+            IdentityFile = lib.imap0 (
+              i: idFileName: "${config.home.homeDirectory}/.ssh/${idFileName}"
+            ) host.identityFiles;
+            IdentitiesOnly = true;
+          })
+        ) effectiveHosts)
       ];
     };
   };
