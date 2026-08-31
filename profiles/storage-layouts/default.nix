@@ -5,6 +5,7 @@
       device,
       filesystem,
       encrypted ? { },
+      passwordFile ? null,
       impermanent ? false,
       bootSize ? "1G",
       subvolumes ? [ ],
@@ -30,6 +31,7 @@
 
         encrypted = encryption.enable;
         inherit (encryption) method;
+        inherit passwordFile;
       };
 
       diskDefinition = {
@@ -68,7 +70,19 @@
         disk.${name} = diskDefinition;
       }
       // lib.optionalAttrs impermanent {
-        nodev."/" = helpers.mkTmpfsRoot { };
+        nodev = {
+          "/" = helpers.mkTmpfsRoot { };
+        }
+        // lib.optionalAttrs (filesystem != "btrfs") {
+          # XFS has no subvolumes: the store lives in a directory on the
+          # persistent filesystem and is bind-mounted at /nix.
+          "/nix" = lib.mkMerge [
+            helpers.nixBind
+            ({ rootMountPoint, ... }: {
+              preMountHook = ''mkdir -p "${rootMountPoint}/persistent/nix"'';
+            })
+          ];
+        };
       };
 
       fileSystems = lib.mkIf impermanent {

@@ -7,7 +7,7 @@
 let
   id = config.sqwer.identity;
   hostName = "star";
-  hostSecrets = config.sqwer.secrets.outConfig."${hostName}";
+  hostCfg = config.sqwer.secrets.outConfig."${hostName}";
 in
 {
   imports = [
@@ -40,21 +40,55 @@ in
 
     boot.initrdSsh = {
       enable = true;
-      port = 2222;
+      port = 22;
       hostKey = "/persistent/nixos/etc/ssh/initrd_host_ed25519_key";
+      publicFallback = false;
 
-      network = lib.mkIf (hostSecrets.initrdNetwork != null) hostSecrets.initrdNetwork;
+      network = lib.mkIf (hostCfg.network != null) hostCfg.network;
 
       tailscale = {
         enable = true;
         stateDir = "/persistent/nixos/var/lib/tailscale-initrd";
-        ip = hostSecrets.initrdTailscaleIp;
+        ip = hostCfg.initrdSsh.bindIp;
+      };
+    };
+
+    firewall = {
+      enable = true;
+      zones = {
+        lan = {
+          match.interfaces = [ "en*" ];
+          allowedTCPPorts = [ ];
+          allowedUDPPorts = [ ];
+        };
+        mesh = {
+          allowedTCPPorts = [
+            22
+            53
+            80
+            443
+            2222
+          ];
+          allowedUDPPorts = [
+            53
+            443
+          ];
+        };
       };
     };
 
     network = {
       enable = true;
       interface = "en*";
+      static = {
+        ipv4Address = hostCfg.network.manualConfiguration.address;
+        ipv4Gateway = hostCfg.network.manualConfiguration.gateway;
+
+        ipv6Address = hostCfg.networkV6.manualConfiguration.address;
+        ipv6Gateway = hostCfg.networkV6.manualConfiguration.gateway;
+
+        dns = [ ] ++ hostCfg.network.manualConfiguration.dns ++ hostCfg.networkV6.manualConfiguration.dns;
+      };
     };
 
     ssh.enable = true;
@@ -63,6 +97,8 @@ in
       enable = true;
       operator = id.username;
     };
+
+    ssh.port = 2222;
   };
 
   # ------------------------------------------------------------

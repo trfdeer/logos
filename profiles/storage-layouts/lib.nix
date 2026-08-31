@@ -5,6 +5,7 @@
   filesystem,
   encrypted,
   method ? "tpm",
+  passwordFile ? null,
   impermanent,
   bootSize,
   subvolumes,
@@ -23,12 +24,17 @@ let
     ];
   });
 
-  mkLuks = content: {
-    type = "luks";
-    name = "${partLabel}-crypt";
-    settings = luksSettings;
-    inherit content;
-  };
+  mkLuks =
+    content:
+    {
+      type = "luks";
+      name = "${partLabel}-crypt";
+      settings = luksSettings;
+      inherit content;
+    }
+    // lib.optionalAttrs (passwordFile != null) {
+      inherit passwordFile;
+    };
 
   mkEfiPartition =
     {
@@ -107,9 +113,11 @@ let
       type = "filesystem";
       format = "xfs";
       inherit mountpoint mountOptions;
+      # XFS labels are limited to 12 characters; keep the tail so labels
+      # differing in suffix (persistent vs root) stay unique.
       extraArgs = [
         "-L"
-        label
+        (builtins.substring (builtins.stringLength label - 12) 12 label)
       ];
     };
 
@@ -125,6 +133,19 @@ let
         mountpoint = if impermanent then "/persistent" else "/";
       };
 
+  # XFS has no subvolumes, so the store lives in a directory on the
+  # persistent filesystem and is bind-mounted at /nix.
+  nixBind = {
+    type = "nodev";
+    fsType = "xfs"; # mount -o bind ignores the type, but disko requires one
+    device = "/persistent/nix";
+    mountpoint = "/nix";
+    mountOptions = [
+      "bind"
+      "noatime"
+    ];
+  };
+
   rootContent = if encrypted then mkLuks rootFilesystem else rootFilesystem;
 
   bootPartition = mkEfiPartition { size = bootSize; };
@@ -135,6 +156,7 @@ in
     mkLuks
     mkEfiPartition
     mkTmpfsRoot
+    nixBind
     baseBtrfsOpts
     mkBtrfsSubvolume
     mkBtrfsFilesystem

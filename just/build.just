@@ -19,3 +19,6 @@ iso OUTPUT *ARGS:
 # Build WSL tarball
 wsl OUTPUT *ARGS:
     cd {{ROOT}} && just build image {{OUTPUT}} tarballBuilder {{ARGS}}
+
+eval OUTPUT *ARGS:
+  cd {{ROOT}} && nix eval .#nixosConfigurations.{{OUTPUT}}.config.system.build.toplevel {{ARGS}}

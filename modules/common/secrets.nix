@@ -27,6 +27,36 @@ let
     };
   };
 
+  networkConfigType = lib.types.submodule {
+    options = {
+      mode = lib.mkOption {
+        type = lib.types.enum [
+          "auto"
+          "manual"
+        ];
+        default = "auto";
+      };
+      manualConfiguration = lib.mkOption {
+        type = lib.types.nullOr (
+          lib.types.submodule {
+            options = {
+              address = lib.mkOption {
+                type = lib.types.strMatching ".+/.+";
+              };
+              gateway = lib.mkOption {
+                type = lib.types.str;
+              };
+              dns = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = [ ];
+              };
+            };
+          }
+        );
+        default = null;
+      };
+    };
+  };
 in
 {
   options.sqwer.secrets = {
@@ -140,45 +170,30 @@ in
                 type = lib.types.listOf lib.types.nonEmptyStr;
                 default = [ ];
               };
-              initrdNetwork = lib.mkOption {
+              network = lib.mkOption {
+                type = lib.types.nullOr networkConfigType;
+                default = null;
+              };
+
+              networkV6 = lib.mkOption {
+                type = lib.types.nullOr networkConfigType;
+                default = null;
+              };
+
+              initrdSsh = lib.mkOption {
                 type = lib.types.nullOr (
                   lib.types.submodule {
                     options = {
-                      mode = lib.mkOption {
-                        type = lib.types.enum [
-                          "auto"
-                          "manual"
-                        ];
-                        default = "auto";
-                      };
-                      manualConfiguration = lib.mkOption {
-                        type = lib.types.nullOr (
-                          lib.types.submodule {
-                            options = {
-                              address = lib.mkOption {
-                                type = lib.types.strMatching ".+/.+";
-                              };
-                              gateway = lib.mkOption {
-                                type = lib.types.str;
-                              };
-                              dns = lib.mkOption {
-                                type = lib.types.listOf lib.types.str;
-                                default = [ ];
-                              };
-                            };
-                          }
-                        );
-                        default = null;
+                      bindIp = lib.mkOption {
+                        type = lib.types.str;
+                        description = "Internal (Tailscale / VPN) IP that ssh in initrd should bind to instead of public IP";
                       };
                     };
                   }
                 );
                 default = null;
               };
-              initrdTailscaleIp = lib.mkOption {
-                type = lib.types.nullOr lib.types.str;
-                default = null;
-              };
+
             };
           }
         )

@@ -12,10 +12,12 @@ let
 
   tsSocket = "/run/tailscale-initrd.sock";
 
-  luksDevices = lib.filterAttrs (_: dev: dev.enable or false) config.boot.initrd.luks.devices;
+  luksDevices = lib.filterAttrs (_: dev: dev.device != null) config.boot.initrd.luks.devices;
 
   unlockCmd = lib.concatStringsSep " && " (
-    map (n: "${pkgs.systemd}/bin/systemd-cryptsetup unlock ${n}") (builtins.attrNames luksDevices)
+    lib.mapAttrsToList (
+      n: dev: "${pkgs.systemd}/bin/systemd-cryptsetup attach ${n} ${dev.device}"
+    ) luksDevices
   );
 
   tsUpScript = pkgs: ts: ''
@@ -52,7 +54,7 @@ let
     networkConfig.DNS = manualDns;
     routes = [
       {
-        routeConfig.Gateway = cfg.network.manualConfiguration.gateway;
+        Gateway = cfg.network.manualConfiguration.gateway;
       }
     ];
   };
@@ -278,11 +280,9 @@ in
         };
       };
 
-      secrets = lib.mkIf tsCfg.enable (
-        lib.mkDefault {
-          "${tsCfg.stateDir}" = null;
-        }
-      );
+      secrets = lib.mkIf tsCfg.enable {
+        "${tsCfg.stateDir}" = null;
+      };
 
       kernelModules = lib.optionals tsCfg.enable [ "tun" ];
 
