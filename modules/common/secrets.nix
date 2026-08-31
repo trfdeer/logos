@@ -139,6 +139,7 @@ in
             _id = lib.mkOption { type = lib.types.nonEmptyStr; };
             alias = lib.mkOption { type = lib.types.nonEmptyStr; };
             hostname = lib.mkOption { type = lib.types.nonEmptyStr; };
+            port = lib.mkOption { type = lib.types.nullOr lib.types.port; };
             username = lib.mkOption { type = lib.types.nonEmptyStr; };
             identityFiles = lib.mkOption {
               type = lib.types.listOf lib.types.nonEmptyStr;

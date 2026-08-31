@@ -4,13 +4,23 @@ let
   cfgOp = config.sqwer.home._1password;
   id = config.sqwer.identity;
 
+  hostCfg =
+    if config.sqwer.secrets.outConfig ? ${config.sqwer.platform.hostName} then
+      config.sqwer.secrets.outConfig.${config.sqwer.platform.hostName}
+    else
+      { };
+
+  allowedHosts = hostCfg.allowedSshHosts or [ ];
+
   filteredIdentityHosts =
     if cfg.strict then
       lib.filterAttrs (name: _: lib.elem name cfg.hostFilter) id.sshHosts
-    else if cfg.hostFilter == [ ] then
-      id.sshHosts
+    else if cfg.hostFilter != [ ] then
+      lib.filterAttrs (name: _: lib.elem name cfg.hostFilter) id.sshHosts
+    else if allowedHosts != [ ] then
+      lib.filterAttrs (name: _: lib.elem name allowedHosts) id.sshHosts
     else
-      lib.filterAttrs (name: _: lib.elem name cfg.hostFilter) id.sshHosts;
+      id.sshHosts;
 
   effectiveHosts = filteredIdentityHosts // cfg.additionalHosts;
 in
@@ -71,6 +81,7 @@ in
           name: host:
           {
             HostName = host.domain;
+            Port = host.port;
             User = host.user;
           }
           // (lib.optionalAttrs (!cfgOp.enable) {

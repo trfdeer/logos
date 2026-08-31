@@ -93,15 +93,10 @@ in
       type = lib.types.attrsOf (
         lib.types.submodule {
           options = {
-            domain = lib.mkOption {
-              type = lib.types.nonEmptyStr;
-            };
-            user = lib.mkOption {
-              type = lib.types.nonEmptyStr;
-            };
-            identityFiles = lib.mkOption {
-              type = lib.types.listOf lib.types.nonEmptyStr;
-            };
+            domain = lib.mkOption { type = lib.types.nonEmptyStr; };
+            port = lib.mkOption { type = lib.types.port; };
+            user = lib.mkOption { type = lib.types.nonEmptyStr; };
+            identityFiles = lib.mkOption { type = lib.types.listOf lib.types.nonEmptyStr; };
           };
         }
       );
@@ -146,6 +141,7 @@ in
           name = host.alias;
           value = {
             domain = host.hostname;
+            port = if (builtins.isNull host.port) then 22 else host.port;
             user = host.username;
             identityFiles = host.identityFiles;
           };
