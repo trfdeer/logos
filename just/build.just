@@ -1,3 +1,4 @@
+set quiet
 set default-list
 
 ROOT := justfile_directory()

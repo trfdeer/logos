@@ -1,4 +1,3 @@
-# Secrets management
 set quiet
 set default-list
 
