@@ -31,7 +31,9 @@ in
         disabled_providers = [ "opencode" ];
         provider = {
           hyper.whitelist = [
+            "glm-5.3"
             "deepseek-v4-flash-0731"
+            "glm-5.3-flash"
             "qwen3.8-flash"
           ];
 
