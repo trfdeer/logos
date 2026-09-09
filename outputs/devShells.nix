@@ -12,6 +12,9 @@
       age
       sops
 
+      just
+      secretspec
+
       deploy-rs
       nixos-anywhere
     ];

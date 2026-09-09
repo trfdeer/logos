@@ -34,7 +34,12 @@
     };
 
     wor = {
-      url = "git+ssh://cbgit/trfdeer/wor";
+      url = "git+https://codeberg.org/trfdeer/wor";
+    };
+
+    opencode = {
+      url = "github:anomalyco/opencode/v2";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 }
