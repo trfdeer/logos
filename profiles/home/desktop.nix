@@ -1,9 +1,9 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   sqwer = {
     home = {
       ssh.enable = lib.mkDefault true;
-      fonts.enable = lib.mkDefault true;
+      fonts.enable = config.sqwer.platform.isNixosSystem;
 
       sound = {
         disable-hsp = lib.mkDefault false;

@@ -42,4 +42,9 @@ in
     name = "brim";
     prefs.roles = [ "server" ];
   };
+
+  "dwai@star" = makeHome {
+    name = "star";
+    prefs.roles = [ "server" ];
+  };
 }

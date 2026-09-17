@@ -43,13 +43,10 @@ This repository is a NixOS / Home Manager flake for managing multiple machines (
   - `profiles/system/base.nix` maps roles to home profiles.
   - `makeSystem` imports `profiles.system.desktop` when `"desktop"` is in roles, and `profiles.system.server` when `"server"` is in roles.
 
-## Commit & changelog conventions
+## Commit conventions
 
-### Commit messages (Conventional Commits)
-
-Format: `type(scope): subject` — imperative mood, no trailing period.
-
-Allowed types: `feat`, `fix`, `refactor`, `perf`, `build`, `ci`, `docs`, `style`, `chore`, `revert`.
+Commit messages follow the `commit-conventions` skill (Conventional Commits with
+Keep a Changelog bodies). Repo-specific overrides:
 
 Allowed scopes — **closed list, never invent one on the fly**:
 
@@ -68,30 +65,6 @@ Allowed scopes — **closed list, never invent one on the fly**:
 | `docs`     | `AGENTS.md`, `README.md`, `docs/`                                 |
 
 - Per-host scopes are never allowed (e.g. `sol`, `brim`) — use `host`.
-- Change spanning multiple areas — omit the scope (`feat: ...`).
-- Genuinely new top-level area — add a row to this table in the same commit that first uses it.
-
-### Commit message bodies (Keep a Changelog)
-
-Release tooling generates changelogs from commit message bodies, so do **not** maintain a manual `CHANGELOG` file.
-
-Bodies use the [Keep a Changelog](https://keepachangelog.com/) section labels:
-
-- Available labels: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`. Use only the ones that apply, in that order.
-- Each label is a heading line followed by `-` bullets, one per user-visible change.
-- Default label for the commit type: `feat` → `Added`, `fix` → `Fixed`, `refactor` / `perf` / user-visible `chore` → `Changed`.
-- Content-based labels win over the type default: deprecations → `Deprecated`, removals → `Removed`, security fixes → `Security`.
-- `docs`, `style`, `ci`, `build` commits are usually body-less.
-
-Example:
-
-```text
-feat(home): add opencode home module
-
-Added:
-- `sqwer.home.opencode` option managing OpenCode (package, settings, TUI)
-- `oc` shell alias for opencode
-```
 
 ## Common commands
 

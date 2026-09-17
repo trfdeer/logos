@@ -17,7 +17,7 @@ os CONFIG ENDPOINT=CONFIG:
 # Upgrade Home Manager on remote target
 home CONFIG ENDPOINT=CONFIG:
     home-manager build --flake "{{ROOT}}#{{CONFIG}}"
-    nix copy --to {{endpoint(ENDPOINT)}} {{ROOT}}#homeConfigurations."{{CONFIG}}".activationPackage
+    nix copy --to {{endpoint(ENDPOINT)}} {{ROOT}}#homeConfigurations."{{CONFIG}}".activationPackage --no-check-sigs
     ssh {{port_flag(ENDPOINT)}} {{host(ENDPOINT)}} "$(nix path-info {{ROOT}}#homeConfigurations.\"{{CONFIG}}\".activationPackage)/activate"
 
 # Install (bootstrap) OS onto target host
