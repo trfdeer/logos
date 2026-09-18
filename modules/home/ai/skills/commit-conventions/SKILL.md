@@ -1,6 +1,6 @@
 ---
 name: commit-conventions
-description: "Use when writing, revising, or reviewing any git commit message in any repo: Conventional Commits subject lines, resolving the project's scope list, and Keep a Changelog bodies that feed generated changelogs."
+description: "Use when writing, revising, or reviewing any git commit message in any repo: Conventional Commits subject lines, breaking-change markers, resolving the project's scope list, and Keep a Changelog bodies that feed generated changelogs (e.g. git-cliff)."
 ---
 
 # Commit Conventions
@@ -31,8 +31,32 @@ Format: `type(scope): subject`
 - Aim for ≤ 50 characters after the prefix; the whole subject ≤ 72.
 - Body separated by one blank line; wrap at ~72 columns.
 
-Types: `feat`, `fix`, `refactor`, `perf`, `build`, `ci`, `docs`, `style`, `chore`, `revert`.
+Types: `feat`, `fix`, `refactor`, `perf`, `build`, `ci`, `docs`, `style`, `test`, `chore`, `revert`.
 A repo may narrow or extend this list — its own list wins.
+
+This prefix is load-bearing: changelog generators like
+[git-cliff](https://git-cliff.org/docs/) group commits by regexes over it (`^feat`,
+`^fix`, …), so a type outside the repo's `commit_parsers` list lands in "Other" or is
+filtered out of the changelog entirely (`filter_unconventional`). Use the exact spellings
+above — no ad-hoc types. `chore(release):` and `chore(deps…):` shapes are skipped by
+git-cliff's default parsers — leave those to release automation, don't hand-write them.
+
+### Breaking changes
+
+Anything that breaks consumers must be marked in **both** places, so tools derive the
+major version bump and highlight the commit:
+
+- `!` before the colon: `feat(home)!: rename the opencode settings option`
+- a `BREAKING CHANGE:` footer in the body explaining what broke and how to migrate:
+
+  ```text
+  BREAKING CHANGE: `sqwer.home.opencode.settings` replaces `extraConfig`;
+  move existing values to the new option.
+  ```
+
+git-cliff flags such commits `[**breaking**]` in the changelog and bumps major on
+`--bumped-version`; `feat` alone is only a minor, `fix` only a patch. Breaking commits may
+also be protected from exclusion via `protect_breaking_commits`.
 
 ## Scopes
 
@@ -64,8 +88,10 @@ Use one scope per commit; split the commit instead of writing `(home,secrets)`.
 
 ## Body — Keep a Changelog sections
 
-Release tooling often builds changelogs from commit bodies, so no manual `CHANGELOG` file
-is needed. Use these labels, only the ones that apply, in this order:
+Templates like git-cliff's `keepachangelog` build changelog sections from commit bodies in
+this format, so no manual `CHANGELOG` file is needed. (With git-cliff's *default* template
+only the subject line is rendered — always write a subject that stands on its own.)
+Use these labels, only the ones that apply, in this order:
 
 `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`
 
@@ -113,7 +139,9 @@ Security:
 
 Before finishing, confirm:
 
-- The type is from the allowed list and describes the change, not the effort.
+- The type is from the allowed list and describes the change, not the effort — changelog
+  generators key off the exact prefix.
+- If the change breaks consumers, `!` and a `BREAKING CHANGE:` footer are both present.
 - The scope exists in the repo's own list, or is absent.
 - Nothing in the message references files the diff does not touch.
 - Bullets are user-visible; no "WIP", "fixup", "address review", or ticket-only prose.
