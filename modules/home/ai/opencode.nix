@@ -31,8 +31,8 @@ in
           external_directory = "ask";
         };
 
-        model = "hyper/qwen3.8-flash";
-        small_model = "hyper/qwen3.8-flash";
+        model = "hyper/glm5.3-flash";
+        small_model = "hyper/glm5.3-flash";
 
         mcp = {
           context7 = {
@@ -40,14 +40,19 @@ in
             url = "https://mcp.context7.com/mcp";
           };
 
-          grep = {
-            type = "remote";
-            url = "https://mcp.grep.app";
-          };
-
           plane = {
             type = "remote";
             url = "https://mcp.plane.so/http/mcp";
+          };
+
+          nixos = {
+            type = "local";
+            command = [
+              "nix"
+              "run"
+              "github:utensils/mcp-nixos/v3.1.0"
+              "--"
+            ];
           };
 
           firefox-devtools = {

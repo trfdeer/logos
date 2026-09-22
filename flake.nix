@@ -35,10 +35,11 @@
 
     wor = {
       url = "git+https://codeberg.org/trfdeer/wor";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     opencode = {
-      url = "github:anomalyco/opencode/v2";
+      url = "github:anomalyco/opencode/v2.0.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
