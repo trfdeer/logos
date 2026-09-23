@@ -9,7 +9,7 @@ This repository is a NixOS / Home Manager flake for managing multiple machines (
 - **[hosts/](hosts/)** — one directory per machine; each has `configuration.nix` and usually `home-configuration.nix`.
 - **[modules/](modules/)** — reusable `sqwer.*` options and implementations (`common/`, `home/`, `system/`).
 - **[profiles/](profiles/)** — composed selections of modules (`system/`, `home/`, `hardware/`, `storage-layouts/`).
-- **[secrets/](secrets/)** — SOPS-encrypted JSON files.
+- **[secrets/](secrets/)** — SOPS-encrypted JSON files (plus `facter/` binary reports).
 - **[just/](just/)** — Just recipes for secrets, building images, and remote upgrades.
 
 ## Conventions
@@ -103,9 +103,16 @@ If `<target-host>` is omitted, it defaults to the same value as `<flake-output>`
 
 Encrypted files are under `secrets/`; do not edit them as plain JSON.
 
+SOPS is always wrapped in `secretspec run --scope sops --` (see `secretspec.toml`): the age key
+(`SOPS_AGE_KEY`) is fetched from 1Password and cached in the OS keyring. Bare `sops` commands fail —
+use the Just recipes, which require `secretspec` and 1Password access.
+
 1. Decrypt locally: `just secrets init`
 2. Edit: `just secrets edit secrets/<file>.json`
 3. Remove plaintext: `just secrets clean`
+
+Facter reports (`secrets/facter/*.json`) are bzip2-compressed binary SOPS files; edit them with
+`just secrets edit-facter <name>` (do not hand-edit or regenerate the encrypted file).
 
 `just secrets init` also sets `core.hooksPath` to `.githooks` and stages decrypted files with `git add -fN`. Never commit `.runtime/`.
 
@@ -132,7 +139,7 @@ Encrypted files are under `secrets/`; do not edit them as plain JSON.
 - `sqwer.system.boot.secureBoot.enable = true;` forces `boot.loader.systemd-boot` off via `lanzaboote`.
 - Impermanence uses `preservation`, not `impermanence.nix`, preserving files on `/persistent/nixos`.
 - Proxmox LXC hosts set `nix.settings.sandbox = false`.
-- `outputs/homeConfigurations.nix` currently defines `"dwai@brim"` with `name = "zeph"` — verify host names match when adding homes.
+- `outputs/homeConfigurations.nix` keys are `"dwai@<host>"` and each entry's `name` must match a host in `hosts/` and `secrets/outConfig.json` — a mismatch fails evaluation.
 
 ## Validation
 
