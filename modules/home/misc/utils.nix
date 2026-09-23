@@ -55,6 +55,11 @@ in
           git
           helix
           go-task
+
+          gh
+
+          nixd
+          nixfmt
         ]
         ++ (with pkgs.unstable; [
           secretspec

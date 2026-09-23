@@ -18,6 +18,10 @@ in
       dotDir = "${config.xdg.configHome}/zsh";
       history.save = 0;
       initContent = ''
+        nr() {
+          nix run "nixpkgs#$1" -- "''${@:2}"
+        }
+
         if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
           . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
         fi
@@ -50,17 +54,15 @@ in
         fi
       '';
 
-      shellAliases = {
-        nr = "nix run";
-      }
-      // lib.optionalAttrs homeCfg.utils.enable {
-        ls = "exa";
-      }
-      // lib.optionalAttrs homeCfg.k8s.enable {
-        k = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl";
-        kd = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl describe";
-        kubectl = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl";
-      };
+      shellAliases =
+        lib.optionalAttrs homeCfg.utils.enable {
+          ls = "eza";
+        }
+        // lib.optionalAttrs homeCfg.k8s.enable {
+          k = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl";
+          kd = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl describe";
+          kubectl = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl";
+        };
 
       oh-my-zsh = {
         enable = true;
