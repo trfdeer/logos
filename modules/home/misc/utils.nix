@@ -67,10 +67,14 @@ in
 
       programs.mise = {
         enable = true;
+        package = pkgs.unstable.mise;
         enableZshIntegration = config.sqwer.home.zsh.enable;
       };
 
-      programs.direnv.mise.enable = true;
+      programs.direnv.mise = {
+        enable = true;
+        package = pkgs.unstable.mise;
+      };
     })
   ];
 }
