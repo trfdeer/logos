@@ -64,6 +64,13 @@ in
         ++ (with pkgs.unstable; [
           secretspec
         ]);
+
+      programs.mise = {
+        enable = true;
+        enableZshIntegration = config.sqwer.home.zsh.enable;
+      };
+
+      programs.direnv.mise.enable = true;
     })
   ];
 }
