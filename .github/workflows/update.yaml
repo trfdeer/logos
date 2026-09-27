@@ -1,0 +1,24 @@
+name: "Flake.lock: update Nix dependencies"
+
+on:
+  workflow_dispatch: # allows manual triggering
+  schedule:
+    - cron: "0 0 * * 0" # runs weekly on Sunday at 00:00
+
+jobs:
+  nix-flake-update:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: true # needed to push the commit
+      - uses: DeterminateSystems/determinate-nix-action@4eea0b33e3d1f02ecfe37cf16e7204c424009606 # v3.21.0
+      - name: Update flake.lock and commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          nix flake update --commit-lock-file
+      - name: Push commit
+        run: git push
