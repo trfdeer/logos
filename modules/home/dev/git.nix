@@ -46,6 +46,8 @@ in
   config = lib.mkIf cfg.enable {
     programs.git = {
       enable = true;
+      # Use the same git as `pkgs.unstable.mise` to avoid a second git in the closure.
+      package = pkgs.unstable.git;
       lfs.enable = true;
       signing.signByDefault = true;
 

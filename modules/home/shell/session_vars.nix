@@ -17,6 +17,10 @@
 
       GNUPGHOME = "${config.xdg.dataHome}/gnupg";
 
+      NPM_CONFIG_INIT_MODULE = "${config.xdg.configHome}/npm/config/npm-init.js";
+      NPM_CONFIG_CACHE = "${config.xdg.cacheHome}/npm";
+      NPM_CONFIG_TMP = "${config.xdg.cacheHome}/npm/tmp";
+
       DOCKER_CONFIG = "${config.xdg.configHome}/docker";
     }
     // lib.optionalAttrs (config.sqwer.home.k8s.enable == true) {

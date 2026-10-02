@@ -9,6 +9,7 @@
       enable = true;
       defaultEditor = true;
       settings = {
+        theme = "rose_pine";
         editor = {
           mouse = true;
           bufferline = "always";

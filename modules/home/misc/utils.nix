@@ -52,29 +52,12 @@ in
       home.packages =
         with pkgs;
         [
-          git
-          helix
-          go-task
-
           gh
-
-          nixd
-          nixfmt
+          helix
         ]
         ++ (with pkgs.unstable; [
           secretspec
         ]);
-
-      programs.mise = {
-        enable = true;
-        package = pkgs.unstable.mise;
-        enableZshIntegration = config.sqwer.home.zsh.enable;
-      };
-
-      programs.direnv.mise = {
-        enable = true;
-        package = pkgs.unstable.mise;
-      };
     })
   ];
 }
