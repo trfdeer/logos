@@ -40,7 +40,7 @@ in
     environment.systemPackages = with pkgs; [ docker-compose ];
     users.extraGroups.podman.members = cfg.users;
 
-    users.users = lib.getAttrs cfg.users (_: {
+    users.users = lib.genAttrs cfg.users (_: {
       subUidRanges = [
         {
           startUid = 100000;
@@ -49,7 +49,7 @@ in
       ];
       subGidRanges = [
         {
-          startUid = 100000;
+          startGid = 100000;
           count = 1048576;
         }
       ];
