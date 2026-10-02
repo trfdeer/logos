@@ -1,9 +1,11 @@
 inputs@{
+  self,
   nixpkgs,
   nixpkgsUnstable,
   sqpkgs,
-  opencode,
   wor,
+  llm-agents,
+  mcp-nixos,
   ...
 }:
 let
@@ -15,7 +17,8 @@ let
     overlays = [
       sqpkgs.overlays.default
       wor.overlays.default
-      opencode.overlays.default
+      llm-agents.overlays.shared-nixpkgs
+      mcp-nixos.overlays.default
 
       (final: prev: {
         unstable = import nixpkgsUnstable {
