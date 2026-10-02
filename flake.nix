@@ -55,5 +55,7 @@
       url = "github:utensils/mcp-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
 }

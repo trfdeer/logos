@@ -6,6 +6,7 @@ inputs@{
   wor,
   llm-agents,
   mcp-nixos,
+  deploy-rs,
   ...
 }:
 let
@@ -43,6 +44,9 @@ in
   devShells.${system} = import ./devShells.nix { inherit pkgs; };
   formatter.${system} = pkgs.nixfmt-tree;
 
+  deploy.nodes = import ./nodeConfigurations.nix commonInherits;
   homeConfigurations = import ./homeConfigurations.nix commonInherits;
   nixosConfigurations = import ./nixosConfigurations.nix commonInherits;
+
+  checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 }
