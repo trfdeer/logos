@@ -89,7 +89,7 @@ Use one scope per commit; split the commit instead of writing `(home,secrets)`.
 ## Body — Keep a Changelog sections
 
 Templates like git-cliff's `keepachangelog` build changelog sections from commit bodies in
-this format, so no manual `CHANGELOG` file is needed. (With git-cliff's *default* template
+this format, so no manual `CHANGELOG` file is needed. (With git-cliff's _default_ template
 only the subject line is rendered — always write a subject that stands on its own.)
 Use these labels, only the ones that apply, in this order:
 
