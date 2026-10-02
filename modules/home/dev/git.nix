@@ -58,10 +58,10 @@ in
       }
       // lib.optionalAttrs cfgOp.enable {
         "gpg \"ssh\"".program =
-          if (config.sqwer.platform.isNixosSystem) then
-            "${pkgs._1password-cli}/out/op"
-          else if (config.sqwer.platform.isWsl) then
-            "op-ssh-sign.exe"
+          if (config.sqwer.platform.isWsl) then
+            "op-ssh-sign-wsl.exe"
+          else if (config.sqwer.platform.isNixosSystem) then
+            lib.getExe pkgs._1password-cli
           else
             "/opt/1Password/op-ssh-sign";
       };

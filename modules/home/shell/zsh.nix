@@ -62,6 +62,10 @@ in
           k = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl";
           kd = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl describe";
           kubectl = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl";
+        }
+        // lib.optionalAttrs (homeCfg._1password.enable && config.sqwer.platform.isWsl) {
+          # Use the Windows 1Password CLI via WSL interop; there is no Linux `op` on WSL hosts.
+          op = "op.exe";
         };
 
       oh-my-zsh = {
