@@ -104,7 +104,7 @@ If `<target-host>` is omitted, it defaults to the same value as `<flake-output>`
 Encrypted files are under `secrets/`; do not edit them as plain JSON.
 
 SOPS is always wrapped in `secretspec run --scope sops --` (see `secretspec.toml`): the age key
-(`SOPS_AGE_KEY`) is fetched from 1Password and cached in the OS keyring. Bare `sops` commands fail —
+(`SOPS_AGE_KEY`) is fetched from 1Password on each run. Bare `sops` commands fail —
 use the Just recipes, which require `secretspec` and 1Password access.
 
 1. Decrypt locally: `just secrets init`
