@@ -42,7 +42,10 @@ in
   };
   wol = makeSystem {
     name = "wol";
-    prefs.isWsl = true;
+    prefs = {
+      isWsl = true;
+      roles = [ "dev" ];
+    };
   };
 
   # Proxmox LXC Container
