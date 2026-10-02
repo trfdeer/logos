@@ -2,6 +2,7 @@
 {
   sqwer.home = {
     tmux.enable = false;
+    opencode.enable = true;
     _1password.enable = true;
 
     hax = {

@@ -5,14 +5,13 @@
     [
       yubikey-manager
       nix-tree
-      bws
     ]
     ++ (with pkgs; [
       wor.wor-kvm
     ]);
 
   sqwer.home = {
-    # opencode.enable = true;
+    opencode.enable = true;
     _1password.enable = true;
 
     sound = {

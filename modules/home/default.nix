@@ -9,6 +9,9 @@
     ./shell/session_vars.nix
 
     ./ai/opencode.nix
+    ./ai/opencode2.nix
+    ./ai/hax.nix
+    ./ai/mcp.nix
 
     ./dev/k8s.nix
     ./dev/git.nix
