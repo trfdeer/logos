@@ -18,18 +18,9 @@ in
       enable = true;
       servers = {
         mcp-nixos.command = "mcp-nixos";
-
         context7.url = "https://mcp.context7.com/mcp";
-
         microsoft-learn.url = "https://learn.microsoft.com/api/mcp";
-
-        podman = {
-          command = "bun";
-          args = [
-            "x"
-            "podman-mcp-server@0.0.15"
-          ];
-        };
+        linear.url = "https://mcp.linear.app/mcp";
       };
     };
   };

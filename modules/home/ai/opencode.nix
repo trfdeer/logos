@@ -7,7 +7,10 @@
 let
   cfg = config.sqwer.home.opencode;
 
-  agents = [ "monday" ];
+  agents = [
+    "monday"
+    "victor"
+  ];
   skills = [
     "commit-conventions"
     "budget-categorize"
@@ -43,14 +46,6 @@ in
 
         websearch.provider = "random";
 
-        experimental.policies = [
-          {
-            action = "provider.use";
-            effect = "deny";
-            resource = "opencode";
-          }
-        ];
-
         formatter = true;
         share = "disabled";
         update = "disable";
@@ -63,12 +58,6 @@ in
       skills = lib.listToAttrs (map (name: lib.nameValuePair name ./skills/${name}/SKILL.md) skills);
     };
 
-    home.packages = [ pkgs.llm-agents.nono ];
-
-    home.shellAliases.oc =
-      let
-        nono = lib.getExe pkgs.llm-agents.nono;
-      in
-      "${nono} run --profile nolabs-ai/opencode --allow-cwd ${cfg.package.pname}";
+    home.shellAliases.oc = cfg.package.pname;
   };
 }
