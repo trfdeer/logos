@@ -1,17 +1,5 @@
 { lib, ... }:
 
 {
-  imports = [ ];
-
-  boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "ahci"
-    "nvme"
-    "usb_storage"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.facter.reportPath = ../../../.runtime/facter/optiplex-7050.json;
 }

@@ -11,7 +11,7 @@ let
 in
 {
   imports = [
-    profiles.hardware.devices.desktop-zeph
+    profiles.hardware.devices.desktop-gre
     (profiles.storage-layouts.makeStorageLayout {
       name = "nixos";
       device = config.sqwer.secrets.devices.ll-comput.drive_paths.root;
