@@ -1,10 +1,16 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   cfg = config.sqwer.system.docker;
 in
 {
   options.sqwer.system.docker = {
     enable = lib.mkEnableOption "Enable docker";
+    package = lib.mkPackageOption pkgs "docker" { };
     useBtrfsDriver = lib.mkEnableOption "Use btrfs storage driver";
     enableRootless = lib.mkEnableOption "Use rootless docker";
     openSwarmPorts = lib.mkEnableOption "Open swarm ports (2377, 7946, 4789)";
@@ -22,6 +28,7 @@ in
       {
         virtualisation.docker = {
           enable = true;
+          inherit (cfg) package;
           storageDriver = lib.mkIf cfg.useBtrfsDriver "btrfs";
         };
 
@@ -32,6 +39,7 @@ in
 
         virtualisation.docker.rootless = {
           enable = true;
+          inherit (cfg) package;
           setSocketVariable = true;
         };
 

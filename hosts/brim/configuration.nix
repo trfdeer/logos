@@ -21,6 +21,10 @@ in
     })
   ];
 
+  # No GPU/wifi on this box: skip redistributable firmware blobs
+  # (facter enables them defensively for undetected devices)
+  hardware.enableRedistributableFirmware = false;
+
   # ------------------------------------------------------------
   # Host identity
   # ------------------------------------------------------------
@@ -83,8 +87,5 @@ in
 
   services.fstrim.enable = true;
 
-  # ------------------------------------------------------------
-  # Host-specific Home Manager deltas
-  # ------------------------------------------------------------
-  home-manager.users.${id.username}.imports = [ ./home-configuration.nix ];
+  # Home Manager deltas come from the server home profile
 }
