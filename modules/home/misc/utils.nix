@@ -13,6 +13,9 @@ in
       default = true;
     };
     dev = lib.mkEnableOption "development tools";
+    sensors = lib.mkEnableOption "lm_sensors hardware monitoring" // {
+      default = true;
+    };
   };
 
   config = lib.mkMerge [
@@ -21,15 +24,13 @@ in
         with pkgs;
         [
           jq
-          nh
           eza
           zsh
           ripgrep
-          neovim
           _7zip-zstd
-          lm_sensors
         ]
-        ++ (with pkgs.unstable; [ just ]);
+        ++ [ pkgs.just ]
+        ++ lib.optional cfg.sensors lm_sensors;
 
       programs.btop = {
         enable = true;

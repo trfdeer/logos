@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
@@ -13,28 +14,34 @@ in
     };
   };
 
-  config = lib.mkIf (homeCfg.nix.enable && !config.sqwer.platform.isNixosSystem) {
-    nix = {
+  config = lib.mkMerge [
+    (lib.mkIf homeCfg.nix.enable {
+      home.packages = with pkgs; [ nh ];
+    })
 
-      settings = {
-        use-xdg-base-directories = true;
-        auto-optimise-store = true;
-        experimental-features = [
-          "nix-command"
-          "flakes"
-        ];
+    (lib.mkIf (homeCfg.nix.enable && !config.sqwer.platform.isNixosSystem) {
+      nix = {
 
-        # Can't set these from home config
-        # trusted-users = [ config.sqwer.identity.username ];
+        settings = {
+          use-xdg-base-directories = true;
+          auto-optimise-store = true;
+          experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
+
+          # Can't set these from home config
+          # trusted-users = [ config.sqwer.identity.username ];
+        };
+
+        gc = {
+          automatic = true;
+          dates = "weekly";
+          options = "--delete-older-than 14d";
+        };
       };
 
-      gc = {
-        automatic = true;
-        dates = "weekly";
-        options = "--delete-older-than 14d";
-      };
-    };
-
-    programs.home-manager.enable = true;
-  };
+      programs.home-manager.enable = true;
+    })
+  ];
 }

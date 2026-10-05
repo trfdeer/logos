@@ -1,13 +1,39 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
   options.sqwer.home.helix = {
     enable = lib.mkEnableOption "Enable Helix Editor";
+    grammars = lib.mkOption {
+      type = with lib.types; nullOr (listOf str);
+      default = null;
+      description = ''
+        Tree-sitter grammar names to build into Helix.
+        `null` builds the stock package with every grammar.
+      '';
+    };
   };
 
   config = lib.mkIf config.sqwer.home.helix.enable {
     programs.helix = {
       enable = true;
       defaultEditor = true;
+      package =
+        let
+          helixGrammars =
+            if config.sqwer.home.helix.grammars == null then
+              pkgs.helix
+            else
+              pkgs.helix.override {
+                lockedGrammars = lib.getAttrs config.sqwer.home.helix.grammars (
+                  lib.importJSON "${pkgs.path}/pkgs/by-name/he/helix/grammars.json"
+                );
+              };
+        in
+        helixGrammars;
       settings = {
         theme = "rose_pine";
         editor = {

@@ -16,6 +16,7 @@
     ./dev/k8s.nix
     ./dev/git.nix
     ./dev/helix.nix
+    ./dev/neovim.nix
     ./dev/lazygit.nix
     ./dev/podman.nix
 
