@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 {
   sqwer.home = {
-    podman.enable = true;
     helix.enable = true;
   };
 

@@ -22,6 +22,8 @@ in
     virtualisation = {
       containers = {
         enable = true;
+        # podman 5 defaults to the netavark network backend; CNI plugins are unused
+        containersConf.cniPlugins = lib.mkForce [ ];
         storage.settings.storage =
           { }
           // (lib.optionalAttrs cfg.useBtrfsDriver {
@@ -34,10 +36,16 @@ in
       podman = {
         enable = true;
         defaultNetwork.settings.dns_enabled = true;
+
+        # crun is already bundled with podman; drop the default runc runtime
+        extraRuntimes = [ ];
+        # krun support drags in libkrun/libkrunfw
+        package = pkgs.podman.override {
+          crun = pkgs.crun.override { withLibkrun = false; };
+        };
       };
     };
 
-    environment.systemPackages = with pkgs; [ docker-compose ];
     users.extraGroups.podman.members = cfg.users;
 
     users.users = lib.genAttrs cfg.users (_: {

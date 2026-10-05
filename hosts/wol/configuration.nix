@@ -8,7 +8,7 @@ in
 {
   networking.hostName = "wol";
   sqwer.system = {
-    docker = {
+    podman = {
       enable = true;
       users = [ id.username ];
     };

@@ -34,7 +34,8 @@ in
   # ------------------------------------------------------------
   sqwer.system = {
     impermanence.enable = true;
-    boot.secureBoot.enable = true;
+
+    podman.enable = true;
 
     network = {
       enable = true;
@@ -76,8 +77,6 @@ in
       enable = true;
       operator = id.username;
     };
-
-    podman.enable = true;
 
     ssh.port = 2222;
   };

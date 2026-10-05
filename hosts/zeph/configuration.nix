@@ -34,7 +34,6 @@ in
   # ------------------------------------------------------------
   sqwer.system = {
     impermanence.enable = true;
-    boot.secureBoot.enable = true;
 
     network = {
       enable = true;
@@ -54,18 +53,14 @@ in
       operator = id.username;
     };
 
-    docker = {
+    podman = {
       enable = true;
-      enableRootless = true;
-      useBtrfsDriver = true;
       users = [ id.username ];
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    amdgpu_top
-    rocmPackages.rocm-smi
-  ];
+  # (GPU monitoring tools removed; run them in a container if needed)
+  # Firmware is curated in profiles/hardware/devices/desktop-gre.nix
 
   services.fstrim.enable = true;
 
