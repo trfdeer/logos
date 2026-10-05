@@ -5,14 +5,14 @@
   ...
 }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
 in
 {
   imports = [
     profiles.hardware.ct.proxmox-lxc
   ];
 
-  sqwer.system = {
+  logos.system = {
     ssh.enable = true;
     boot.doNotConfigure = true;
 

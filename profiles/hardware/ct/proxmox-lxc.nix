@@ -4,7 +4,7 @@
     (modulesPath + "/virtualisation/proxmox-lxc.nix")
   ];
 
-  sqwer.system.hardware.proxmox-lxc = {
+  logos.system.hardware.proxmox-lxc = {
     enable = true;
     privileged = lib.mkDefault false;
   };

@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
 in
 {
-  sqwer.home = {
+  logos.home = {
     utils.dev = lib.mkDefault true;
     lazygit.enable = lib.mkDefault true;
     helix.enable = lib.mkDefault true;

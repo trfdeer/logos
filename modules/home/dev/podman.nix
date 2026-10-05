@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.home.podman;
+  cfg = config.logos.home.podman;
 in
 {
-  options.sqwer.home.podman = {
+  options.logos.home.podman = {
     enable = lib.mkEnableOption "Podman Configuration";
     useBtrfsDriver = lib.mkEnableOption "Use btrfs driver";
   };

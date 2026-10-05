@@ -40,11 +40,11 @@ Use this skill when the user wants to add a new machine to the `logos` flake.
 
 6. **Import hardware and storage profiles**
    - Import the right `profiles.hardware.*` module in `hosts/<name>/configuration.nix`.
-   - Import a storage-layout profile if disk configuration is required, passing `device` from `config.sqwer.secrets.devices.*.drive_paths.root`.
+   - Import a storage-layout profile if disk configuration is required, passing `device` from `config.logos.secrets.devices.*.drive_paths.root`.
 
 7. **Configure services**
-   - Use `sqwer.system.*` options for NixOS services (network, tailscale, docker, ssh, etc.).
-   - Use `sqwer.home.*` options for Home Manager settings.
+   - Use `logos.system.*` options for NixOS services (network, tailscale, docker, ssh, etc.).
+   - Use `logos.home.*` options for Home Manager settings.
 
 8. **Validate**
    - Run `nix fmt`.

@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.home.k8s;
+  cfg = config.logos.home.k8s;
 in
 {
-  options.sqwer.home.k8s = {
+  options.logos.home.k8s = {
     enable = lib.mkEnableOption "Enable Kubernetes tools";
     clusterPackage = lib.mkPackageOption pkgs.unstable "talosctl" {
       nullable = true;

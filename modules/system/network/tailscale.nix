@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.system.tailscale;
+  cfg = config.logos.system.tailscale;
 in
 {
-  options.sqwer.system.tailscale = {
+  options.logos.system.tailscale = {
     enable = lib.mkEnableOption "Enable Tailscale";
     operator = lib.mkOption {
       type = lib.types.str;

@@ -4,7 +4,7 @@
   ...
 }:
 let
-  cfgHome = config.sqwer.home;
+  cfgHome = config.logos.home;
 
   # opSshSignPath =
   #   if sqPlatform.isWsl then
@@ -16,7 +16,7 @@ let
 
 in
 {
-  options.sqwer.home._1password = {
+  options.logos.home._1password = {
     enable = lib.mkEnableOption "1Password User Config";
   };
 

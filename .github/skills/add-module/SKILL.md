@@ -18,10 +18,10 @@ Use this skill when adding reusable NixOS or Home Manager configuration under `m
 ```nix
 { lib, config, pkgs, ... }:
 let
-  cfg = config.sqwer.<subsystem>.<name>;
+  cfg = config.logos.<subsystem>.<name>;
 in
 {
-  options.sqwer.<subsystem>.<name> = {
+  options.logos.<subsystem>.<name> = {
     enable = lib.mkEnableOption "<description>";
   };
 
@@ -31,7 +31,7 @@ in
 }
 ```
 
-Replace `<subsystem>` with `system` or `home`. Use `options.sqwer.*` for project-specific toggles.
+Replace `<subsystem>` with `system` or `home`. Use `options.logos.*` for project-specific toggles.
 
 ## Wiring it in
 

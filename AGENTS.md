@@ -7,28 +7,28 @@ This repository is a NixOS / Home Manager flake for managing multiple machines (
 - **[flake.nix](flake.nix)** declares inputs and delegates to **[outputs/default.nix](outputs/default.nix)**.
 - **[utils/makeSystem.nix](utils/makeSystem.nix)** and **[utils/makeHome.nix](utils/makeHome.nix)** assemble every configuration.
 - **[hosts/](hosts/)** — one directory per machine; each has `configuration.nix` and usually `home-configuration.nix`.
-- **[modules/](modules/)** — reusable `sqwer.*` options and implementations (`common/`, `home/`, `system/`).
+- **[modules/](modules/)** — reusable `logos.*` options and implementations (`common/`, `home/`, `system/`).
 - **[profiles/](profiles/)** — composed selections of modules (`system/`, `home/`, `hardware/`, `storage-layouts/`).
 - **[secrets/](secrets/)** — SOPS-encrypted JSON files (plus `facter/` binary reports).
 - **[just/](just/)** — Just recipes for secrets, building images, and remote upgrades.
 
 ## Conventions
 
-- Use the custom `sqwer.*` option namespace for project-specific configuration.
-  - `sqwer.platform.*` — host metadata: `hostName`, `roles`, `stateVersion`, `isWsl`, `isNixosSystem`.
-  - `sqwer.identity.*` — derived from decrypted secrets: `username`, `fullName`, `hashedPassword`, `git`, `sshPublicKeys`, `sshHosts`.
-  - `sqwer.secrets.*` — parsed raw JSON from `.runtime/secrets/`.
-  - `sqwer.system.*` — NixOS-only options.
-  - `sqwer.home.*` — Home Manager-only options.
+- Use the custom `logos.*` option namespace for project-specific configuration.
+  - `logos.platform.*` — host metadata: `hostName`, `roles`, `stateVersion`, `isWsl`, `isNixosSystem`.
+  - `logos.identity.*` — derived from decrypted secrets: `username`, `fullName`, `hashedPassword`, `git`, `sshPublicKeys`, `sshHosts`.
+  - `logos.secrets.*` — parsed raw JSON from `.runtime/secrets/`.
+  - `logos.system.*` — NixOS-only options.
+  - `logos.home.*` — Home Manager-only options.
 - Module skeleton:
 
   ```nix
   { lib, config, ... }:
   let
-    cfg = config.sqwer.<subsystem>.<name>;
+    cfg = config.logos.<subsystem>.<name>;
   in
   {
-    options.sqwer.<subsystem>.<name> = {
+    options.logos.<subsystem>.<name> = {
       enable = lib.mkEnableOption "...";
     };
 
@@ -123,12 +123,12 @@ Facter reports (`secrets/facter/*.json`) are bzip2-compressed binary SOPS files;
 1. Create `hosts/<name>/configuration.nix` and `home-configuration.nix` if needed.
 2. Register it in **[hosts/default.nix](hosts/default.nix)**.
 3. Declare it in **[outputs/nixosConfigurations.nix](outputs/nixosConfigurations.nix)** and its standalone home config in **[outputs/homeConfigurations.nix](outputs/homeConfigurations.nix)**.
-4. Add a `<name>` entry in `secrets/outConfig.json` so `sqwer.identity` resolves; re-encrypt with SOPS.
+4. Add a `<name>` entry in `secrets/outConfig.json` so `logos.identity` resolves; re-encrypt with SOPS.
 5. Import the appropriate hardware profile from `profiles/hardware/` and, if needed, a storage-layout profile from `profiles/storage-layouts/`.
 
 ## Adding a new module or profile
 
-- New module: add under `modules/<area>/`, import it in the nearest `default.nix`, and follow the `sqwer.<subsystem>.<name>` option pattern.
+- New module: add under `modules/<area>/`, import it in the nearest `default.nix`, and follow the `logos.<subsystem>.<name>` option pattern.
 - New profile: add under `profiles/system/` or `profiles/home/` and register it in the corresponding `default.nix`.
 - New hardware/storage profile: add under `profiles/hardware/` or `profiles/storage-layouts/` and register it in the corresponding `default.nix`.
 
@@ -136,7 +136,7 @@ Facter reports (`secrets/facter/*.json`) are bzip2-compressed binary SOPS files;
 
 - Never use `/tmp` for testing changes; use `.runtime/agent/` instead.
 - A host **must** exist in `secrets/outConfig.json` or evaluation fails with an assertion in `modules/common/identity.nix`.
-- `sqwer.system.boot.secureBoot.enable = true;` forces `boot.loader.systemd-boot` off via `lanzaboote`.
+- `logos.system.boot.secureBoot.enable = true;` forces `boot.loader.systemd-boot` off via `lanzaboote`.
 - Impermanence uses `preservation`, not `impermanence.nix`, preserving files on `/persistent/nixos`.
 - Proxmox LXC hosts set `nix.settings.sandbox = false`.
 - `outputs/homeConfigurations.nix` keys are `"dwai@<host>"` and each entry's `name` must match a host in `hosts/` and `secrets/outConfig.json` — a mismatch fails evaluation.

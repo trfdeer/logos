@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.system.boot;
+  cfg = config.logos.system.boot;
 in
 {
-  options.sqwer.system.boot = {
+  options.logos.system.boot = {
     doNotConfigure = lib.mkEnableOption "Skip configuring boot options";
 
     kernelPackage = lib.mkOption {

@@ -10,7 +10,7 @@
       wor.wor-kvm
     ]);
 
-  sqwer.home = {
+  logos.home = {
     opencode.enable = true;
     _1password.enable = true;
 

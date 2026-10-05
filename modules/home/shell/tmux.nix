@@ -1,10 +1,10 @@
 { lib, config, ... }:
 
 let
-  cfg = config.sqwer.home.tmux;
+  cfg = config.logos.home.tmux;
 in
 {
-  options.sqwer.home.tmux = {
+  options.logos.home.tmux = {
     enable = lib.mkEnableOption "Enable tmux";
     prefixKey = lib.mkOption {
       type = lib.types.nonEmptyStr;

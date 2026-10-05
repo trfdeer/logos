@@ -1,9 +1,9 @@
 { config, lib, ... }:
 let
-  cfg = config.sqwer.system.hardware.proxmox-lxc;
+  cfg = config.logos.system.hardware.proxmox-lxc;
 in
 {
-  options.sqwer.system.hardware.proxmox-lxc = {
+  options.logos.system.hardware.proxmox-lxc = {
     enable = lib.mkEnableOption "Is a Proxmox LXC container";
     privileged = lib.mkOption {
       type = lib.types.bool;

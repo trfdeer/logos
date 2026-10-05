@@ -1,15 +1,15 @@
 { lib, config, ... }:
 let
-  homeCfg = config.sqwer.home;
+  homeCfg = config.logos.home;
 in
 {
-  options.sqwer.home.zsh = {
+  options.logos.home.zsh = {
     enable = lib.mkEnableOption "Enable ZSH" // {
       default = true;
     };
   };
 
-  config = lib.mkIf config.sqwer.home.zsh.enable {
+  config = lib.mkIf config.logos.home.zsh.enable {
     programs.zsh = {
       enable = true;
       enableCompletion = true;
@@ -63,7 +63,7 @@ in
           kd = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl describe";
           kubectl = "kubectl --cache-dir=$XDG_CACHE_HOME/kubectl";
         }
-        // lib.optionalAttrs (homeCfg._1password.enable && config.sqwer.platform.isWsl) {
+        // lib.optionalAttrs (homeCfg._1password.enable && config.logos.platform.isWsl) {
           # Use the Windows 1Password CLI via WSL interop; there is no Linux `op` on WSL hosts.
           op = "op.exe";
         };

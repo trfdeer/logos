@@ -3,7 +3,7 @@
     proxmox-lxc = ./hardware/proxmox-lxc.nix;
   };
 
-  sqwerSystem = {
+  logosSystem = {
     imports = [
       ./network/network.nix
       ./network/firewall.nix

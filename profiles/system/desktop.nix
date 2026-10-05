@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
 in
 {
-  sqwer.system = {
+  logos.system = {
     ssh.enable = lib.mkDefault true;
     _1password = {
       enable = true;

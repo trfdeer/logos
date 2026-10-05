@@ -6,7 +6,7 @@
   ...
 }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
 in
 {
   imports = [
@@ -14,13 +14,13 @@ in
   ];
   installer.cloneConfig = false;
 
-  sqwer.system.boot.doNotConfigure = true;
+  logos.system.boot.doNotConfigure = true;
 
   boot.kernelParams = [ "console=ttyS0,115200" ];
   boot.loader.timeout = 10;
   networking.hostName = "seed";
 
-  sqwer.system.ssh.enable = true;
+  logos.system.ssh.enable = true;
   services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
 
   users.users.root.openssh.authorizedKeys.keys = id.sshPublicKeys;

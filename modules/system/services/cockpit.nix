@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.system.cockpit;
+  cfg = config.logos.system.cockpit;
 in
 {
-  options.sqwer.system.cockpit = {
+  options.logos.system.cockpit = {
     enable = lib.mkEnableOption "Enable cockpit";
     allowedOrigins = lib.mkOption {
       type = lib.types.listOf lib.types.str;
@@ -31,8 +31,8 @@ in
         [
           cockpit-files
         ]
-        ++ lib.optional config.sqwer.system.libvirtd.enable pkgs.cockpit-machines
-        ++ lib.optional config.sqwer.system.podman.enable pkgs.cockpit-podman;
+        ++ lib.optional config.logos.system.libvirtd.enable pkgs.cockpit-machines
+        ++ lib.optional config.logos.system.podman.enable pkgs.cockpit-podman;
     };
   };
 }

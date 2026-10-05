@@ -6,7 +6,7 @@
   ...
 }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
   hostName = "sol";
 in
 {
@@ -15,7 +15,7 @@ in
 
     (profiles.storage-layouts.makeStorageLayout {
       name = "nixos";
-      device = config.sqwer.secrets.devices.ss-minipc.drive_paths.root;
+      device = config.logos.secrets.devices.ss-minipc.drive_paths.root;
       filesystem = "btrfs";
       encrypted = { };
       impermanent = false;
@@ -29,7 +29,7 @@ in
   # ------------------------------------------------------------
   networking = {
     inherit hostName;
-    domain = config.sqwer.secrets.outConfig."${hostName}".domain;
+    domain = config.logos.secrets.outConfig."${hostName}".domain;
 
     networkmanager.enable = true;
   };
@@ -37,7 +37,7 @@ in
   # ------------------------------------------------------------
   # Host-specific services
   # ------------------------------------------------------------
-  sqwer.system = {
+  logos.system = {
     boot.secureBoot.enable = true;
 
     tailscale = {

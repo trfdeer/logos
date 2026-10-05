@@ -25,7 +25,7 @@ being stored anywhere on disk. Intended for headless servers/VPS instances.
 There are two layers:
 
 1. The storage layout must mark the encrypted volume as SSH-unlocked.
-2. `sqwer.system.boot.initrdSsh` must be enabled and tuned.
+2. `logos.system.boot.initrdSsh` must be enabled and tuned.
 
 ### 1. Storage layout (makeStorageLayout)
 
@@ -50,18 +50,18 @@ All other hosts (beet, brim, sol, zeph) use the TPM default via `encrypted = { }
 
 ### 2. Initrd SSH module
 
-Enable `sqwer.system.boot.initrdSsh`. The module sets `boot.initrd.enable`,
+Enable `logos.system.boot.initrdSsh`. The module sets `boot.initrd.enable`,
 enables initrd networking and initrd sshd, and configures
 `boot.initrd.systemd` with the network + (optionally) the tailscale units.
 
 ```nix
-sqwer.system.boot.initrdSsh = {
+logos.system.boot.initrdSsh = {
   enable = true;
   port = 22;
   hostKey = "/persistent/nixos/etc/ssh/initrd_host_ed25519_key";
   publicFallback = false;
 
-  network = hostCfg.network;          # from sqwer.secrets.outConfig
+  network = hostCfg.network;          # from logos.secrets.outConfig
 
   tailscale = {
     enable = true;
@@ -71,7 +71,7 @@ sqwer.system.boot.initrdSsh = {
 };
 ```
 
-Options (all under `sqwer.system.boot.initrdSsh`):
+Options (all under `logos.system.boot.initrdSsh`):
 
 | Option | Default | Purpose |
 | ------ | ------- | ------- |
@@ -103,9 +103,9 @@ A warning is emitted if `tailscale.enable` and `publicFallback` are both on
 The secrets schema (`modules/common/secrets.nix`) exposes per-host options,
 read from `secrets/outConfig.json` (decrypted under `.runtime/secrets/`):
 
-- `sqwer.secrets.outConfig.<host>.initrdSsh.bindIp` — tailnet IP the initrd
+- `logos.secrets.outConfig.<host>.initrdSsh.bindIp` — tailnet IP the initrd
   sshd binds to (used as `tailscale.ip`).
-- `sqwer.secrets.outConfig.<host>.network` — the initrd network config
+- `logos.secrets.outConfig.<host>.network` — the initrd network config
   (reused as `initrdSsh.network`; same `networkConfigType` submodule as the
   main network: `mode` + `manualConfiguration`).
 
@@ -119,7 +119,7 @@ Add these values for the host and re-encrypt with SOPS (see the repo's
 - A VPS server (`profiles.hardware.vm.vps01`), XFS root on `/dev/vda`,
   `encrypted.method = "ssh"`, impermanent, with the `/nix` bind mount on
   `/persistent/nix`.
-- `sqwer.system.boot.initrdSsh` enabled with `port = 22`, host key at
+- `logos.system.boot.initrdSsh` enabled with `port = 22`, host key at
   `/persistent/nixos/etc/ssh/initrd_host_ed25519_key`, `publicFallback = false`,
   static initrd network from secrets, and initrd Tailscale with
   `stateDir = /persistent/nixos/var/lib/tailscale-initrd` and
@@ -156,7 +156,7 @@ tailscale --socket=/run/tailscale-initrd-setup.sock ip -4
 kill %tailscaled
 ```
 
-- Record the printed IPv4 in `sqwer.secrets.outConfig.<host>.initrdSsh.bindIp`.
+- Record the printed IPv4 in `logos.secrets.outConfig.<host>.initrdSsh.bindIp`.
 - Rebuild.
 - Once reachable only over the tailnet, set `publicFallback = false` to close
   the public unlock port (if not already set).
@@ -181,8 +181,8 @@ tailscale --socket=/run/tailscale-initrd-setup.sock ip -4
 kill %tailscaled
 ```
 
-Record the printed IPv4 as `sqwer.secrets.outConfig.star.initrdSsh.bindIp`
-(and `sqwer.system.boot.initrdSsh.tailscale.ip`), then rebuild.
+Record the printed IPv4 as `logos.secrets.outConfig.star.initrdSsh.bindIp`
+(and `logos.system.boot.initrdSsh.tailscale.ip`), then rebuild.
 
 ### Unlocking at boot
 

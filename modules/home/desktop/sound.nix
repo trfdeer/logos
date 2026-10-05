@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.home.sound;
+  cfg = config.logos.home.sound;
 in
 {
-  options.sqwer.home.sound = {
+  options.logos.home.sound = {
     disable-hsp = lib.mkEnableOption "Disable bluetooth Headset Profile";
     disable-hw-volume = lib.mkEnableOption "Disable Hardware Volume Control";
   };

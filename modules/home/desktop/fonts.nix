@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.home.fonts;
+  cfg = config.logos.home.fonts;
 in
 {
-  options.sqwer.home.fonts = {
+  options.logos.home.fonts = {
     enable = lib.mkEnableOption "Install Fonts";
   };
 

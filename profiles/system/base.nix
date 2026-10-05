@@ -9,10 +9,10 @@
   ...
 }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
 in
 {
-  sqwer.platform = {
+  logos.platform = {
     isNixosSystem = true;
     hostName = hostname;
     roles = roles;
@@ -46,7 +46,7 @@ in
 
     sharedModules = [
       modules.common
-      { sqwer.platform = config.sqwer.platform; }
+      { logos.platform = config.logos.platform; }
     ];
 
     users.${id.username}.imports = [
@@ -77,10 +77,10 @@ in
   programs.zsh.enable = true;
   programs.nix-ld.enable = true;
 
-  sqwer.system = {
+  logos.system = {
     ssh.enable = lib.mkDefault true;
   }
-  // lib.optionalAttrs (lib.elem "desktop" config.sqwer.platform.roles) {
+  // lib.optionalAttrs (lib.elem "desktop" config.logos.platform.roles) {
     _1password = {
       enable = true;
       systemUsers = [ id.username ];
@@ -90,7 +90,7 @@ in
   # ------------------------------------------------------------
   # Lifecycle
   # ------------------------------------------------------------
-  system.stateVersion = config.sqwer.platform.stateVersion;
+  system.stateVersion = config.logos.platform.stateVersion;
 
   boot.zfs.forceImportRoot = lib.mkForce false;
   environment.defaultPackages = [ ];

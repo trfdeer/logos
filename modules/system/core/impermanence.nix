@@ -4,12 +4,12 @@
   ...
 }:
 let
-  id = config.sqwer.identity;
-  cfg = config.sqwer.system.impermanence;
-  isServer = lib.elem "server" config.sqwer.platform.roles;
+  id = config.logos.identity;
+  cfg = config.logos.system.impermanence;
+  isServer = lib.elem "server" config.logos.platform.roles;
 in
 {
-  options.sqwer.system.impermanence = {
+  options.logos.system.impermanence = {
     enable = lib.mkEnableOption "Enable Secure Boot";
   };
 
@@ -39,18 +39,18 @@ in
 
       directories =
         [ ]
-        ++ lib.optional config.sqwer.system.docker.enable "/var/lib/docker"
-        ++ lib.optional config.sqwer.system.podman.enable "/var/lib/containers"
-        ++ lib.optional config.sqwer.system.boot.secureBoot.enable "/var/lib/sbctl"
-        ++ lib.optional config.sqwer.system.tailscale.enable "/var/lib/tailscale"
+        ++ lib.optional config.logos.system.docker.enable "/var/lib/docker"
+        ++ lib.optional config.logos.system.podman.enable "/var/lib/containers"
+        ++ lib.optional config.logos.system.boot.secureBoot.enable "/var/lib/sbctl"
+        ++ lib.optional config.logos.system.tailscale.enable "/var/lib/tailscale"
         ++ lib.optional isServer "/srv/containers";
 
       users.${id.username} = {
         files = [ ];
         directories =
           [ ]
-          ++ lib.optional config.sqwer.system.docker.enable ".local/share/docker"
-          ++ lib.optional config.sqwer.system.podman.enable ".local/share/containers";
+          ++ lib.optional config.logos.system.docker.enable ".local/share/docker"
+          ++ lib.optional config.logos.system.podman.enable ".local/share/containers";
 
       };
     };

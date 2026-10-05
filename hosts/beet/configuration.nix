@@ -5,7 +5,7 @@
   ...
 }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
 in
 {
   imports = [
@@ -33,7 +33,7 @@ in
   # ------------------------------------------------------------
   # Host-specific services
   # ------------------------------------------------------------
-  sqwer.system = {
+  logos.system = {
     impermanence.enable = true;
     boot.secureBoot.enable = true;
 

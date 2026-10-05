@@ -59,7 +59,7 @@ let
   };
 in
 {
-  options.sqwer.secrets = {
+  options.logos.secrets = {
     identities = lib.mkOption {
       type = lib.types.nonEmptyListOf (
         lib.types.submodule {
@@ -203,7 +203,7 @@ in
   };
 
   config = {
-    sqwer.secrets = {
+    logos.secrets = {
       identities = parsedIdentities.identities;
       devices = parsedDevices.devices;
       sshHosts = parsedSshHosts.sshHosts;

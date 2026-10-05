@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.system.ssh;
+  cfg = config.logos.system.ssh;
 in
 {
-  options.sqwer.system.ssh = {
+  options.logos.system.ssh = {
     enable = lib.mkEnableOption "Enable SSH";
     port = lib.mkOption {
       type = lib.types.port;
@@ -14,7 +14,7 @@ in
 
   config = lib.mkIf cfg.enable {
     # Don't open the SSH port globally; it must be allowed explicitly via a
-    # `sqwer.system.firewall` zone. Otherwise `services.openssh.openFirewall`
+    # `logos.system.firewall` zone. Otherwise `services.openssh.openFirewall`
     # (default true) injects the port into `networking.firewall.allowedTCPPorts`,
     # punching it through every zone.
     services.openssh = {

@@ -1,17 +1,17 @@
 { lib, config, ... }:
 let
-  currentHostname = config.sqwer.platform.hostName;
+  currentHostname = config.logos.platform.hostName;
   hostConfig =
-    if config.sqwer.secrets.outConfig ? ${currentHostname} then
-      config.sqwer.secrets.outConfig.${currentHostname}
+    if config.logos.secrets.outConfig ? ${currentHostname} then
+      config.logos.secrets.outConfig.${currentHostname}
     else
-      throw "No configuration found for hostname '${currentHostname}' in outConfig.json. Available: ${lib.concatStringsSep ", " (lib.attrNames config.sqwer.secrets.outConfig)}";
+      throw "No configuration found for hostname '${currentHostname}' in outConfig.json. Available: ${lib.concatStringsSep ", " (lib.attrNames config.logos.secrets.outConfig)}";
 
   # 3. Get the target user ID
   targetUserId = hostConfig.defaultUser;
 
   # 4. Find the identity in the secrets list
-  targetIdentity = lib.findFirst (id: id._id == targetUserId) null config.sqwer.secrets.identities;
+  targetIdentity = lib.findFirst (id: id._id == targetUserId) null config.logos.secrets.identities;
 
   gitIdentityType = lib.types.submodule {
     options = {
@@ -31,7 +31,7 @@ let
   };
 in
 {
-  options.sqwer.identity = {
+  options.logos.identity = {
     username = lib.mkOption {
       type = lib.types.str;
       description = ''
@@ -112,7 +112,7 @@ in
   config = {
     assertions = [
       {
-        assertion = config.sqwer.secrets.outConfig ? ${currentHostname};
+        assertion = config.logos.secrets.outConfig ? ${currentHostname};
         message = "Missing host config for '${currentHostname}' in outConfig.json";
       }
       {
@@ -121,7 +121,7 @@ in
       }
     ];
 
-    sqwer.identity = {
+    logos.identity = {
       username = targetIdentity.username;
       fullName = if targetIdentity.fullname == null then "" else targetIdentity.fullname;
       hashedPassword = targetIdentity.password_hash;
@@ -145,7 +145,7 @@ in
             user = host.username;
             identityFiles = host.identityFiles;
           };
-        }) config.sqwer.secrets.sshHosts
+        }) config.logos.secrets.sshHosts
       );
     };
   };

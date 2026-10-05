@@ -5,9 +5,9 @@
   ...
 }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
   hostName = "star";
-  hostCfg = config.sqwer.secrets.outConfig."${hostName}";
+  hostCfg = config.logos.secrets.outConfig."${hostName}";
 in
 {
   imports = [
@@ -29,13 +29,13 @@ in
   # ------------------------------------------------------------
   networking = {
     inherit hostName;
-    domain = config.sqwer.secrets.outConfig."${hostName}".domain;
+    domain = config.logos.secrets.outConfig."${hostName}".domain;
   };
 
   # ------------------------------------------------------------
   # Host-specific services
   # ------------------------------------------------------------
-  sqwer.system = {
+  logos.system = {
     impermanence.enable = true;
 
     boot.initrdSsh = {

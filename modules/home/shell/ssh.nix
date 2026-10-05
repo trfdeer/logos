@@ -1,12 +1,12 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.home.ssh;
-  cfgOp = config.sqwer.home._1password;
-  id = config.sqwer.identity;
+  cfg = config.logos.home.ssh;
+  cfgOp = config.logos.home._1password;
+  id = config.logos.identity;
 
   hostCfg =
-    if config.sqwer.secrets.outConfig ? ${config.sqwer.platform.hostName} then
-      config.sqwer.secrets.outConfig.${config.sqwer.platform.hostName}
+    if config.logos.secrets.outConfig ? ${config.logos.platform.hostName} then
+      config.logos.secrets.outConfig.${config.logos.platform.hostName}
     else
       { };
 
@@ -25,7 +25,7 @@ let
   effectiveHosts = filteredIdentityHosts // cfg.additionalHosts;
 in
 {
-  options.sqwer.home.ssh = {
+  options.logos.home.ssh = {
     enable = lib.mkEnableOption "Enable SSH config derived from identity";
 
     strict = lib.mkOption {

@@ -50,7 +50,7 @@ major version bump and highlight the commit:
 - a `BREAKING CHANGE:` footer in the body explaining what broke and how to migrate:
 
   ```text
-  BREAKING CHANGE: `sqwer.home.opencode.settings` replaces `extraConfig`;
+  BREAKING CHANGE: `logos.home.opencode.settings` replaces `extraConfig`;
   move existing values to the new option.
   ```
 
@@ -111,7 +111,7 @@ With a declared scope:
 feat(home): add opencode home module
 
 Added:
-- `sqwer.home.opencode` option managing OpenCode (package, settings, TUI)
+- `logos.home.opencode` option managing OpenCode (package, settings, TUI)
 - `oc` shell alias for opencode
 ```
 

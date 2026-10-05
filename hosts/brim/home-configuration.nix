@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 {
-  sqwer.home = {
+  logos.home = {
     helix.enable = true;
   };
 }

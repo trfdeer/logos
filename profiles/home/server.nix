@@ -1,5 +1,5 @@
 { lib, ... }: {
-  sqwer.home = {
+  logos.home = {
     tmux.enable = lib.mkDefault true;
     nix.enable = lib.mkDefault false;
     ssh.enable = lib.mkDefault false;
@@ -10,12 +10,12 @@
   programs.man.enable = false;
   fonts.fontconfig.enable = false;
   xdg.mime.enable = lib.mkForce false;
-  sqwer.home.utils.sensors = false;
+  logos.home.utils.sensors = false;
 
-  sqwer.home.helix.enable = lib.mkDefault true;
+  logos.home.helix.enable = lib.mkDefault true;
 
   # Helix with only the grammars a server needs
-  sqwer.home.helix.grammars = [
+  logos.home.helix.grammars = [
     "bash"
     "ini"
     "json"

@@ -5,8 +5,8 @@
   ...
 }:
 let
-  cfg = config.sqwer.home.git;
-  cfgOp = config.sqwer.home._1password;
+  cfg = config.logos.home.git;
+  cfgOp = config.logos.home._1password;
 
   gitIdentityType = lib.types.submodule {
     options = {
@@ -26,7 +26,7 @@ let
   };
 in
 {
-  options.sqwer.home.git = {
+  options.logos.home.git = {
     enable = lib.mkEnableOption "Enable Git";
 
     identities = lib.mkOption {
@@ -55,14 +55,14 @@ in
         init.defaultBranch = "main";
         user.useConfigOnly = true;
       }
-      // lib.optionalAttrs config.sqwer.platform.isWsl {
+      // lib.optionalAttrs config.logos.platform.isWsl {
         core.sshCommand = "ssh.exe";
       }
       // lib.optionalAttrs cfgOp.enable {
         "gpg \"ssh\"".program =
-          if (config.sqwer.platform.isWsl) then
+          if (config.logos.platform.isWsl) then
             "op-ssh-sign-wsl.exe"
-          else if (config.sqwer.platform.isNixosSystem) then
+          else if (config.logos.platform.isNixosSystem) then
             lib.getExe pkgs._1password-cli
           else
             "/opt/1Password/op-ssh-sign";

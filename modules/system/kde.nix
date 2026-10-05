@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.system.kde;
+  cfg = config.logos.system.kde;
 in
 {
-  options.sqwer.system.kde = {
+  options.logos.system.kde = {
     enable = lib.mkEnableOption "KDE Plasma";
   };
 

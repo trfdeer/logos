@@ -1,6 +1,6 @@
 { ... }:
 {
-  sqwer.platform = {
+  logos.platform = {
     stateVersion = "26.05";
   };
 }

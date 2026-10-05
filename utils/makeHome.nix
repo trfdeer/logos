@@ -29,7 +29,7 @@ inputs.home-manager.lib.homeManagerConfiguration {
     profiles.home.base
     {
       nix.package = pkgs.nix;
-      sqwer.platform = {
+      logos.platform = {
         hostName = name;
         isWsl = prefs'.isWsl;
         roles = prefs'.roles;

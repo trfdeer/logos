@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.system.libvirtd;
+  cfg = config.logos.system.libvirtd;
 in
 {
-  options.sqwer.system.libvirtd = {
+  options.logos.system.libvirtd = {
     enable = lib.mkEnableOption "Enable libvirtd";
 
     users = lib.mkOption {
@@ -30,14 +30,14 @@ in
         swtpm.enable = true;
       };
     }
-    // lib.optionalAttrs (config.sqwer.system.cockpit.enable) {
+    // lib.optionalAttrs (config.logos.system.cockpit.enable) {
       dbus.enable = true;
     };
     virtualisation.spiceUSBRedirection.enable = true;
 
     environment.systemPackages =
       with pkgs;
-      [ OVMF ] ++ lib.optional config.sqwer.system.cockpit.enable pkgs.virt-manager;
+      [ OVMF ] ++ lib.optional config.logos.system.cockpit.enable pkgs.virt-manager;
 
     users.extraGroups.kvm.members = cfg.users;
     users.extraGroups.qemu.members = cfg.users;

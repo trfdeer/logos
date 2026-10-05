@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.system.podman;
+  cfg = config.logos.system.podman;
 in
 {
-  options.sqwer.system.podman = {
+  options.logos.system.podman = {
     enable = lib.mkEnableOption "Enable Podman";
     useBtrfsDriver = lib.mkEnableOption "Use btrfs driver";
     users = lib.mkOption {

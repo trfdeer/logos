@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.system.samba;
+  cfg = config.logos.system.samba;
 in
 {
-  options.sqwer.system.samba = {
+  options.logos.system.samba = {
     enable = lib.mkEnableOption "Enable Samba file share";
 
     name = lib.mkOption {

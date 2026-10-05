@@ -8,7 +8,7 @@ A NixOS and Home Manager flake for declaratively managing multiple machines.
 | --------- | ------- |
 | [flake.nix](flake.nix) | Flake inputs, including nixpkgs, home-manager, lanzaboote, disko, and sqpkgs. |
 | [hosts/](hosts/) | One directory per machine, containing `configuration.nix` and usually `home-configuration.nix`. |
-| [modules/](modules/) | Reusable configuration modules using the `sqwer.*` option namespace. |
+| [modules/](modules/) | Reusable configuration modules using the `logos.*` option namespace. |
 | [profiles/](profiles/) | Composed selections of modules for system, home, hardware, and storage layouts. |
 | [utils/](utils/) | Helpers for assembling system and home configurations. |
 | [outputs/](outputs/) | Flake outputs for dev shells, formatters, home configurations, and NixOS configurations. |
@@ -50,12 +50,12 @@ If `<target-host>` is omitted, it defaults to the same value as `<flake-output>`
 
 ## Conventions
 
-- Project-specific configuration lives under the `sqwer.*` option namespace.
-  - `sqwer.platform.*` — host metadata: `hostName`, `roles`, `stateVersion`, `isWsl`, `isNixosSystem`.
-  - `sqwer.identity.*` — derived from decrypted secrets: `username`, `fullName`, `hashedPassword`, `git`, `sshPublicKeys`, `sshHosts`.
-  - `sqwer.secrets.*` — parsed raw JSON from `.runtime/secrets/`.
-  - `sqwer.system.*` — NixOS-only options.
-  - `sqwer.home.*` — Home Manager-only options.
+- Project-specific configuration lives under the `logos.*` option namespace.
+  - `logos.platform.*` — host metadata: `hostName`, `roles`, `stateVersion`, `isWsl`, `isNixosSystem`.
+  - `logos.identity.*` — derived from decrypted secrets: `username`, `fullName`, `hashedPassword`, `git`, `sshPublicKeys`, `sshHosts`.
+  - `logos.secrets.*` — parsed raw JSON from `.runtime/secrets/`.
+  - `logos.system.*` — NixOS-only options.
+  - `logos.home.*` — Home Manager-only options.
 - Modules follow the standard `mkEnableOption` / `mkIf cfg.enable` pattern.
 - Profiles use `lib.mkDefault` for values hosts may override.
 - Host `roles` are limited to `"desktop"`, `"server"`, and `"dev"`.
@@ -79,19 +79,19 @@ just secrets clean                     # remove plaintext files
 1. Create `hosts/<name>/configuration.nix` and `home-configuration.nix` if needed.
 2. Register it in [hosts/default.nix](hosts/default.nix).
 3. Declare it in [outputs/nixosConfigurations.nix](outputs/nixosConfigurations.nix) and its standalone home config in [outputs/homeConfigurations.nix](outputs/homeConfigurations.nix).
-4. Add a `<name>` entry in `secrets/outConfig.json` so `sqwer.identity` resolves, then re-encrypt.
+4. Add a `<name>` entry in `secrets/outConfig.json` so `logos.identity` resolves, then re-encrypt.
 5. Import the appropriate hardware profile from [profiles/hardware/](profiles/hardware/) and, if needed, a storage-layout profile from [profiles/storage-layouts/](profiles/storage-layouts/).
 
 ## Adding a module or profile
 
-- New module: add under `modules/<area>/`, import it in the nearest `default.nix`, and follow the `sqwer.<subsystem>.<name>` option pattern.
+- New module: add under `modules/<area>/`, import it in the nearest `default.nix`, and follow the `logos.<subsystem>.<name>` option pattern.
 - New profile: add under `profiles/system/` or `profiles/home/` and register it in the corresponding `default.nix`.
 - New hardware/storage profile: add under `profiles/hardware/` or `profiles/storage-layouts/` and register it in the corresponding `default.nix`.
 
 ## Important notes
 
 - A host must exist in `secrets/outConfig.json` or evaluation fails with an assertion in [modules/common/identity.nix](modules/common/identity.nix).
-- Enabling `sqwer.system.boot.secureBoot.enable` disables `boot.loader.systemd-boot` via lanzaboote.
+- Enabling `logos.system.boot.secureBoot.enable` disables `boot.loader.systemd-boot` via lanzaboote.
   - Secure Boot must be enabled and be in Setup Mode in firmware before booting the installer.
   - After installation, enroll the LUKS TPM2 key by running:
 

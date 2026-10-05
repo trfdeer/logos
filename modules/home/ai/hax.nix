@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.sqwer.home.hax;
+  cfg = config.logos.home.hax;
 
   settingsFormat = pkgs.formats.json { };
 
@@ -22,7 +22,7 @@ let
   mergedSettings = baseSettings // presets // cfg.settings;
 in
 {
-  options.sqwer.home.hax = {
+  options.logos.home.hax = {
     enable = lib.mkEnableOption "hax";
     package = lib.mkPackageOption pkgs.llm-agents "hax" { nullable = false; };
 

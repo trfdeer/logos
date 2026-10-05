@@ -5,11 +5,11 @@
   ...
 }:
 let
-  cfg = config.sqwer.system.tailscale-serve;
+  cfg = config.logos.system.tailscale-serve;
   serveConfig = pkgs.writeText "tailscale-serve-port" (toString cfg.port);
 in
 {
-  options.sqwer.system.tailscale-serve = {
+  options.logos.system.tailscale-serve = {
     enable = lib.mkEnableOption "Enable Tailscale";
 
     port = lib.mkOption {

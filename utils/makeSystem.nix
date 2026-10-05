@@ -41,7 +41,7 @@ inputs.nixpkgs.lib.nixosSystem {
     inputs.home-manager.nixosModules.home-manager
 
     modules.common
-    modules.system.sqwerSystem
+    modules.system.logosSystem
 
     hosts.${name}
     profiles.platform

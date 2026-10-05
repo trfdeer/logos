@@ -5,7 +5,7 @@
   ...
 }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
   hostName = "brim";
 in
 {
@@ -14,7 +14,7 @@ in
 
     (profiles.storage-layouts.makeStorageLayout {
       name = "nixos";
-      device = config.sqwer.secrets.devices.op-server.drive_paths.root;
+      device = config.logos.secrets.devices.op-server.drive_paths.root;
       filesystem = "xfs";
       encrypted = { };
       impermanent = false;
@@ -30,13 +30,13 @@ in
   # ------------------------------------------------------------
   networking = {
     inherit hostName;
-    domain = config.sqwer.secrets.outConfig."${hostName}".domain;
+    domain = config.logos.secrets.outConfig."${hostName}".domain;
   };
 
   # ------------------------------------------------------------
   # Host-specific services
   # ------------------------------------------------------------
-  sqwer.system = {
+  logos.system = {
     impermanence.enable = true;
 
     podman.enable = true;

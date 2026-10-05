@@ -5,10 +5,10 @@
   ...
 }:
 let
-  id = config.sqwer.identity;
-  cfg = config.sqwer.system.boot.initrdSsh;
+  id = config.logos.identity;
+  cfg = config.logos.system.boot.initrdSsh;
   tsCfg = cfg.tailscale;
-  netCfg = config.sqwer.system.network;
+  netCfg = config.logos.system.network;
 
   tsSocket = "/run/tailscale-initrd.sock";
 
@@ -77,7 +77,7 @@ let
   '';
 in
 {
-  options.sqwer.system.boot.initrdSsh = {
+  options.logos.system.boot.initrdSsh = {
     enable = lib.mkEnableOption ''
       SSH access in the initrd for remote LUKS unlock.
       Unlock: ssh -tt -p <port> root@<initrd-ssh-target> — the LUKS
@@ -228,7 +228,7 @@ in
 
       hostname = lib.mkOption {
         type = lib.types.str;
-        default = "${config.sqwer.platform.hostName}-initrd";
+        default = "${config.logos.platform.hostName}-initrd";
         description = "Tailscale hostname announced by the initrd node.";
       };
 
@@ -248,20 +248,20 @@ in
     assertions = [
       {
         assertion = !tsCfg.enable || cfg.publicFallback || tsCfg.ip != null;
-        message = "sqwer.system.boot.initrdSsh: set tailscale.ip when publicFallback is false";
+        message = "logos.system.boot.initrdSsh: set tailscale.ip when publicFallback is false";
       }
       {
         assertion = cfg.network.mode != "manual" || cfg.network.manualConfiguration != null;
-        message = "sqwer.system.boot.initrdSsh: network.mode is manual but network.manualConfiguration is null";
+        message = "logos.system.boot.initrdSsh: network.mode is manual but network.manualConfiguration is null";
       }
       {
         assertion = luksDevices != { };
-        message = "sqwer.system.boot.initrdSsh: enabled but no boot.initrd.luks.devices found — did the storage layout set encrypted.method = \"ssh\"?";
+        message = "logos.system.boot.initrdSsh: enabled but no boot.initrd.luks.devices found — did the storage layout set encrypted.method = \"ssh\"?";
       }
     ];
 
     warnings = lib.optionals (tsCfg.enable && cfg.publicFallback) [
-      "sqwer.system.boot.initrdSsh: publicFallback is on, the initrd sshd is reachable on the public interface — disable it after enrolling the initrd tailnet node"
+      "logos.system.boot.initrdSsh: publicFallback is on, the initrd sshd is reachable on the public interface — disable it after enrolling the initrd tailnet node"
     ];
 
     boot.initrd = {
@@ -364,7 +364,7 @@ in
         '';
 
     preservation.preserveAt."/persistent/nixos".files =
-      lib.mkIf (config.sqwer.system.impermanence.enable && !lib.hasPrefix "/persistent" cfg.hostKey)
+      lib.mkIf (config.logos.system.impermanence.enable && !lib.hasPrefix "/persistent" cfg.hostKey)
         [
           {
             file = cfg.hostKey;

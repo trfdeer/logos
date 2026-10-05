@@ -1,6 +1,6 @@
 { config, modulesPath, ... }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
 in
 {
   wsl = {
@@ -18,7 +18,7 @@ in
     "${modulesPath}/profiles/headless.nix"
   ];
 
-  sqwer = {
+  logos = {
     platform.isWsl = true;
     system.boot.doNotConfigure = true;
   };

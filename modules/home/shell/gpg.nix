@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.home.gpg;
+  cfg = config.logos.home.gpg;
 in
 {
-  options.sqwer.home.gpg = {
+  options.logos.home.gpg = {
     enable = lib.mkEnableOption "Enable GPG";
   };
 

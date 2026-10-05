@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.system._1password;
+  cfg = config.logos.system._1password;
 in
 {
-  options.sqwer.system._1password = {
+  options.logos.system._1password = {
     enable = lib.mkEnableOption "1Password Password Manager";
     systemUsers = lib.mkOption {
       type = lib.types.listOf lib.types.nonEmptyStr;

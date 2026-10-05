@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.sqwer.home.opencode;
+  cfg = config.logos.home.opencode;
 
   agents = [
     "monday"
@@ -17,13 +17,13 @@ let
   ];
 in
 {
-  options.sqwer.home.opencode = {
+  options.logos.home.opencode = {
     enable = lib.mkEnableOption "OpenCode";
     package = lib.mkPackageOption pkgs.llm-agents "opencode2" { nullable = false; };
   };
 
   config = lib.mkIf cfg.enable {
-    sqwer.home.mcp.enable = true;
+    logos.home.mcp.enable = true;
 
     programs.opencode2 = {
       enable = true;

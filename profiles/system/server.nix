@@ -11,7 +11,7 @@
   documentation.man.enable = false;
 
   # Image builds happen off-host
-  sqwer.system.docker.package = lib.mkDefault (pkgs.docker.override { buildxSupport = false; });
+  logos.system.docker.package = lib.mkDefault (pkgs.docker.override { buildxSupport = false; });
 
   # Rebuilds run on the workstation (`just upgrade`) and copy closures to the
   # target; the target never resolves flakes, so don't pin nixpkgs (~197 MiB)

@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.home.utils;
+  cfg = config.logos.home.utils;
 in
 {
-  options.sqwer.home.utils = {
+  options.logos.home.utils = {
     enable = lib.mkEnableOption "core shell utilities" // {
       default = true;
     };
@@ -42,7 +42,7 @@ in
       programs.zoxide = {
         enable = true;
       }
-      // (lib.optionalAttrs config.sqwer.home.zsh.enable {
+      // (lib.optionalAttrs config.logos.home.zsh.enable {
         enableZshIntegration = true;
       });
 

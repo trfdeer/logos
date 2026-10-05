@@ -1,12 +1,12 @@
 { lib, config, ... }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
 in
 {
   home = {
     username = id.username;
     homeDirectory = "/home/${id.username}";
-    stateVersion = config.sqwer.platform.stateVersion;
+    stateVersion = config.logos.platform.stateVersion;
   };
 
   xdg.enable = true;

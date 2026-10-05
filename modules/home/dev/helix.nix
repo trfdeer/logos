@@ -5,7 +5,7 @@
   ...
 }:
 {
-  options.sqwer.home.helix = {
+  options.logos.home.helix = {
     enable = lib.mkEnableOption "Enable Helix Editor";
     grammars = lib.mkOption {
       type = with lib.types; nullOr (listOf str);
@@ -17,18 +17,18 @@
     };
   };
 
-  config = lib.mkIf config.sqwer.home.helix.enable {
+  config = lib.mkIf config.logos.home.helix.enable {
     programs.helix = {
       enable = true;
       defaultEditor = true;
       package =
         let
           helixGrammars =
-            if config.sqwer.home.helix.grammars == null then
+            if config.logos.home.helix.grammars == null then
               pkgs.helix
             else
               pkgs.helix.override {
-                lockedGrammars = lib.getAttrs config.sqwer.home.helix.grammars (
+                lockedGrammars = lib.getAttrs config.logos.home.helix.grammars (
                   lib.importJSON "${pkgs.path}/pkgs/by-name/he/helix/grammars.json"
                 );
               };

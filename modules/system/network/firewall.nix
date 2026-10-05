@@ -1,8 +1,8 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.system.firewall;
-  cfgNetwork = config.sqwer.system.network;
-  cfgTailscale = config.sqwer.system.tailscale;
+  cfg = config.logos.system.firewall;
+  cfgNetwork = config.logos.system.network;
+  cfgTailscale = config.logos.system.tailscale;
 
   # Zoning is a layer on top of the nftables backend of `networking.firewall`:
   #
@@ -192,7 +192,7 @@ let
   };
 in
 {
-  options.sqwer.system.firewall = {
+  options.logos.system.firewall = {
     enable = lib.mkEnableOption "zone-based nftables firewall";
 
     zones = lib.mkOption {
@@ -211,7 +211,7 @@ in
       description = ''
         Firewall zones. Every allow must be attached to a zone; traffic
         matching no zone rule is dropped by the strict-deny baseline.
-        `lan` is seeded with `sqwer.system.network.interface` and `mesh`
+        `lan` is seeded with `logos.system.network.interface` and `mesh`
         with `tailscale0` (when those modules are enabled) as long as the
         zone's `match.interfaces` is left empty.
       '';
@@ -238,7 +238,7 @@ in
     assertions = [
       {
         assertion = config.networking.firewall.backend == "nftables";
-        message = "sqwer.system.firewall requires the nftables backend (networking.nftables.enable = true)";
+        message = "logos.system.firewall requires the nftables backend (networking.nftables.enable = true)";
       }
     ];
   };

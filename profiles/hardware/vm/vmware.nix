@@ -1,10 +1,10 @@
 { config, lib, ... }:
 
 let
-  cfg = config.sqwer.system.hardware.vmware;
+  cfg = config.logos.system.hardware.vmware;
 in
 {
-  options.sqwer.system.hardware.vmware = {
+  options.logos.system.hardware.vmware = {
     enable = lib.mkEnableOption "Is a VMWare VM";
   };
 

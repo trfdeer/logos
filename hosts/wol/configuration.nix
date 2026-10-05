@@ -3,11 +3,11 @@
   ...
 }:
 let
-  id = config.sqwer.identity;
+  id = config.logos.identity;
 in
 {
   networking.hostName = "wol";
-  sqwer.system = {
+  logos.system = {
     podman = {
       enable = true;
       users = [ id.username ];

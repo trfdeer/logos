@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.system.docker;
+  cfg = config.logos.system.docker;
 in
 {
-  options.sqwer.system.docker = {
+  options.logos.system.docker = {
     enable = lib.mkEnableOption "Enable docker";
     package = lib.mkPackageOption pkgs "docker" { };
     useBtrfsDriver = lib.mkEnableOption "Use btrfs storage driver";

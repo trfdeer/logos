@@ -5,10 +5,10 @@
   ...
 }:
 let
-  homeCfg = config.sqwer.home;
+  homeCfg = config.logos.home;
 in
 {
-  options.sqwer.home.nix = {
+  options.logos.home.nix = {
     enable = lib.mkEnableOption "Configure nix and enable home-manager" // {
       default = true;
     };
@@ -19,7 +19,7 @@ in
       home.packages = with pkgs; [ nh ];
     })
 
-    (lib.mkIf (homeCfg.nix.enable && !config.sqwer.platform.isNixosSystem) {
+    (lib.mkIf (homeCfg.nix.enable && !config.logos.platform.isNixosSystem) {
       nix = {
 
         settings = {
@@ -31,7 +31,7 @@ in
           ];
 
           # Can't set these from home config
-          # trusted-users = [ config.sqwer.identity.username ];
+          # trusted-users = [ config.logos.identity.username ];
         };
 
         gc = {

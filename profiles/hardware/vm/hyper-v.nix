@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.system.hardware.hyperv;
+  cfg = config.logos.system.hardware.hyperv;
 in
 {
-  options.sqwer.system.hardware.hyperv = {
+  options.logos.system.hardware.hyperv = {
     enable = lib.mkEnableOption "Enable Hyper-V specific patches";
   };
 

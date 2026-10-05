@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  cfg = config.sqwer.system.network;
+  cfg = config.logos.system.network;
 in
 {
-  options.sqwer.system.network = {
+  options.logos.system.network = {
     enable = lib.mkEnableOption "networking configuration";
 
     name = lib.mkOption {

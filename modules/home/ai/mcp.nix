@@ -4,10 +4,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.home.mcp;
+  cfg = config.logos.home.mcp;
 in
 {
-  options.sqwer.home.mcp = {
+  options.logos.home.mcp = {
     enable = lib.mkEnableOption "shared MCP servers";
   };
 

@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.sqwer.system.games.terraria;
+  cfg = config.logos.system.games.terraria;
 
   enabledInstances = lib.filterAttrs (_: inst: inst.enable) cfg.instances;
   worldSizeMap = {
@@ -23,7 +23,7 @@ let
 
 in
 {
-  options.sqwer.system.games.terraria = {
+  options.logos.system.games.terraria = {
     enable = lib.mkEnableOption "Terraria game servers";
 
     dataDir = lib.mkOption {
@@ -121,13 +121,13 @@ in
     assertions = [
       {
         assertion = enabledInstances != { };
-        message = "sqwer.system.games.terraria.enable is true, but no instances are enabled";
+        message = "logos.system.games.terraria.enable is true, but no instances are enabled";
       }
       {
         assertion =
           lib.length (lib.unique (map (i: i.port) (lib.attrValues enabledInstances)))
           == lib.length (lib.attrValues enabledInstances);
-        message = "sqwer.system.games.terraria: multiple instances are configured with the same port";
+        message = "logos.system.games.terraria: multiple instances are configured with the same port";
       }
     ];
 

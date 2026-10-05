@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.sqwer.system.games.minecraft;
+  cfg = config.logos.system.games.minecraft;
 in
 {
-  options.sqwer.system.games.minecraft = {
+  options.logos.system.games.minecraft = {
     enable = lib.mkEnableOption "Minecraft Server";
 
     groupMembers = lib.mkOption {

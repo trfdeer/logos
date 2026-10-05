@@ -1,13 +1,13 @@
 { config, ... }:
 {
-  sqwer.home = {
+  logos.home = {
     tmux.enable = false;
     opencode.enable = true;
     _1password.enable = true;
 
     git = {
       enable = true;
-      inherit (config.sqwer.identity.git) identities;
+      inherit (config.logos.identity.git) identities;
     };
 
     hax = {
