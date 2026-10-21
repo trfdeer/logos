@@ -14,7 +14,6 @@
 
       just
       secretspec
-      _1password-cli
 
       deploy-rs
       nixos-anywhere
