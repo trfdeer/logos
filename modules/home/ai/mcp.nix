@@ -12,8 +12,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Written to ~/.config/mcp/mcp.json; individual agents (e.g. opencode2
-    # via `enableMcpIntegration`) merge these into their own server config.
     programs.mcp = {
       enable = true;
       servers = {
@@ -22,6 +20,7 @@ in
         microsoft-learn.url = "https://learn.microsoft.com/api/mcp";
         linear.url = "https://mcp.linear.app/mcp";
       };
+
     };
   };
 }

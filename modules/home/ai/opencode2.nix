@@ -46,7 +46,11 @@ let
     }
     // (
       if isRemote then
-        { inherit (s) url; } // lib.optionalAttrs (s.headers or { } != { }) { inherit (s) headers; }
+        {
+          inherit (s) url;
+        }
+        // lib.optionalAttrs (s ? oauth && s.oauth != null) { inherit (s) oauth; }
+        // lib.optionalAttrs (s.headers or { } != { }) { inherit (s) headers; }
       else
         {
           command = [ s.command ] ++ (s.args or [ ]);

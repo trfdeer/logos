@@ -6,15 +6,6 @@
 }:
 let
   cfg = config.logos.home.opencode;
-
-  agents = [
-    "monday"
-    "victor"
-  ];
-  skills = [
-    "commit-conventions"
-    "budget-categorize"
-  ];
 in
 {
   options.logos.home.opencode = {
@@ -32,6 +23,7 @@ in
       extraPackages = [
         pkgs.mcp-nixos
         pkgs.bun
+        pkgs.uv
       ];
 
       settings = {
@@ -40,23 +32,22 @@ in
           title.model = "hyper/glm-5.3-flash";
         };
 
-        plugins = [
-          "opencode-models-discovery@1.6.1"
-        ];
-
         websearch.provider = "random";
 
+        disabled_providers = [ "opencode" ];
         formatter = true;
         share = "disabled";
         update = "disable";
       };
 
       cli.theme.name = "rosepine";
-
-      agents = lib.listToAttrs (map (name: lib.nameValuePair name ./agents/${name}.md) agents);
-
-      skills = lib.listToAttrs (map (name: lib.nameValuePair name ./skills/${name}/SKILL.md) skills);
     };
+
+    home.activation.copyOpencodeSkillsAgents = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+      rm -rf -- "$HOME/.config/opencode/skills" "$HOME/.config/opencode/agents"
+      cp -r --no-preserve=mode ${./skills} "$HOME/.config/opencode/skills"
+      cp -r --no-preserve=mode ${./agents} "$HOME/.config/opencode/agents"
+    '';
 
     home.shellAliases.oc = cfg.package.pname;
   };
