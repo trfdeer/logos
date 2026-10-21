@@ -21,6 +21,8 @@ in
       [
         k9s
         kubectl
+        kustomize
+        cilium-cli
         kubernetes-helm
       ]
       ++ lib.optional (cfg.clusterPackage != null) cfg.clusterPackage;
