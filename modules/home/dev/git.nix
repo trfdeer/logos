@@ -49,7 +49,7 @@ in
       # Use the same git as `pkgs.unstable.mise` to avoid a second git in the closure.
       package = pkgs.unstable.git;
       lfs.enable = true;
-      signing.signByDefault = true;
+      signing.signByDefault = false;
 
       settings = {
         init.defaultBranch = "main";
