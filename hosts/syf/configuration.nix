@@ -6,7 +6,11 @@ let
   id = config.logos.identity;
 in
 {
-  networking.hostName = "wol";
+  networking.hostName = "syf";
+  # Secret Service provider for headless WSL
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.login.enableGnomeKeyring = true;
+
   logos.system = {
     podman = {
       enable = true;

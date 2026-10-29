@@ -25,8 +25,8 @@ in
     ];
   };
 
-  "dwai@wol" = makeHome {
-    name = "wol";
+  "dwai@syf" = makeHome {
+    name = "syf";
     prefs = {
       isWsl = true;
       roles = [ "server" ];

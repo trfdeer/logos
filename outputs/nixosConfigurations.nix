@@ -40,8 +40,8 @@ in
     name = "zeph";
     prefs.roles = [ "server" ];
   };
-  wol = makeSystem {
-    name = "wol";
+  syf = makeSystem {
+    name = "syf";
     prefs = {
       isWsl = true;
       roles = [ "dev" ];
