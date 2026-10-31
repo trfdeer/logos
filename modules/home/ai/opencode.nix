@@ -34,6 +34,8 @@ in
 
         websearch.provider = "random";
 
+        experimental.artifacts = true;
+
         disabled_providers = [ "opencode" ];
         formatter = true;
         share = "disabled";

@@ -20,6 +20,8 @@ in
       with pkgs.unstable;
       [
         k9s
+        fluxcd
+        flux9s
         kubectl
         kustomize
         cilium-cli
