@@ -13,6 +13,7 @@
   logos.home = {
     opencode.enable = true;
     _1password.enable = true;
+    k8s.enable = true;
 
     sound = {
       disable-hw-volume = true;
