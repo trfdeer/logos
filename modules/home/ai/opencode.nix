@@ -24,6 +24,7 @@ in
         pkgs.mcp-nixos
         pkgs.bun
         pkgs.uv
+        pkgs.llm-agents.agent-browser
       ];
 
       settings = {
@@ -31,6 +32,11 @@ in
         agents = {
           title.model = "hyper/glm-5.3-flash";
         };
+
+        plugins = [
+          "opencode-mem@latest"
+          "@dietrichgebert/ponytail"
+        ];
 
         websearch.provider = "random";
 

@@ -5,6 +5,7 @@
   config = {
     home.sessionPath = [
       "${config.home.homeDirectory}/.local/bin"
+      "${config.home.sessionVariables.CARGO_HOME}/bin"
     ];
 
     home.sessionVariables = {

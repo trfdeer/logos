@@ -16,9 +16,14 @@ in
       enable = true;
       servers = {
         mcp-nixos.command = "mcp-nixos";
+        agent-browser = {
+          command = "agent-browser";
+          args = [ "mcp" ];
+        };
         context7.url = "https://mcp.context7.com/mcp";
         microsoft-learn.url = "https://learn.microsoft.com/api/mcp";
         linear.url = "https://mcp.linear.app/mcp";
+        cloudflare.url = "https://mcp.cloudflare.com/mcp";
       };
 
     };

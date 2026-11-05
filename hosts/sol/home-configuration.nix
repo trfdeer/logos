@@ -5,6 +5,8 @@
     [
       yubikey-manager
       nix-tree
+
+      mitmproxy
     ]
     ++ (with pkgs; [
       wor.wor-kvm
